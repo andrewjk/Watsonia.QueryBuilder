@@ -1,0 +1,1396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<baselines>
+  <baseline key="TestMathLog10">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE LOG10([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathCeiling">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CEILING([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathRoundToPlace">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ROUND([o].[OrderID], 2) = 0
+  </baseline>
+  <baseline key="TestMathFloor">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ROUND([o].[OrderID] - 0.5) = 0
+  </baseline>
+  <baseline key="TestMathTruncate">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(([o].[OrderID] * 10) AS INT) / 10 = 0
+  </baseline>
+  <baseline key="TestStringCompareToLessThan">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &lt; 0
+  </baseline>
+  <baseline key="TestStringCompareToLessThanOrEqualTo">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &lt;= 0
+  </baseline>
+  <baseline key="TestStringCompareToGreaterThan">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &gt; 0
+  </baseline>
+  <baseline key="TestStringCompareToGreaterThanOrEqualTo">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &gt;= 0
+  </baseline>
+  <baseline key="TestStringCompareToEquals">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) = 0
+  </baseline>
+  <baseline key="TestStringCompareToNotEquals">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &lt;&gt; 0
+  </baseline>
+  <baseline key="TestStringCompareLessThan">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &lt; 0
+  </baseline>
+  <baseline key="TestStringCompareLessThanOrEqualTo">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &lt;= 0
+  </baseline>
+  <baseline key="TestStringCompareGreaterThan">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &gt; 0
+  </baseline>
+  <baseline key="TestStringCompareGreaterThanOrEqualTo">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &gt;= 0
+  </baseline>
+  <baseline key="TestStringCompareEquals">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) = 0
+  </baseline>
+  <baseline key="TestStringCompareNotEquals">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (CASE WHEN [c].[City] = 'Seattle' THEN 0 WHEN [c].[City] &lt; 'Seattle' THEN -1 ELSE 1 END) &lt;&gt; 0
+  </baseline>
+  <baseline key="TestIntCompareTo">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE (CASE WHEN [o].[OrderID] = 1000 THEN 0 WHEN [o].[OrderID] &lt; 1000 THEN -1 ELSE 1 END) = 0
+  </baseline>
+  <baseline key="TestDecimalCompare">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE (CASE WHEN [o].[OrderID] = 0.0 THEN 0 WHEN [o].[OrderID] &lt; 0.0 THEN -1 ELSE 1 END) = 0
+  </baseline>
+  <baseline key="TestDecimalAdd">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] + 0.0) = 0.0
+  </baseline>
+  <baseline key="TestDecimalSubtract">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] - 0.0) = 0.0
+  </baseline>
+  <baseline key="TestDecimalMultiply">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] * 1.0) = 1.0
+  </baseline>
+  <baseline key="TestDecimalDivide">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] / 1.0) = 1.0
+  </baseline>
+  <baseline key="TestDecimalRemainder">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] % 1.0) = 0.0
+  </baseline>
+  <baseline key="TestDecimalNegate">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE -[o].[OrderID] = 1.0
+  </baseline>
+  <baseline key="TestDecimalRoundDefault">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ROUND([o].[OrderID], 0) = 0
+  </baseline>
+  <baseline key="TestDecimalRoundPlaces">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ROUND([o].[OrderID], 2) = 0.00
+  </baseline>
+  <baseline key="TestDecimalTruncate">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(([o].[OrderID] * 10) AS INT) / 10 = 0
+  </baseline>
+  <baseline key="TestDecimalCeiling">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CEILING([o].[OrderID]) = 0.0
+  </baseline>
+  <baseline key="TestDecimalFloor">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ROUND([o].[OrderID] - 0.5) = 0.0
+  </baseline>
+  <baseline key="TestDecimalLessThan">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] &lt; 0.0
+  </baseline>
+  <baseline key="TestIntLessThan">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] &lt; 0
+  </baseline>
+  <baseline key="TestIntLessThanOrEqual">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] &lt;= 0
+  </baseline>
+  <baseline key="TestIntGreaterThan">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] &gt; 0
+  </baseline>
+  <baseline key="TestIntGreaterThanOrEqual">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] &gt;= 0
+  </baseline>
+  <baseline key="TestIntEqual">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] = 0
+  </baseline>
+  <baseline key="TestIntNotEqual">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderID] &lt;&gt; 0
+  </baseline>
+  <baseline key="TestIntAdd">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] + 0) = 0
+  </baseline>
+  <baseline key="TestIntSubtract">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] - 0) = 0
+  </baseline>
+  <baseline key="TestIntMultiply">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] * 1) = 1
+  </baseline>
+  <baseline key="TestIntDivide">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] / 1) = 1
+  </baseline>
+  <baseline key="TestIntModulo">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] % 1) = 0
+  </baseline>
+  <baseline key="TestIntLeftShift">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] &lt;&lt; 1) = 0
+  </baseline>
+  <baseline key="TestIntRightShift">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] &gt;&gt; 1) = 0
+  </baseline>
+  <baseline key="TestIntBitwiseAnd">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] &amp; 1) = 0
+  </baseline>
+  <baseline key="TestIntBitwiseOr">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] | 1) = 1
+  </baseline>
+  <baseline key="TestIntBitwiseExclusiveOr">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] &amp;~ 1) = 1
+  </baseline>
+  <baseline key="TestIntBitwiseNot">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ~[o].[OrderID] = 0
+  </baseline>
+  <baseline key="TestIntNegate">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE -[o].[OrderID] = -1
+  </baseline>
+  <baseline key="TestAnd">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] &gt; 0 AND [o].[OrderID] &lt; 2000)
+  </baseline>
+  <baseline key="TestOr">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderID] &lt; 5 OR [o].[OrderID] &gt; 10)
+  </baseline>
+  <baseline key="TestNot">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE NOT [o].[OrderID] = 0
+  </baseline>
+  <baseline key="TestEqualNull">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] IS NULL
+  </baseline>
+  <baseline key="TestEqualNullReverse">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] IS NULL
+  </baseline>
+  <baseline key="TestConditional">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE (CASE WHEN [o].[CustomerID] = 'ALFKI' THEN 1000 ELSE 0 END) = 1000
+  </baseline>
+  <baseline key="TestConditional2">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE (CASE WHEN [o].[CustomerID] = 'ALFKI' THEN 1000 WHEN [o].[CustomerID] = 'ABCDE' THEN 2000 ELSE 0 END) = 1000
+  </baseline>
+  <baseline key="TestConditionalTestIsValue">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE (CASE [o].[OrderID] WHEN 0 THEN 200 ELSE 100 END) = 100
+  </baseline>
+  <baseline key="TestConditionalResultsArePredicates">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CASE WHEN ([o].[CustomerID] = 'ALFKI') THEN CASE WHEN (([o].[OrderID] &lt; 10)) THEN 1 ELSE 0 END ELSE CASE WHEN (([o].[OrderID] &gt; 10)) THEN 1 ELSE 0 END END &lt;&gt; 0
+  </baseline>
+  <baseline key="TestSelectManyJoined">
+    SELECT [c].[ContactName], [o].[OrderDate]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON ([o].[CustomerID] = [c].[CustomerID])
+  </baseline>
+  <baseline key="TestSelectManyJoinedDefaultIfEmpty">
+    SELECT [c].[ContactName], [o].[OrderDate]
+    FROM [Customers] AS [c]
+    LEFT OUTER JOIN [Orders]
+    ON ([o].[CustomerID] = [c].[CustomerID])
+  </baseline>
+  <baseline key="TestSelectWhereAssociation">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    WHERE [c].[City] = 'London'
+  </baseline>
+  <baseline key="TestSelectWhereAssociations">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    WHERE ([c].[City] = 'London') AND ([c].[Phone] &lt;&gt; @1)
+  </baseline>
+  <baseline key="TestSelectWhereAssociationTwice">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    WHERE ([c].[City] = 'London') AND ([c].[Phone] &lt;&gt; @1)
+  </baseline>
+  <baseline key="TestSelectAssociation">
+    SELECT [c].[CustomerID] AS [CustomerID1], [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+  </baseline>
+  <baseline key="TestSelectAssociations">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country] AS [CustomerID1], [c].[Phone]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+  </baseline>
+  <baseline key="TestSelectAssociationsWhereAssociations">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country] AS [CustomerID1], [c].[Phone]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    WHERE ([c].[City] = 'London') AND ([c].[Phone] &lt;&gt; @1)
+  </baseline>
+  <baseline key="TestSingletonAssociationWithMemberAccess">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country] AS [CustomerID1], [c].[Phone]
+    FROM [Orders] AS [o]
+    LEFT OUTER JOIN [Customers]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    WHERE ([c].[City] = 'London') AND ([c].[Phone] &lt;&gt; @1)
+  </baseline>
+  <baseline key="TestCompareDateTimesWithDifferentNullability">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[OrderDate] &lt; @0) AND ([o].[OrderDate] &lt; @1)
+  </baseline>
+  <baseline key="TestContainsWithEmptyLocalList">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE 0 &lt;&gt; 0
+  </baseline>
+  <baseline key="TestContainsWithSubquery2">
+    SELECT [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[CustomerID], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] IN (
+    SELECT [c2].[CustomerID]
+    FROM [Customers] AS [c2]
+    WHERE [c2].[City] = 'London'
+    )
+  </baseline>
+  <baseline key="TestCombineQueriesDeepNesting">
+    SELECT [Order Details].[OrderID], [Order Details].[ProductID]
+    FROM [Order Details] AS [Order Details]
+    WHERE EXISTS(
+    SELECT NULL
+    FROM [Orders] AS [o]
+    WHERE (EXISTS(
+    SELECT NULL
+    FROM [Customers] AS [c]
+    WHERE ([c].[ContactName] LIKE @0 || '%') AND ([c].[CustomerID] = [o].[CustomerID])
+    ) AND ([o].[OrderID] = [Order Details].[OrderID]))
+    )
+  </baseline>
+  <baseline key="TestLetWithSubquery">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], (
+    SELECT COUNT(*)
+    FROM [Orders] AS [o]
+    WHERE [o].[CustomerID] = [c].[CustomerID]
+    ) AS [c0]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSkipTakeDistinct">
+    SELECT DISTINCT [RowNumberTable].[CustomerID], [RowNumberTable].[City], [RowNumberTable].[CompanyName], [RowNumberTable].[ContactName], [RowNumberTable].[Country], [RowNumberTable].[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], ROW_NUMBER() OVER(ORDER BY [c].[ContactName]) AS RowNumber
+    FROM [Customers] AS [c]
+    ) AS [RowNumberTable]
+    WHERE [RowNumber] &gt; 5 AND [RowNumber] &lt;= 15
+    ORDER BY [RowNumberTable].[ContactName]
+  </baseline>
+  <baseline key="TestTakeSkipDistinct">
+    SELECT DISTINCT t0.[City], t0.[CompanyName], t0.[ContactName], t0.[Country], t0.[CustomerID], t0.[Phone]
+    FROM (
+    SELECT t1.[City], t1.[CompanyName], t1.[ContactName], t1.[Country], t1.[CustomerID], t1.[Phone]
+    FROM (
+    SELECT ROW_NUMBER() OVER(ORDER BY t2.[ContactName]) AS [_rownum], t2.[City], t2.[CompanyName], t2.[ContactName], t2.[Country], t2.[CustomerID], t2.[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName]
+    LIMIT 10
+    ) AS t2
+    ) AS t1
+    WHERE t1.[_rownum] &gt; 5
+    ) AS t0
+  </baseline>
+  <baseline key="TestFirst">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName]
+    LIMIT 1
+  </baseline>
+  <baseline key="TestFirstPredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName]
+    LIMIT 1
+  </baseline>
+  <baseline key="TestWhereFirst">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName]
+    LIMIT 1
+  </baseline>
+  <baseline key="TestFirstOrDefault">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName]
+    LIMIT 1
+  </baseline>
+  <baseline key="TestFirstOrDefaultPredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName]
+    LIMIT 1
+  </baseline>
+  <baseline key="TestWhereFirstOrDefault">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName]
+    LIMIT 1
+  </baseline>
+  <baseline key="TestReverse">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName] DESC
+  </baseline>
+  <baseline key="TestReverseReverse">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName]
+  </baseline>
+  <baseline key="TestReverseWhereReverse">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName]
+  </baseline>
+  <baseline key="TestReverseTakeReverse">
+    SELECT t0.[City], t0.[CompanyName], t0.[ContactName], t0.[Country], t0.[CustomerID], t0.[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 5
+    ) AS t0
+    ORDER BY t0.[ContactName]
+  </baseline>
+  <baseline key="TestReverseWhereTakeReverse">
+    SELECT t0.[City], t0.[CompanyName], t0.[ContactName], t0.[Country], t0.[CustomerID], t0.[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 5
+    ) AS t0
+    ORDER BY t0.[ContactName]
+  </baseline>
+  <baseline key="TestLast">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 1
+  </baseline>
+  <baseline key="TestLastPredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 1
+  </baseline>
+  <baseline key="TestWhereLast">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 1
+  </baseline>
+  <baseline key="TestLastOrDefault">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 1
+  </baseline>
+  <baseline key="TestLastOrDefaultPredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 1
+  </baseline>
+  <baseline key="TestWhereLastOrDefault">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+    ORDER BY [c].[ContactName] DESC
+    LIMIT 1
+  </baseline>
+  <baseline key="TestSingle">
+    SELECT [g_1].[CustomerID], [g_1].[City], [g_1].[CompanyName], [g_1].[ContactName], [g_1].[Country], [g_1].[Phone]
+    FROM [Customers] AS [g_1]
+  </baseline>
+  <baseline key="TestSinglePredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestWhereSingle">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestSingleOrDefault">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSingleOrDefaultPredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestWhereSingleOrDefault">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestAnyWithSubquery">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE EXISTS(
+    SELECT NULL
+    FROM [Orders] AS [o]
+    WHERE ([o].[CustomerID] = [c].[CustomerID]) AND (CAST(STRFTIME(year, [o].[OrderDate]) = 1997) AS INT)
+    )
+  </baseline>
+  <baseline key="TestAnyWithSubqueryNoPredicate">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE EXISTS(
+    SELECT NULL
+    FROM [Orders] AS [o]
+    WHERE [o].[CustomerID] = [c].[CustomerID]
+    )
+  </baseline>
+  <baseline key="TestAnyWithLocalCollection">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE ([c].[CustomerID] = 'ALFKI') OR ([c].[CustomerID] = @1)
+  </baseline>
+  <baseline key="TestAnyTopLevel">
+    SELECT CASE WHEN EXISTS (
+    SELECT [g_1].[CustomerID], [g_1].[City], [g_1].[CompanyName], [g_1].[ContactName], [g_1].[Country], [g_1].[Phone]
+    FROM [Customers] AS [g_1]
+    ) THEN 1 ELSE 0 END
+  </baseline>
+  <baseline key="TestAllWithSubquery">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE NOT EXISTS(
+    SELECT NULL
+    FROM [Orders] AS [o]
+    WHERE ([o].[CustomerID] = [c].[CustomerID]) AND NOT (CAST(STRFTIME('%Y', [o].[OrderDate]) = 1997) AS INT)
+    )
+  </baseline>
+  <baseline key="TestAllWithLocalCollection">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE ([c].[ContactName] LIKE '%' || @0 || '%') AND ([c].[ContactName] LIKE '%' || @1 || '%')
+  </baseline>
+  <baseline key="TestAllTopLevel">
+    SELECT CASE WHEN NOT EXISTS (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE NOT [c].[ContactName] LIKE 'a' || '%'
+    ) THEN 1 ELSE 0 END
+  </baseline>
+  <baseline key="TestContainsWithSubquery">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] IN (
+    SELECT [o].[CustomerID]
+    FROM [Orders] AS [o]
+    )
+  </baseline>
+  <baseline key="TestContainsWithLocalCollection">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] IN ('ABCDE', 'ALFKI')
+  </baseline>
+  <baseline key="TestContainsTopLevel">
+    SELECT CASE WHEN 'ALFKI' IN (
+    SELECT [c].[CustomerID]
+    FROM [Customers] AS [c]
+    ) THEN 1 ELSE 0 END
+  </baseline>
+  <baseline key="TestCoalesce">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE COALESCE([c].[City], @0) = @0
+  </baseline>
+  <baseline key="TestCoalesce2">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE COALESCE([c].[City], [c].[Country], @0) = @0
+  </baseline>
+  <baseline key="TestStringLength">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE LENGTH([c].[City]) = 7
+  </baseline>
+  <baseline key="TestStringStartsWithLiteral">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] LIKE 'M' || '%'
+  </baseline>
+  <baseline key="TestStringStartsWithColumn">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] LIKE [c].[ContactName] || '%'
+  </baseline>
+  <baseline key="TestStringEndsWithLiteral">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] LIKE '%' || 's'
+  </baseline>
+  <baseline key="TestStringEndsWithColumn">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] LIKE '%' || [c].[ContactName]
+  </baseline>
+  <baseline key="TestStringContainsLiteral">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] LIKE '%' || 'and' || '%'
+  </baseline>
+  <baseline key="TestStringContainsColumn">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] LIKE '%' || [c].[ContactName] || '%'
+  </baseline>
+  <baseline key="TestStringConcatImplicit2Args">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE ([c].[ContactName] + 'X') = 'X'
+  </baseline>
+  <baseline key="TestStringConcatExplicit2Args">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] + 'X' = 'X'
+  </baseline>
+  <baseline key="TestStringConcatExplicit3Args">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] + 'X' + [c].[Country] = 'X'
+  </baseline>
+  <baseline key="TestStringConcatExplicitNArgs">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[ContactName] + 'X' + [c].[Country] = 'X'
+  </baseline>
+  <baseline key="TestStringIsNullOrEmpty">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE ([c].[City] IS NULL OR [c].[City] = '')
+  </baseline>
+  <baseline key="TestStringToUpper">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE UPPER([c].[City]) = 'SEATTLE'
+  </baseline>
+  <baseline key="TestStringToLower">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE LOWER([c].[City]) = 'seattle'
+  </baseline>
+  <baseline key="TestStringSubstring">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE SUBSTR([c].[City], 0 + 1, 4) = 'Seat'
+  </baseline>
+  <baseline key="TestStringSubstringNoLength">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE SUBSTR([c].[City], 4 + 1, 8000) = 'tle'
+  </baseline>
+  <baseline key="TestStringIndexOf">
+  SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+  FROM [Customers] AS [c]
+  WHERE (INSTR([c].[City], 'tt') - 1) = 4
+  </baseline>
+  <baseline key="TestStringIndexOfChar">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE (INSTR([c].[City], 't') - 1) = 4
+  </baseline>
+  <baseline key="TestStringTrim">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE RTRIM(LTRIM([c].[City])) = 'Seattle'
+  </baseline>
+  <baseline key="TestStringToString">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'Seattle'
+  </baseline>
+  <baseline key="TestStringReplace">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE REPLACE([c].[City], 'ea', 'ae') = 'Saettle'
+  </baseline>
+  <baseline key="TestStringReplaceChars">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE REPLACE([c].[City], 'e', 'y') = 'Syattly'
+  </baseline>
+  <baseline key="TestStringRemove">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE STUFF([c].[City], 1 + 1, 2, '') = 'Sttle'
+  </baseline>
+  <baseline key="TestStringRemoveNoCount">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE STUFF([c].[City], 4 + 1, 8000, '') = 'Seat'
+  </baseline>
+  <baseline key="TestDateTimeConstructYmd">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderDate] = CAST(STRFTIME('%Y', [o].[OrderDate]) AS INT) || '-' || '01' || '-' || '01'
+  </baseline>
+  <baseline key="TestDateTimeConstructYmdhms">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE [o].[OrderDate] = CAST(STRFTIME('%Y', [o].[OrderDate]) AS INT) || '-' || '01' || '-' || '01' || ' ' || '10' || ':' || '25' || ':' || '55'
+  </baseline>
+  <baseline key="TestDateTimeDay">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%d', [o].[OrderDate]) AS INT) = 5
+  </baseline>
+  <baseline key="TestDateTimeMonth">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%m', [o].[OrderDate]) AS INT) = 12
+  </baseline>
+  <baseline key="TestDateTimeYear">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%Y', [o].[OrderDate]) AS INT) = 1997
+  </baseline>
+  <baseline key="TestDateTimeHour">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%H', [o].[OrderDate]) AS INT) = 6
+  </baseline>
+  <baseline key="TestDateTimeMinute">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%M', [o].[OrderDate]) AS INT) = 32
+  </baseline>
+  <baseline key="TestDateTimeSecond">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%S', [o].[OrderDate]) AS INT) = 47
+  </baseline>
+  <baseline key="TestDateTimeMillisecond">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%s', [o].[OrderDate]) AS INT) = 200
+  </baseline>
+  <baseline key="TestDateTimeDayOfYear">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE (CAST(STRFTIME('%j', [o].[OrderDate]) AS INT) - 1) = 360
+  </baseline>
+  <baseline key="TestDateTimeDayOfWeek">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE CAST(STRFTIME('%w', [o].[OrderDate]) AS INT) = 5
+  </baseline>
+  <baseline key="TestMathAbs">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ABS([o].[OrderID]) = 10
+  </baseline>
+  <!-- Math functions are not supported in SQLite
+  <baseline key="TestMathAtan">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ATAN([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathCos">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE COS([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathSin">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE SIN([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathTan">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE TAN([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathExp">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE EXP([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathLog">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE LOG([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathSqrt">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE SQRT([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathPow">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE POWER((CASE WHEN [o].[OrderID] &lt; 1000 THEN 1 ELSE 2 END), 3) = 0
+  </baseline>
+  <baseline key="TestMathAcos">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ACOS([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathAsin">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ASIN([o].[OrderID]) = 0
+  </baseline>
+  <baseline key="TestMathAtan2">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ATAN2([o].[OrderID], 3) = 0
+  </baseline>-->
+  <baseline key="TestMathRoundDefault">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ROUND([o].[OrderID], 0) = 0
+  </baseline>
+  <baseline key="TestWhere">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+  </baseline>
+  <baseline key="TestWhereTrue">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE 1 &lt;&gt; 0
+  </baseline>
+  <baseline key="TestWhereFalse">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE 0 &lt;&gt; 0
+  </baseline>
+  <baseline key="TestCompareEntityEqual">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestCompareEntityNotEqual">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] &lt;&gt; 'ALFKI'
+  </baseline>
+  <baseline key="TestCompareConstructedEqual">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = { x = London }
+  </baseline>
+  <baseline key="TestCompareConstructedMultiValueEqual">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London') AND ([c].[Country] = 'UK'
+  </baseline>
+  <baseline key="TestCompareConstructedMultiValueNotEqual">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE NOT (([c].[City] = 'London') AND ([c].[Country] = 'UK'))
+  </baseline>
+  <baseline key="TestCompareConstructed">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = { x = London }
+  </baseline>
+  <baseline key="TestSelectScalar">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousOne">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousTwo">
+    SELECT [c].[City], [c].[Phone]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousThree">
+    SELECT [c].[City], [c].[Phone], [c].[Country]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectCustomerTable">
+    SELECT [g_0].[CustomerID], [g_0].[City], [g_0].[CompanyName], [g_0].[ContactName], [g_0].[Country], [g_0].[Phone]
+    FROM [Customers] AS [g_0]
+  </baseline>
+  <baseline key="TestSelectCustomerIdentity">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousWithObject">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousNested">
+    SELECT [c].[CustomerID], [c].[City], [c].[Country]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousEmpty">
+    SELECT NULL
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectAnonymousLiteral">
+    SELECT NULL
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectConstantInt">
+    SELECT 0
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectConstantNullString">
+    SELECT NULL
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectLocal">
+    SELECT 10
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestSelectNestedCollection">
+    SELECT [c].[CustomerID]
+    FROM [Customers] AS [c]
+    WHERE [c].[City] = 'London'
+
+    SELECT [o].[OrderID]
+    FROM [Orders] AS [o]
+    WHERE [o].[CustomerID] = @n0) AND (CAST(STRFTIME('%Y', [o].[OrderDate]) AS INT) = 1997
+  </baseline>
+  <baseline key="TestSelectNestedCollectionInAnonymousType">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderID]
+    FROM [Customers] AS [c]
+    LEFT OUTER JOIN [Orders]
+    ON (([o].[CustomerID] = [c].[CustomerID]) AND (CAST(STRFTIME('%Y', [o].[OrderDate]) = 1997)) AS INT)
+    WHERE [c].[CustomerID] = 'ALFKI'
+
+    SELECT [c].[CustomerID]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestJoinCustomerOrders">
+    SELECT [c].[ContactName], [o].[OrderID]
+    FROM [Customers] AS [c]
+    LEFT OUTER JOIN [Orders] As [o]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+  </baseline>
+  <baseline key="TestJoinMultiKey">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], [o].[CustomerID] AS [CustomerID1], [o].[OrderDate]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON (([c].[CustomerID] = [o].[CustomerID]) AND ([c].[CustomerID] = [o].[CustomerID]))
+  </baseline>
+  <baseline key="TestJoinIntoCustomersOrders">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Customers] AS [c]
+    LEFT OUTER JOIN [Orders]
+    ON ([o].[CustomerID] = [c].[CustomerID])
+
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestJoinIntoCustomersOrdersCount">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], (
+    SELECT COUNT(*)
+    FROM [Orders] AS [o]
+    WHERE [o].[CustomerID] = [c].[CustomerID]
+    ) AS [c0]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestJoinIntoDefaultIfEmpty">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], [o].[CustomerID] AS [CustomerID1], [o].[OrderDate]
+    FROM [Customers] AS [c]
+    LEFT OUTER JOIN [Orders]
+    ON ([o].[CustomerID] = [c].[CustomerID])
+  </baseline>
+  <baseline key="TestSelectManyCustomerOrders">
+    SELECT [c].[ContactName], [o].[OrderID]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+  </baseline>
+  <baseline key="TestMultipleJoinsWithJoinConditionsInWhere">
+    SELECT [Order Details].[ProductID]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON ([o].[CustomerID] = [c].[CustomerID])
+    INNER JOIN [Order Details] AS [Order Details]
+    ON ([o].[OrderID] = [Order Details].[OrderID])
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestMultipleJoinsWithMissingJoinCondition">
+    SELECT [Order Details].[ProductID]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON ([o].[CustomerID] = [c].[CustomerID])
+    CROSS JOIN [Order Details]
+    WHERE [c].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestOrderBy">
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID]
+  </baseline>
+  <baseline key="TestOrderBySelect">
+    SELECT [c].[ContactName]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID]
+  </baseline>
+  <baseline key="TestOrderByOrderBy">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID], [c].[Country]
+  </baseline>
+  <baseline key="TestOrderByThenBy">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID], [c].[Country]
+  </baseline>
+  <baseline key="TestOrderByDescending">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID] DESC
+  </baseline>
+  <baseline key="TestOrderByDescendingThenBy">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID] DESC, [c].[Country]
+  </baseline>
+  <baseline key="TestOrderByDescendingThenByDescending">
+    SELECT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID] DESC, [c].[Country] DESC
+  </baseline>
+  <baseline key="TestOrderByJoin">
+    SELECT [c].[CustomerID], [o].[OrderID]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    ORDER BY [c].[CustomerID], [o].[OrderID]
+  </baseline>
+  <baseline key="TestOrderBySelectMany">
+    SELECT [c].[ContactName], [o].[OrderID]
+    FROM [Customers] AS [c]
+    INNER JOIN [Orders]
+    ON ([c].[CustomerID] = [o].[CustomerID])
+    ORDER BY [c].[CustomerID], [o].[OrderID]
+  </baseline>
+  <baseline key="TestGroupBy">
+    SELECT [c].[CustomerID], [c].[City]
+    FROM [Customers] AS [c]
+    GROUP BY [c].[City]
+
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE ([c].[City] IS NULL AND @n0 IS NULL) OR ([c].[City] = @n0)
+  </baseline>
+  <baseline key="TestGroupBySelectMany">
+    SELECT t1.[City], t1.[CompanyName], t1.[ContactName], t1.[Country], t1.[CustomerID], t1.[Phone]
+    FROM (
+    SELECT t2.[City]
+    FROM [Customers] AS [c] AS t2
+    GROUP BY t2.[City]
+    ) AS t0
+    INNER JOIN [Customers] AS t1
+    ON ((t1.[City] IS NULL AND t0.[City] IS NULL) OR (t1.[City] = t0.[City]))
+  </baseline>
+  <baseline key="TestGroupBySum">
+    SELECT SUM([o].[OrderID]) AS [agg1]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByCount">
+    SELECT COUNT(*) AS [agg1]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByLongCount">
+    SELECT COUNT_BIG(*) AS [agg1]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupBySumMinMaxAvg">
+    SELECT SUM([o].[OrderID]) AS [agg1], MIN([o].[OrderID]) AS [agg2], MAX([o].[OrderID]) AS [agg3], AVG([o].[OrderID]) AS [agg4]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByWithResultSelector">
+    SELECT SUM([o].[OrderID]) AS [c0], MIN([o].[OrderID]) AS [c1], MAX([o].[OrderID]) AS [c2], AVG([o].[OrderID]) AS [c3]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByWithElementSelectorSum">
+    SELECT SUM([o].[OrderID]) AS [agg1]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByWithElementSelector">
+    SELECT [o].[OrderID], [o].[CustomerID]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+
+    SELECT [o].[OrderID]
+    FROM [Orders] AS [o]
+    WHERE ([o].[CustomerID] IS NULL AND @n0 IS NULL) OR ([o].[CustomerID] = @n0)
+  </baseline>
+  <baseline key="TestGroupByWithElementSelectorSumMax">
+    SELECT SUM([o].[OrderID]) AS [agg1], MAX([o].[OrderID]) AS [agg2]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByWithAnonymousElement">
+    SELECT SUM([o].[OrderID]) AS [agg1]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestGroupByWithTwoPartKey">
+    SELECT SUM([o].[OrderID]) AS [agg2]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+  </baseline>
+  <baseline key="TestOrderByGroupBy">
+    SELECT SUM([o].[OrderID]) AS [agg1]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+  </baseline>
+  <baseline key="TestOrderByGroupBySelectMany">
+    SELECT t1.[CustomerID], t1.[OrderDate], t1.[OrderID]
+    FROM (
+    SELECT t2.[CustomerID]
+    FROM [Orders] AS [o] AS t2
+    GROUP BY t2.[CustomerID]
+    ) AS t0
+    INNER JOIN [Orders] AS t1
+    ON ((t1.[CustomerID] IS NULL AND t0.[CustomerID] IS NULL) OR (t1.[CustomerID] = t0.[CustomerID]))
+    ORDER BY t1.[OrderID]
+  </baseline>
+  <baseline key="TestSumWithNoArg">
+    SELECT SUM([o].[OrderID])
+    FROM [Orders] AS [o]
+  </baseline>
+  <baseline key="TestSumWithArg">
+    SELECT SUM([o].[OrderID])
+    FROM [Orders] AS [o]
+  </baseline>
+  <baseline key="TestCountWithNoPredicate">
+    SELECT COUNT(*)
+    FROM [Orders] AS [g_1]
+  </baseline>
+  <baseline key="TestCountWithPredicate">
+    SELECT COUNT(*)
+    FROM [Orders] AS [o]
+    WHERE [o].[CustomerID] = 'ALFKI'
+  </baseline>
+  <baseline key="TestDistinct">
+    SELECT DISTINCT [g_1].[CustomerID], [g_1].[City], [g_1].[CompanyName], [g_1].[ContactName], [g_1].[Country], [g_1].[Phone]
+    FROM [Customers] AS [g_1]
+  </baseline>
+  <baseline key="TestDistinctScalar">
+    SELECT DISTINCT [c].[City]
+    FROM [Customers] AS [c]
+  </baseline>
+  <baseline key="TestOrderByDistinct">
+    SELECT DISTINCT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[CustomerID]
+  </baseline>
+  <baseline key="TestDistinctOrderBy">
+    SELECT DISTINCT [c].[City]
+    FROM [Customers] AS [c]
+    ORDER BY [c].[City]
+  </baseline>
+  <baseline key="TestDistinctGroupBy">
+    SELECT t0.[CustomerID]
+    FROM (
+    SELECT DISTINCT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    ) AS t0
+    GROUP BY t0.[CustomerID]
+
+    SELECT DISTINCT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[CustomerID] IS NULL AND @n0 IS NULL) OR ([o].[CustomerID] = @n0)
+  </baseline>
+  <baseline key="TestGroupByDistinct">
+    SELECT DISTINCT t0.[CustomerID]
+    FROM (
+    SELECT [o].[OrderID], [o].[CustomerID]
+    FROM [Orders] AS [o]
+    GROUP BY [o].[CustomerID]
+    ) AS t0
+
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    WHERE ([o].[CustomerID] IS NULL AND @n0 IS NULL) OR ([o].[CustomerID] = @n0)
+  </baseline>
+  <baseline key="TestDistinctCount">
+    SELECT DISTINCT COUNT(*)
+    FROM [Customers] AS [g_2]
+  </baseline>
+  <baseline key="TestSelectDistinctCount">
+    SELECT COUNT(*)
+    FROM (
+    SELECT DISTINCT [c].[City]
+    FROM [Customers] AS [c]
+    ) AS t0
+  </baseline>
+  <baseline key="TestSelectSelectDistinctCount">
+    SELECT COUNT(*)
+    FROM (
+    SELECT DISTINCT [c].[City]
+    FROM [Customers] AS [c]
+    ) AS t0
+  </baseline>
+  <baseline key="TestDistinctCountPredicate">
+    SELECT COUNT(*)
+    FROM (
+    SELECT DISTINCT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone]
+    FROM [Customers] AS [c]
+    WHERE [c].[CustomerID] = 'ALFKI'
+    ) AS t0
+  </baseline>
+  <baseline key="TestDistinctSumWithArg">
+    SELECT SUM(t0.[OrderID])
+    FROM (
+    SELECT DISTINCT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    ) AS t0
+  </baseline>
+  <baseline key="TestSelectDistinctSum">
+    SELECT SUM(DISTINCT [o].[OrderID])
+    FROM [Orders] AS [o]
+  </baseline>
+  <baseline key="TestTake">
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    LIMIT 5
+  </baseline>
+  <baseline key="TestTakeDistinct">
+    SELECT DISTINCT t0.[CustomerID], t0.[OrderDate], t0.[OrderID]
+    FROM (
+    SELECT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    LIMIT 5
+    ) AS t0
+  </baseline>
+  <baseline key="TestDistinctTake">
+    SELECT [g_2].[CustomerID], [g_2].[OrderDate], [g_2].[OrderID]
+    FROM (
+    SELECT DISTINCT [o].[OrderID], [o].[CustomerID], [o].[OrderDate]
+    FROM [Orders] AS [o]
+    LIMIT 5
+    ) AS [g_2]
+  </baseline>
+  <baseline key="TestDistinctTakeCount">
+    SELECT COUNT(*)
+    FROM (
+    SELECT t1.[CustomerID], t1.[OrderDate], t1.[OrderID]
+    FROM (
+    SELECT DISTINCT t2.[CustomerID], t2.[OrderDate], t2.[OrderID]
+    FROM [Orders] AS [o] AS t2
+    ) AS t1
+    LIMIT 5
+    ) AS t0
+  </baseline>
+  <baseline key="TestTakeDistinctCount">
+    SELECT COUNT(*)
+    FROM (
+    SELECT DISTINCT t1.[CustomerID], t1.[OrderDate], t1.[OrderID]
+    FROM (
+    SELECT t2.[CustomerID], t2.[OrderDate], t2.[OrderID]
+    FROM [Orders] AS [o] AS t2
+    LIMIT 5
+    ) AS t1
+    ) AS t0
+  </baseline>
+  <baseline key="TestSkip">
+    SELECT [RowNumberTable].[CustomerID], [RowNumberTable].[City], [RowNumberTable].[CompanyName], [RowNumberTable].[ContactName], [RowNumberTable].[Country], [RowNumberTable].[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], ROW_NUMBER() OVER(ORDER BY [c].[ContactName]) AS RowNumber
+    FROM [Customers] AS [c]
+    ) AS [RowNumberTable]
+    WHERE [RowNumber] &gt; 5
+    ORDER BY [RowNumberTable].[ContactName]
+  </baseline>
+  <baseline key="TestTakeSkip">
+    SELECT [RowNumberTable].[CustomerID], [RowNumberTable].[City], [RowNumberTable].[CompanyName], [RowNumberTable].[ContactName], [RowNumberTable].[Country], [RowNumberTable].[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], ROW_NUMBER() OVER(ORDER BY [c].[ContactName]) AS RowNumber
+    FROM [Customers] AS [c]
+    ) AS [RowNumberTable]
+    WHERE [RowNumber] &gt; 5 AND [RowNumber] &lt;= 15
+    ORDER BY [RowNumberTable].[ContactName]
+  </baseline>
+  <baseline key="TestDistinctSkip">
+    SELECT t0.[City], t0.[CompanyName], t0.[ContactName], t0.[Country], t0.[CustomerID], t0.[Phone]
+    FROM (
+    SELECT ROW_NUMBER() OVER(ORDER BY t1.[ContactName]) AS [_rownum], t1.[City], t1.[CompanyName], t1.[ContactName], t1.[Country], t1.[CustomerID], t1.[Phone]
+    FROM (
+    SELECT DISTINCT t2.[City], t2.[CompanyName], t2.[ContactName], t2.[Country], t2.[CustomerID], t2.[Phone]
+    FROM [Customers] AS [c] AS t2
+    ) AS t1
+    ) AS t0
+    WHERE t0.[_rownum] &gt; 5
+    ORDER BY t0.[ContactName]
+  </baseline>
+  <baseline key="TestSkipTake">
+    SELECT [RowNumberTable].[CustomerID], [RowNumberTable].[City], [RowNumberTable].[CompanyName], [RowNumberTable].[ContactName], [RowNumberTable].[Country], [RowNumberTable].[Phone]
+    FROM (
+    SELECT [c].[CustomerID], [c].[City], [c].[CompanyName], [c].[ContactName], [c].[Country], [c].[Phone], ROW_NUMBER() OVER(ORDER BY [c].[ContactName]) AS RowNumber
+    FROM [Customers] AS [c]
+    ) AS [RowNumberTable]
+    WHERE [RowNumber] &gt; 5 AND [RowNumber] &lt;= 15
+    ORDER BY [RowNumberTable].[ContactName]
+  </baseline>
+  <baseline key="TestDistinctSkipTake">
+    SELECT t0.[City], t0.[CompanyName], t0.[ContactName], t0.[Country], t0.[CustomerID], t0.[Phone]
+    FROM (
+    SELECT ROW_NUMBER() OVER(ORDER BY t1.[ContactName]) AS [_rownum], t1.[City], t1.[CompanyName], t1.[ContactName], t1.[Country], t1.[CustomerID], t1.[Phone]
+    FROM (
+    SELECT DISTINCT t2.[City], t2.[CompanyName], t2.[ContactName], t2.[Country], t2.[CustomerID], t2.[Phone]
+    FROM [Customers] AS [c] AS t2
+    ) AS t1
+    ) AS t0
+    WHERE t0.[_rownum] BETWEEN (5 + 1) AND (5 + 10)
+    ORDER BY t0.[ContactName]
+  </baseline>
+  <baseline key="TestSkipDistinct">
+    SELECT DISTINCT t0.[City], t0.[CompanyName], t0.[ContactName], t0.[Country], t0.[CustomerID], t0.[Phone]
+    FROM (
+    SELECT t1.[City], t1.[CompanyName], t1.[ContactName], t1.[Country], t1.[CustomerID], t1.[Phone]
+    FROM (
+    SELECT ROW_NUMBER() OVER(ORDER BY t2.[ContactName]) AS [_rownum], t2.[City], t2.[CompanyName], t2.[ContactName], t2.[Country], t2.[CustomerID], t2.[Phone]
+    FROM [Customers] AS [c] AS t2
+    ) AS t1
+    WHERE t1.[_rownum] &gt; 5
+    ) AS t0
+  </baseline>
+</baselines>
