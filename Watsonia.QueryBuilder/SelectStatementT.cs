@@ -20,7 +20,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		public Type Source
+		public Table<T> Source
 		{
 			get;
 			internal set;
@@ -44,17 +44,17 @@ namespace Watsonia.QueryBuilder
 
 		public List<Tuple<PropertyInfo, OrderDirection>> OrderByFields { get; internal set; } = new List<Tuple<PropertyInfo, OrderDirection>>();
 
-		internal SelectStatement()
+		internal SelectStatement(string alias = null)
 		{
-			this.Source = typeof(T);
+			this.Source = new Table<T>(typeof(T), alias);
 		}
 
 		public SelectStatement CreateStatement(DatabaseMapper mapper)
 		{
 			var select = new SelectStatement();
-			select.Source = new Table(mapper.GetTableName(this.Source));
-			select.SourceFields.AddRange(this.SourceFields.Select(s => new Column(mapper.GetTableName(s.DeclaringType), mapper.GetColumnName(s))));
-			select.SourceFields.AddRange(this.AggregateFields.Select(s => new Aggregate(s.Item2, new Column(s.Item1 != null ? mapper.GetTableName(s.Item1.DeclaringType) : "", s.Item1 != null ? mapper.GetColumnName(s.Item1) : "*"))));
+			select.Source = new Table(mapper.GetTableName(this.Source.Type), this.Source.Alias);
+			select.SourceFields.AddRange(this.SourceFields.Select(s => new Column(TableNameOrAlias(mapper, s.DeclaringType), mapper.GetColumnName(s))));
+			select.SourceFields.AddRange(this.AggregateFields.Select(s => new Aggregate(s.Item2, new Column(s.Item1 != null ? TableNameOrAlias(mapper, s.Item1.DeclaringType) : "", s.Item1 != null ? mapper.GetColumnName(s.Item1) : "*"))));
 			select.IsAny = this.IsAny;
 			select.IsAll = this.IsAll;
 			select.IsDistinct = this.IsDistinct;
@@ -62,13 +62,27 @@ namespace Watsonia.QueryBuilder
 			select.Limit = this.Limit;
 			if (this.Conditions != null)
 			{
-				foreach (var condition in StatementCreator.VisitStatementConditions<T>(this.Conditions, mapper, false))
+				// TODO: Need to handle columns from multiple tables...
+				bool aliasTables = !string.IsNullOrEmpty(this.Source.Alias);
+				foreach (var condition in StatementCreator.VisitStatementConditions<T>(this.Conditions, mapper, aliasTables))
 				{
 					select.Conditions.Add(condition);
 				}
 			}
-			select.OrderByFields.AddRange(this.OrderByFields.Select(s => new OrderByExpression(new Column(mapper.GetTableName(s.Item1.DeclaringType), mapper.GetColumnName(s.Item1)), s.Item2)));
+			select.OrderByFields.AddRange(this.OrderByFields.Select(s => new OrderByExpression(new Column(TableNameOrAlias(mapper, s.Item1.DeclaringType), mapper.GetColumnName(s.Item1)), s.Item2)));
 			return select;
+		}
+
+		private string TableNameOrAlias(DatabaseMapper mapper, Type t)
+		{
+			if (t == this.Source.Type && !string.IsNullOrEmpty(this.Source.Alias))
+			{
+				return this.Source.Alias;
+			}
+			else
+			{
+				return mapper.GetTableName(t);
+			}
 		}
 	}
 }

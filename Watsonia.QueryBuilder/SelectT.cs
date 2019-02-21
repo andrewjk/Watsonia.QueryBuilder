@@ -12,9 +12,9 @@ namespace Watsonia.QueryBuilder
 {
 	public static partial class Select
 	{
-		public static SelectStatement<T> From<T>()
+		public static SelectStatement<T> From<T>(string alias = null)
 		{
-			return new SelectStatement<T>() { Source = typeof(T) };
+			return new SelectStatement<T>(alias);
 		}
 
 		public static SelectStatement<T> Columns<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)

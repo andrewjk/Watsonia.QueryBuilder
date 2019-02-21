@@ -43,12 +43,18 @@ namespace Watsonia.QueryBuilder
 		{
 			// Build a new query
 			var queryParser = QueryParser.CreateDefault();
-			var queryExecutor = new StatementExecutor<T>();
+			var queryExecutor = new StatementExecutor();
 			var query = new StatementQuery<T>(queryParser, queryExecutor);
 
-			// Select from the query with the conditions so that we have a sequence for Re-Linq to parse
-			var select = (from t in query select t).Where(conditions);
-			var expression = Expression.Constant(select, query.GetType());
+			// Create an expression to select from the query with the conditions so that we have a sequence for Re-Linq to parse
+			MethodCallExpression expression = Expression.Call(
+				typeof(Queryable),
+				"Where",
+				new Type[] { query.ElementType },
+				query.Expression,
+				conditions);
+
+			// Parse the expression with Re-Linq
 			QueryModel queryModel = queryParser.GetParsedQuery(expression);
 
 			// Get the conditions from the query model
