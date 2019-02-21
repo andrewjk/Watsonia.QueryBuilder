@@ -18,14 +18,7 @@ namespace Watsonia.Data.Tests.Queries
 	[TestClass]
 	public class QueryLanguageTests
 	{
-		private class Thing
-		{
-			public IQueryable<Customer> Customers { get; internal set; }
-			public IQueryable<Order> Orders { get; internal set; }
-		}
-		private Thing db = new Thing();
-
-		private static DatabaseMapper mapper = new NorthwindMapper();
+		private static readonly DatabaseMapper mapper = new NorthwindMapper();
 		private static Dictionary<string, string> sqlServerBaselines = new Dictionary<string, string>();
 		private static Dictionary<string, string> sqliteBaselines = new Dictionary<string, string>();
 
