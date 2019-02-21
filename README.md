@@ -62,7 +62,7 @@ AND [Customer].[BusinessNumber] = @p1)
 ORDER BY [Customer].[Name]
 ```
 
-## Insert##
+## Insert ##
 
 Using string names:
 
@@ -102,7 +102,7 @@ INSERT INTO [Customer] ([Code], [Description], [BusinessNumber], [LicenseCount])
 VALUES (@p0, @p1, @p2, @p3)
 ```
 
-## Update##
+## Update ##
 
 Using string names:
 
