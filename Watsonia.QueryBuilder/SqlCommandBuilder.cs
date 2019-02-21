@@ -11,7 +11,7 @@ namespace Watsonia.QueryBuilder
 	{
 		private const int IndentationWidth = 2;
 
-		private enum Indentation
+		protected enum Indentation
 		{
 			Same,
 			Inner,
@@ -90,7 +90,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitConstant(ConstantPart constant)
+		protected virtual void VisitConstant(ConstantPart constant)
 		{
 			VisitObject(constant.Value);
 			if (!string.IsNullOrEmpty(constant.Alias))
@@ -101,7 +101,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitObject(object value)
+		protected virtual void VisitObject(object value)
 		{
 			if (value == null)
 			{
@@ -159,7 +159,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitSelect(SelectStatement select)
+		protected virtual void VisitSelect(SelectStatement select)
 		{
 			// TODO: If we're using SQL Server 2012 we should just use the OFFSET keyword
 			if (select.StartIndex > 0)
@@ -332,7 +332,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitSelectWithRowNumber(SelectStatement select)
+		protected virtual void VisitSelectWithRowNumber(SelectStatement select)
 		{
 			// It's going to look something like this:
 			// SELECT Fields
@@ -383,7 +383,7 @@ namespace Watsonia.QueryBuilder
 			VisitSelect(outer);
 		}
 
-		private void VisitSelectWithAny(SelectStatement select)
+		protected virtual void VisitSelectWithAny(SelectStatement select)
 		{
 			// It's going to look something like this:
 			// SELECT CASE WHEN EXISTS (
@@ -400,7 +400,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
 
-		private void VisitSelectWithAll(SelectStatement select)
+		protected virtual void VisitSelectWithAll(SelectStatement select)
 		{
 			// It's going to look something like this:
 			// SELECT CASE WHEN NOT EXISTS (
@@ -418,7 +418,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
 
-		private void VisitSelectWithContains(SelectStatement select)
+		protected virtual void VisitSelectWithContains(SelectStatement select)
 		{
 			// It's going to look something like this:
 			// SELECT CASE WHEN @p0 IN (
@@ -436,7 +436,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
 
-		private void VisitUpdate(UpdateStatement update)
+		protected virtual void VisitUpdate(UpdateStatement update)
 		{
 			this.CommandText.Append("UPDATE ");
 			this.VisitTable(update.Target);
@@ -490,7 +490,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitInsert(InsertStatement insert)
+		protected virtual void VisitInsert(InsertStatement insert)
 		{
 			this.CommandText.Append("INSERT INTO ");
 			this.VisitTable(insert.Target);
@@ -539,7 +539,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitDelete(DeleteStatement delete)
+		protected virtual void VisitDelete(DeleteStatement delete)
 		{
 			this.CommandText.Append("DELETE FROM ");
 			this.VisitTable(delete.Target);
@@ -579,7 +579,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitField(StatementPart field)
+		protected virtual void VisitField(StatementPart field)
 		{
 			switch (field.PartType)
 			{
@@ -814,7 +814,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitColumn(Column column)
+		protected virtual void VisitColumn(Column column)
 		{
 			if (column.Table != null)
 			{
@@ -839,7 +839,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitSource(StatementPart source)
+		protected virtual void VisitSource(StatementPart source)
 		{
 			bool previousIsNested = this.IsNested;
 			this.IsNested = true;
@@ -899,14 +899,14 @@ namespace Watsonia.QueryBuilder
 			this.IsNested = previousIsNested;
 		}
 
-		private void VisitTable(Table table)
+		protected virtual void VisitTable(Table table)
 		{
 			this.CommandText.Append("[");
 			this.CommandText.Append(table.Name);
 			this.CommandText.Append("]");
 		}
 
-		private void VisitUserDefinedFunction(UserDefinedFunction function)
+		protected virtual void VisitUserDefinedFunction(UserDefinedFunction function)
 		{
 			this.CommandText.Append(function.Name);
 			this.CommandText.Append("(");
@@ -921,7 +921,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
-		private void VisitJoin(Join join)
+		protected virtual void VisitJoin(Join join)
 		{
 			switch (join.JoinType)
 			{
@@ -959,7 +959,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitCondition(ConditionExpression condition)
+		protected virtual void VisitCondition(ConditionExpression condition)
 		{
 			// TODO: Should all types of conditions be a class?  Not exposed to the user, because that
 			// interface would be gross
@@ -984,7 +984,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitCondition(Condition condition)
+		protected virtual void VisitCondition(Condition condition)
 		{
 			// Check for null comparisons first
 			bool fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
@@ -1120,7 +1120,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitConditionCollection(ConditionCollection collection)
+		protected virtual void VisitConditionCollection(ConditionCollection collection)
 		{
 			this.CommandText.Append("(");
 			for (int i = 0; i < collection.Count; i++)
@@ -1152,7 +1152,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
-		private void VisitConditionalCase(ConditionalCase conditional)
+		protected virtual void VisitConditionalCase(ConditionalCase conditional)
 		{
 			if (conditional.Test is Condition)
 			{
@@ -1189,7 +1189,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitRowNumber(RowNumber rowNumber)
+		protected virtual void VisitRowNumber(RowNumber rowNumber)
 		{
 			this.CommandText.Append("ROW_NUMBER() OVER(");
 			if (rowNumber.OrderByFields != null && rowNumber.OrderByFields.Count > 0)
@@ -1211,7 +1211,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") AS RowNumber");
 		}
 
-		private void VisitAggregate(Aggregate aggregate)
+		protected virtual void VisitAggregate(Aggregate aggregate)
 		{
 			this.CommandText.Append(GetAggregateName(aggregate.AggregateType));
 			this.CommandText.Append("(");
@@ -1266,14 +1266,14 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitConditionPredicate(ConditionPredicate predicate)
+		protected virtual void VisitConditionPredicate(ConditionPredicate predicate)
 		{
 			this.CommandText.Append("(CASE WHEN ");
 			this.VisitField(predicate.Predicate);
 			this.CommandText.Append(" THEN 1 ELSE 0 END)");
 		}
 
-		private void VisitExists(Exists exists)
+		protected virtual void VisitExists(Exists exists)
 		{
 			if (exists.Not)
 			{
@@ -1287,7 +1287,7 @@ namespace Watsonia.QueryBuilder
 			this.Indent(Indentation.Outer);
 		}
 
-		private void VisitCoalesceFunction(CoalesceFunction coalesce)
+		protected virtual void VisitCoalesceFunction(CoalesceFunction coalesce)
 		{
 			StatementPart first = coalesce.Arguments[0];
 			StatementPart second = coalesce.Arguments[1];
@@ -1306,7 +1306,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
-		private void VisitFunction(string name, params StatementPart[] arguments)
+		protected virtual void VisitFunction(string name, params StatementPart[] arguments)
 		{
 			this.CommandText.Append(name);
 			this.CommandText.Append("(");
@@ -1321,7 +1321,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
-		private void VisitConvertFunction(ConvertFunction function)
+		protected virtual void VisitConvertFunction(ConvertFunction function)
 		{
 			// TODO: Handle more types
 			this.CommandText.Append("CONVERT(VARCHAR, ");
@@ -1329,12 +1329,12 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
-		private void VisitStringLengthFunction(StringLengthFunction function)
+		protected virtual void VisitStringLengthFunction(StringLengthFunction function)
 		{
 			VisitFunction("LEN", function.Argument);
 		}
 
-		private void VisitSubstringFunction(SubstringFunction function)
+		protected virtual void VisitSubstringFunction(SubstringFunction function)
 		{
 			this.CommandText.Append("SUBSTRING(");
 			this.VisitField(function.Argument);
@@ -1345,7 +1345,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
-		private void VisitStringRemoveFunction(StringRemoveFunction function)
+		protected virtual void VisitStringRemoveFunction(StringRemoveFunction function)
 		{
 			this.CommandText.Append("STUFF(");
 			this.VisitField(function.Argument);
@@ -1356,7 +1356,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(", '')");
 		}
 
-		private void VisitStringCharIndexFunction(StringIndexFunction function)
+		protected virtual void VisitStringCharIndexFunction(StringIndexFunction function)
 		{
 			this.CommandText.Append("(");
 			if (function.StartIndex != null)
@@ -1370,29 +1370,29 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" - 1)");
 		}
 
-		private void VisitStringToUpperFunction(StringToUpperFunction function)
+		protected virtual void VisitStringToUpperFunction(StringToUpperFunction function)
 		{
 			VisitFunction("UPPER", function.Argument);
 		}
 
-		private void VisitStringToLowerFunction(StringToLowerFunction function)
+		protected virtual void VisitStringToLowerFunction(StringToLowerFunction function)
 		{
 			VisitFunction("LOWER", function.Argument);
 		}
 
-		private void VisitStringReplaceFunction(StringReplaceFunction function)
+		protected virtual void VisitStringReplaceFunction(StringReplaceFunction function)
 		{
 			VisitFunction("REPLACE", function.Argument, function.OldValue, function.NewValue);
 		}
 
-		private void VisitStringTrimFunction(StringTrimFunction function)
+		protected virtual void VisitStringTrimFunction(StringTrimFunction function)
 		{
 			this.CommandText.Append("RTRIM(LTRIM(");
 			this.VisitField(function.Argument);
 			this.CommandText.Append("))");
 		}
 
-		private void VisitStringCompareFunction(StringCompareFunction function)
+		protected virtual void VisitStringCompareFunction(StringCompareFunction function)
 		{
 			this.CommandText.Append("(CASE WHEN ");
 			this.VisitField(function.Argument);
@@ -1405,7 +1405,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" THEN -1 ELSE 1 END)");
 		}
 
-		private void VisitStringConcatenateFunction(StringConcatenateFunction function)
+		protected virtual void VisitStringConcatenateFunction(StringConcatenateFunction function)
 		{
 			for (int i = 0; i < function.Arguments.Count; i++)
 			{
@@ -1417,7 +1417,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitDatePartFunction(DatePartFunction function)
+		protected virtual void VisitDatePartFunction(DatePartFunction function)
 		{
 			switch (function.DatePart)
 			{
@@ -1472,7 +1472,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitDateAddFunction(DateAddFunction function)
+		protected virtual void VisitDateAddFunction(DateAddFunction function)
 		{
 			this.VisitFunction("DATEADD", new StatementPart[]
 				{
@@ -1482,7 +1482,7 @@ namespace Watsonia.QueryBuilder
 				});
 		}
 
-		private void VisitDateNewFunction(DateNewFunction function)
+		protected virtual void VisitDateNewFunction(DateNewFunction function)
 		{
 			if (function.Hour != null)
 			{
@@ -1522,74 +1522,74 @@ namespace Watsonia.QueryBuilder
 
 		}
 
-		private void VisitDateDifferenceFunction(DateDifferenceFunction function)
+		protected virtual void VisitDateDifferenceFunction(DateDifferenceFunction function)
 		{
 			this.VisitFunction("DATEDIFF", function.Date1, function.Date2);
 		}
 
-		private void VisitNumberAbsoluteFunction(NumberAbsoluteFunction function)
+		protected virtual void VisitNumberAbsoluteFunction(NumberAbsoluteFunction function)
 		{
 			this.VisitFunction("ABS", function.Argument);
 		}
 
-		private void VisitNumberNegateFunction(NumberNegateFunction function)
+		protected virtual void VisitNumberNegateFunction(NumberNegateFunction function)
 		{
 			this.CommandText.Append("-");
 			this.VisitField(function.Argument);
 		}
 
-		private void VisitNumberCeilingFunction(NumberCeilingFunction function)
+		protected virtual void VisitNumberCeilingFunction(NumberCeilingFunction function)
 		{
 			this.VisitFunction("CEILING", function.Argument);
 		}
 
-		private void VisitNumberFloorFunction(NumberFloorFunction function)
+		protected virtual void VisitNumberFloorFunction(NumberFloorFunction function)
 		{
 			this.VisitFunction("FLOOR", function.Argument);
 		}
 
-		private void VisitNumberRoundFunction(NumberRoundFunction function)
+		protected virtual void VisitNumberRoundFunction(NumberRoundFunction function)
 		{
 			this.VisitFunction("ROUND", function.Argument, function.Precision);
 		}
 
-		private void VisitNumberTruncateFunction(NumberTruncateFunction function)
+		protected virtual void VisitNumberTruncateFunction(NumberTruncateFunction function)
 		{
 			this.VisitFunction("ROUND", function.Argument, new ConstantPart(0), new ConstantPart(1));
 		}
 
-		private void VisitNumberSignFunction(NumberSignFunction function)
+		protected virtual void VisitNumberSignFunction(NumberSignFunction function)
 		{
 			this.VisitFunction("SIGN", function.Argument);
 		}
 
-		private void VisitNumberPowerFunction(NumberPowerFunction function)
+		protected virtual void VisitNumberPowerFunction(NumberPowerFunction function)
 		{
 			this.VisitFunction("POWER", function.Argument, function.Power);
 		}
 
-		private void VisitNumberRootFunction(NumberRootFunction function)
+		protected virtual void VisitNumberRootFunction(NumberRootFunction function)
 		{
 			// TODO: I'm being lazy, if root > 3 then we should to convert it to POW(argument, 1 / root)
 			this.VisitFunction("SQRT", function.Argument);
 		}
 
-		private void VisitNumberExponentialFunction(NumberExponentialFunction function)
+		protected virtual void VisitNumberExponentialFunction(NumberExponentialFunction function)
 		{
 			this.VisitFunction("EXP", function.Argument);
 		}
 
-		private void VisitNumberLogFunction(NumberLogFunction function)
+		protected virtual void VisitNumberLogFunction(NumberLogFunction function)
 		{
 			this.VisitFunction("LOG", function.Argument);
 		}
 
-		private void VisitNumberLog10Function(NumberLog10Function function)
+		protected virtual void VisitNumberLog10Function(NumberLog10Function function)
 		{
 			this.VisitFunction("LOG10", function.Argument);
 		}
 
-		private void VisitNumberTrigFunction(NumberTrigFunction function)
+		protected virtual void VisitNumberTrigFunction(NumberTrigFunction function)
 		{
 			if (function.Argument2 != null)
 			{
@@ -1601,7 +1601,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitBinaryOperation(BinaryOperation operation)
+		protected virtual void VisitBinaryOperation(BinaryOperation operation)
 		{
 			if (operation.Operator == BinaryOperator.LeftShift)
 			{
@@ -1687,7 +1687,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitUnaryOperation(UnaryOperation operation)
+		protected virtual void VisitUnaryOperation(UnaryOperation operation)
 		{
 			this.CommandText.Append(GetOperatorName(operation.Operator));
 			// TODO: If isbinary: this.Builder.Append(" ");
@@ -1714,12 +1714,12 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void VisitLiteralPart(LiteralPart literalPart)
+		protected virtual void VisitLiteralPart(LiteralPart literalPart)
 		{
 			this.CommandText.Append(literalPart.Value);
 		}
 
-		private void VisitSelectExpression(SelectExpression select)
+		protected virtual void VisitSelectExpression(SelectExpression select)
 		{
 			this.CommandText.Append("(");
 			this.AppendNewLine(Indentation.Inner);
@@ -1735,7 +1735,7 @@ namespace Watsonia.QueryBuilder
 			this.Indent(Indentation.Outer);
 		}
 
-		private void AppendNewLine(Indentation style)
+		protected virtual void AppendNewLine(Indentation style)
 		{
 			this.CommandText.AppendLine();
 			this.Indent(style);
@@ -1745,7 +1745,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		private void Indent(Indentation style)
+		protected virtual void Indent(Indentation style)
 		{
 			if (style == Indentation.Inner)
 			{
