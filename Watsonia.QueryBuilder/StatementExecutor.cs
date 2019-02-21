@@ -9,9 +9,8 @@ namespace Watsonia.QueryBuilder
 	/// <summary>
 	/// A dummy implementation of IQueryExecutor for visiting statement conditions e.g. in Delete.Where.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
 	/// <seealso cref="Remotion.Linq.IQueryExecutor" />
-	internal class StatementExecutor<T> : IQueryExecutor
+	internal class StatementExecutor : IQueryExecutor
 	{
 		////internal SelectStatement BuildSelectStatement(QueryModel queryModel)
 		////{
@@ -58,10 +57,10 @@ namespace Watsonia.QueryBuilder
 		/// <returns>
 		/// A scalar value of type <typeparamref name="T" /> that represents the query's result.
 		/// </returns>
-		/// <exception cref="System.InvalidOperationException"></exception>
+		/// <exception cref="NotImplementedException"></exception>
 		public IEnumerable<T> ExecuteCollection<T>(QueryModel queryModel)
 		{
-			throw new InvalidOperationException();
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -74,7 +73,7 @@ namespace Watsonia.QueryBuilder
 		/// <returns>
 		/// A scalar value of type <typeparamref name="T" /> that represents the query's result.
 		/// </returns>
-		/// <exception cref="System.InvalidOperationException"></exception>
+		/// <exception cref="NotImplementedException"></exception>
 		/// <remarks>
 		/// The difference between <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> and <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)" /> is in the kind of object that is returned.
 		/// <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> is used when a query that would otherwise return a collection result set should pick a single value from the
@@ -84,7 +83,7 @@ namespace Watsonia.QueryBuilder
 		/// </remarks>
 		public T ExecuteScalar<T>(QueryModel queryModel)
 		{
-			throw new InvalidOperationException();
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -100,7 +99,7 @@ namespace Watsonia.QueryBuilder
 		/// <returns>
 		/// A single value of type <typeparamref name="T" /> that represents the query's result.
 		/// </returns>
-		/// <exception cref="System.InvalidOperationException"></exception>
+		/// <exception cref="NotImplementedException"></exception>
 		/// <remarks>
 		/// The difference between <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> and <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)" /> is in the kind of object that is returned.
 		/// <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> is used when a query that would otherwise return a collection result set should pick a single value from the
@@ -110,7 +109,7 @@ namespace Watsonia.QueryBuilder
 		/// </remarks>
 		public T ExecuteSingle<T>(QueryModel queryModel, bool returnDefaultWhenEmpty)
 		{
-			throw new InvalidOperationException();
+			throw new NotImplementedException();
 		}
 	}
 }
