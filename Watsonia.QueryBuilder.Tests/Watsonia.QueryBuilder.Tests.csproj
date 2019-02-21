@@ -16,4 +16,13 @@
     <ProjectReference Include="..\Watsonia.QueryBuilder\Watsonia.QueryBuilder.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Baselines\SQLite.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Baselines\SqlServer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
