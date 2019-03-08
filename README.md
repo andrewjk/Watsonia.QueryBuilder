@@ -6,13 +6,21 @@ Supports Select, Insert, Update and Delete statements.
 
 Create a statement and run its Build function to create an object with CommandText and Parameters properties.
 
-Pass Insert, Update and Delete commands directly to EntityFramework like so:
+Pass Select statements directly to EntityFramework Core like so:
+
+```C#
+context.Set<Item>().FromSql(command.CommandText, command.Parameters);
+```
+
+Pass Insert, Update and Delete commands directly to EntityFramework Core like so:
 
 ```C#
 context.Database.ExecuteSqlCommand(command.CommandText, command.Parameters);
 ```
 
 Or use with any other ORM that accepts SQL, such as Dapper.
+
+Note that calling Insert, Update and Delete commands when using EntityFramework will not update the entities loaded in your context. This means that your database and context may become out of sync if you are both loading entities and running bulk operations.
 
 ## Select ##
 
