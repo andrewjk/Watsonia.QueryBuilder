@@ -29,6 +29,5 @@ namespace Watsonia.QueryBuilder
 		{
 			return property.Name;
 		}
-
 	}
 }
