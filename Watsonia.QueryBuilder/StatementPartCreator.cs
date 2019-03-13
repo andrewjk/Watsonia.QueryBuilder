@@ -297,19 +297,19 @@ namespace Watsonia.QueryBuilder
 			{
 				this.Stack.Push(new ConstantPart(expression.Value));
 			}
-			////else if (this.Configuration.ShouldMapType(expression.Type))
-			////{
-			////	string primaryKeyName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
-			////	PropertyInfo property = expression.Type.GetProperty(primaryKeyName);
-			////	object value = property.GetValue(expression.Value);
-			////	this.Stack.Push(new ConstantPart(value));
-			////}
-			////else if (TypeHelper.IsGenericType(expression.Type, typeof(IQueryable<>)))
-			////{
-			////	Type queryType = expression.Value.GetType().GetGenericArguments()[0];
-			////	string tableName = this.Configuration.GetTableName(queryType);
-			////	this.Stack.Push(new Table(tableName));
-			////}
+			else if (this.Configuration.ShouldMapType(expression.Type))
+			{
+				string primaryKeyName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
+				PropertyInfo property = expression.Type.GetProperty(primaryKeyName);
+				object value = property.GetValue(expression.Value);
+				this.Stack.Push(new ConstantPart(value));
+			}
+			else if (TypeHelper.IsGenericType(expression.Type, typeof(IQueryable<>)))
+			{
+				Type queryType = expression.Value.GetType().GetGenericArguments()[0];
+				string tableName = this.Configuration.GetTableName(queryType);
+				this.Stack.Push(new Table(tableName));
+			}
 			else
 			{
 				this.Stack.Push(new ConstantPart(expression.Value));
@@ -458,11 +458,11 @@ namespace Watsonia.QueryBuilder
 
 				var property = (PropertyInfo)expression.Member;
 				string columnName = this.Configuration.GetColumnName(property);
-				////if (this.Configuration.IsRelatedItem(property))
-				////{
-				////	// TODO: Should this be done here, or when converting the statement to SQL?
-				////	columnName = this.Configuration.GetForeignKeyColumnName(property);
-				////}
+				if (this.Configuration.ShouldMapType(property.PropertyType))
+				{
+					// TODO: Should this be done here, or when converting the statement to SQL?
+					columnName = this.Configuration.GetForeignKeyColumnName(property);
+				}
 				var newColumn = new Column(tableName, columnName) { PropertyType = property.PropertyType };
 				this.Stack.Push(newColumn);
 				return expression;
@@ -1162,10 +1162,10 @@ namespace Watsonia.QueryBuilder
 
 		protected override Expression VisitQuerySourceReference(QuerySourceReferenceExpression expression)
 		{
-			////string tableName = expression.ReferencedQuerySource.ItemName.Replace("<generated>", "g");
-			////string columnName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
-			////var newColumn = new Column(tableName, columnName);
-			////this.Stack.Push(newColumn);
+			string tableName = expression.ReferencedQuerySource.ItemName.Replace("<generated>", "g");
+			string columnName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
+			var newColumn = new Column(tableName, columnName);
+			this.Stack.Push(newColumn);
 
 			return base.VisitQuerySourceReference(expression);
 		}
@@ -1183,25 +1183,25 @@ namespace Watsonia.QueryBuilder
 				Visit(contains.Item);
 				newCondition.Field = this.Stack.Pop();
 
-				////if (TypeHelper.IsGenericType(expression.QueryModel.MainFromClause.FromExpression.Type, typeof(IQueryable<>)))
-				////{
-				////	// Create the sub-select statement
-				////	var subselect = SelectStatementCreator.Visit(expression.QueryModel, this.Configuration, true);
-				////	subselect.IsContains = false;
-				////	if (subselect.SourceFields.Count == 0)
-				////	{
-				////		var subselectField = expression.QueryModel.SelectClause.Selector;
-				////		Visit(subselectField);
-				////		subselect.SourceFields.Add((SourceExpression)this.Stack.Pop());
-				////	}
-				////	newCondition.Value = subselect;
-				////}
-				////else
-				////{
+				if (TypeHelper.IsGenericType(expression.QueryModel.MainFromClause.FromExpression.Type, typeof(IQueryable<>)))
+				{
+					// Create the sub-select statement
+					var subselect = StatementCreator.Visit(expression.QueryModel, this.Configuration, true);
+					subselect.IsContains = false;
+					if (subselect.SourceFields.Count == 0)
+					{
+						var subselectField = expression.QueryModel.SelectClause.Selector;
+						Visit(subselectField);
+						subselect.SourceFields.Add((SourceExpression)this.Stack.Pop());
+					}
+					newCondition.Value = subselect;
+				}
+				else
+				{
 					// Just check in the array that was passed
 					Visit(expression.QueryModel.MainFromClause.FromExpression);
 					newCondition.Value = this.Stack.Pop();
-				////}
+				}
 
 				this.Stack.Push(newCondition);
 			}

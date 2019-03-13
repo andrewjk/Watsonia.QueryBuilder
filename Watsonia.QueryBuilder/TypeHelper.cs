@@ -180,50 +180,50 @@ namespace Watsonia.QueryBuilder
 		//		(type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
 		//}
 
-		//public static bool IsGenericType(Type type, Type genericType)
-		//{
-		//	// From http://stackoverflow.com/questions/982487/testing-if-object-is-of-generic-type-in-c-sharp
-		//	while (type != null)
-		//	{
-		//		if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
-		//		{
-		//			return true;
-		//		}
-		//		if (genericType.IsInterface && IsAssignableToGenericType(type, genericType))
-		//		{
-		//			return true;
-		//		}
-		//		type = type.BaseType;
-		//	}
-		//	return false;
-		//}
+		public static bool IsGenericType(Type type, Type genericType)
+		{
+			// From http://stackoverflow.com/questions/982487/testing-if-object-is-of-generic-type-in-c-sharp
+			while (type != null)
+			{
+				if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
+				{
+					return true;
+				}
+				if (genericType.IsInterface && IsAssignableToGenericType(type, genericType))
+				{
+					return true;
+				}
+				type = type.BaseType;
+			}
+			return false;
+		}
 
-		//public static bool IsAssignableToGenericType(Type type, Type genericType)
-		//{
-		//	// From http://stackoverflow.com/questions/5461295/using-isassignablefrom-with-generics
-		//	var interfaceTypes = type.GetInterfaces();
+		public static bool IsAssignableToGenericType(Type type, Type genericType)
+		{
+			// From http://stackoverflow.com/questions/5461295/using-isassignablefrom-with-generics
+			var interfaceTypes = type.GetInterfaces();
 
-		//	foreach (var it in interfaceTypes)
-		//	{
-		//		if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
-		//		{
-		//			return true;
-		//		}
-		//	}
+			foreach (var it in interfaceTypes)
+			{
+				if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+				{
+					return true;
+				}
+			}
 
-		//	if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
-		//	{
-		//		return true;
-		//	}
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType)
+			{
+				return true;
+			}
 
-		//	Type baseType = type.BaseType;
-		//	if (baseType == null)
-		//	{
-		//		return false;
-		//	}
+			Type baseType = type.BaseType;
+			if (baseType == null)
+			{
+				return false;
+			}
 
-		//	return IsAssignableToGenericType(baseType, genericType);
-		//}
+			return IsAssignableToGenericType(baseType, genericType);
+		}
 
 		///// <summary>
 		///// Returns an object of the specified type and whose value is equivalent to the specified object.

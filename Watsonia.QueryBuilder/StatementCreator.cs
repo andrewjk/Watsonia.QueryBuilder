@@ -13,7 +13,7 @@ namespace Watsonia.QueryBuilder
 	/// <summary>
 	/// Converts QueryModels into Select statements for passing to the database.
 	/// </summary>
-	internal class StatementCreator : QueryModelVisitorBase
+	public class StatementCreator : QueryModelVisitorBase
 	{
 		private DatabaseMapper Configuration { get; set; }
 
@@ -77,18 +77,18 @@ namespace Watsonia.QueryBuilder
 
 		public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel)
 		{
-			////if (this.Configuration.IsFunction(fromClause.ItemType))
-			////{
-			////	string functionName = this.Configuration.GetFunctionName(fromClause.ItemType);
-			////	string alias = fromClause.ItemName.Replace("<generated>", "g");
-			////	this.SelectStatement.Source = new UserDefinedFunction(functionName) { Alias = alias };
-			////}
-			////else
-			////{
+			if (this.Configuration.IsFunction(fromClause.ItemType))
+			{
+				string functionName = this.Configuration.GetFunctionName(fromClause.ItemType);
+				string alias = fromClause.ItemName.Replace("<generated>", "g");
+				this.SelectStatement.Source = new UserDefinedFunction(functionName) { Alias = alias };
+			}
+			else
+			{
 				string tableName = this.Configuration.GetTableName(fromClause.ItemType);
 				string alias = fromClause.ItemName.Replace("<generated>", "g");
 				this.SelectStatement.Source = new Table(tableName) { Alias = alias };
-			////}
+			}
 			base.VisitMainFromClause(fromClause, queryModel);
 		}
 
