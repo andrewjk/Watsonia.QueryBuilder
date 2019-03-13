@@ -6,6 +6,11 @@ namespace Watsonia.QueryBuilder
 {
 	public class SqlServerCommandBuilder : SqlCommandBuilder
 	{
-		// TODO: Override the necessary functions
+		protected override void VisitLimitAtStart(SelectStatement select)
+		{
+			this.CommandText.Append("TOP (");
+			this.CommandText.Append(select.Limit);
+			this.CommandText.Append(") ");
+		}
 	}
 }

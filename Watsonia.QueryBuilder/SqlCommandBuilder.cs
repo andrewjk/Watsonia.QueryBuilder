@@ -140,12 +140,12 @@ namespace Watsonia.QueryBuilder
 				var index = this.ParameterValues.IndexOf(value);
 				if (index != -1)
 				{
-					this.CommandText.Append("@p");
+					this.CommandText.Append("@");
 					this.CommandText.Append(index);
 				}
 				else
 				{
-					this.CommandText.Append("@p");
+					this.CommandText.Append("@");
 					this.CommandText.Append(this.ParameterValues.Count);
 					if (value.GetType().IsEnum)
 					{
@@ -200,37 +200,16 @@ namespace Watsonia.QueryBuilder
 			}
 			if (select.Limit > 0)
 			{
-				this.CommandText.Append("TOP (");
-				this.CommandText.Append(select.Limit);
-				this.CommandText.Append(") ");
+				// TODO: Use OFFSET and FETCH for SQL Server and remove this method
+				VisitLimitAtStart(select);
 			}
 			if (select.SourceFieldsFrom.Count > 0)
 			{
-				// TODO: Should the SourceFieldsFrom actually be its own class?
-				for (var i = 0; i < select.SourceFieldsFrom.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.CommandText.Append(", ");
-					}
-					this.VisitTable(select.SourceFieldsFrom[i]);
-					this.CommandText.Append(".*");
-				}
-				if (select.SourceFields.Count > 0)
-				{
-					this.CommandText.Append(", ");
-				}
+				VisitSourceFieldsFrom(select);
 			}
 			if (select.SourceFields.Count > 0)
 			{
-				for (var i = 0; i < select.SourceFields.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.CommandText.Append(", ");
-					}
-					this.VisitField(select.SourceFields[i]);
-				}
+				VisitSourceFields(select);
 			}
 			if (select.SourceFieldsFrom.Count == 0 && select.SourceFields.Count == 0)
 			{
@@ -262,67 +241,20 @@ namespace Watsonia.QueryBuilder
 			}
 			if (select.Conditions.Count > 0)
 			{
-				this.AppendNewLine(Indentation.Same);
-				this.CommandText.Append("WHERE ");
-				if (select.Conditions.Not)
-				{
-					this.CommandText.Append("NOT ");
-				}
-				for (var i = 0; i < select.Conditions.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.AppendNewLine(Indentation.Same);
-						switch (select.Conditions[i].Relationship)
-						{
-							case ConditionRelationship.And:
-							{
-								this.CommandText.Append(" AND ");
-								break;
-							}
-							case ConditionRelationship.Or:
-							{
-								this.CommandText.Append(" OR ");
-								break;
-							}
-							default:
-							{
-								throw new InvalidOperationException();
-							}
-						}
-					}
-					this.VisitCondition(select.Conditions[i]);
-				}
+				VisitWhere(select.Conditions);
 			}
 			if (select.GroupByFields.Count > 0)
 			{
-				this.AppendNewLine(Indentation.Same);
-				this.CommandText.Append("GROUP BY ");
-				for (var i = 0; i < select.GroupByFields.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.CommandText.Append(", ");
-					}
-					this.VisitField(select.GroupByFields[i]);
-				}
+				VisitGroupBy(select);
 			}
 			if (select.OrderByFields.Count > 0 && !select.IsAggregate)
 			{
-				this.AppendNewLine(Indentation.Same);
-				this.CommandText.Append("ORDER BY ");
-				for (var i = 0; i < select.OrderByFields.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.CommandText.Append(", ");
-					}
-					this.VisitField(select.OrderByFields[i].Expression);
-					if (select.OrderByFields[i].Direction != OrderDirection.Ascending)
-					{
-						this.CommandText.Append(" DESC");
-					}
-				}
+				VisitOrderBy(select);
+			}
+			if (select.Limit > 0)
+			{
+				// TODO: Use OFFSET and FETCH for SQL Server and rename this method
+				VisitLimitAtEnd(select);
 			}
 			foreach (var union in select.UnionStatements)
 			{
@@ -421,7 +353,7 @@ namespace Watsonia.QueryBuilder
 		protected virtual void VisitSelectWithContains(SelectStatement select)
 		{
 			// It's going to look something like this:
-			// SELECT CASE WHEN @p0 IN (
+			// SELECT CASE WHEN @0 IN (
 			//		SELECT Fields
 			//		FROM Table
 			// ) THEN 1 ELSE 0 END
@@ -449,40 +381,14 @@ namespace Watsonia.QueryBuilder
 					{
 						this.CommandText.Append(", ");
 					}
-					this.VisitColumn(update.SetValues[i].Column);
+					this.VisitColumn(update.SetValues[i].Column, ignoreTablePrefix: true);
 					this.CommandText.Append(" = ");
 					this.VisitField(update.SetValues[i].Value);
 				}
 			}
 			if (update.Conditions != null && update.Conditions.Count > 0)
 			{
-				this.AppendNewLine(Indentation.Same);
-				this.CommandText.Append("WHERE ");
-				for (var i = 0; i < update.Conditions.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.AppendNewLine(Indentation.Same);
-						switch (update.Conditions[i].Relationship)
-						{
-							case ConditionRelationship.And:
-							{
-								this.CommandText.Append(" AND ");
-								break;
-							}
-							case ConditionRelationship.Or:
-							{
-								this.CommandText.Append(" OR ");
-								break;
-							}
-							default:
-							{
-								throw new InvalidOperationException();
-							}
-						}
-					}
-					this.VisitCondition(update.Conditions[i]);
-				}
+				VisitWhere(update.Conditions);
 			}
 			else
 			{
@@ -545,38 +451,119 @@ namespace Watsonia.QueryBuilder
 			this.VisitTable(delete.Target);
 			if (delete.Conditions != null && delete.Conditions.Count > 0)
 			{
-				this.AppendNewLine(Indentation.Same);
-				this.CommandText.Append("WHERE ");
-				for (var i = 0; i < delete.Conditions.Count; i++)
-				{
-					if (i > 0)
-					{
-						this.AppendNewLine(Indentation.Same);
-						switch (delete.Conditions[i].Relationship)
-						{
-							case ConditionRelationship.And:
-							{
-								this.CommandText.Append(" AND ");
-								break;
-							}
-							case ConditionRelationship.Or:
-							{
-								this.CommandText.Append(" OR ");
-								break;
-							}
-							default:
-							{
-								throw new InvalidOperationException("Invalid relationship: " + delete.Conditions[i].Relationship);
-							}
-						}
-					}
-					this.VisitCondition(delete.Conditions[i]);
-				}
+				VisitWhere(delete.Conditions);
 			}
 			else
 			{
 				throw new InvalidOperationException("A delete statement must have at least one condition to avoid accidentally deleting all data in a table");
 			}
+		}
+
+		protected virtual void VisitSourceFields(SelectStatement select)
+		{
+			for (var i = 0; i < select.SourceFields.Count; i++)
+			{
+				if (i > 0)
+				{
+					this.CommandText.Append(", ");
+				}
+				this.VisitField(select.SourceFields[i]);
+			}
+		}
+
+		protected virtual void VisitSourceFieldsFrom(SelectStatement select)
+		{
+			// TODO: Should the SourceFieldsFrom actually be its own class?
+			for (var i = 0; i < select.SourceFieldsFrom.Count; i++)
+			{
+				if (i > 0)
+				{
+					this.CommandText.Append(", ");
+				}
+				this.VisitTable(select.SourceFieldsFrom[i]);
+				this.CommandText.Append(".*");
+			}
+			if (select.SourceFields.Count > 0)
+			{
+				this.CommandText.Append(", ");
+			}
+		}
+
+		protected virtual void VisitWhere(ConditionCollection conditions)
+		{
+			this.AppendNewLine(Indentation.Same);
+			this.CommandText.Append("WHERE ");
+			if (conditions.Not)
+			{
+				this.CommandText.Append("NOT ");
+			}
+			for (var i = 0; i < conditions.Count; i++)
+			{
+				if (i > 0)
+				{
+					this.AppendNewLine(Indentation.Same);
+					switch (conditions[i].Relationship)
+					{
+						case ConditionRelationship.And:
+						{
+							this.CommandText.Append(" AND ");
+							break;
+						}
+						case ConditionRelationship.Or:
+						{
+							this.CommandText.Append(" OR ");
+							break;
+						}
+						default:
+						{
+							throw new InvalidOperationException();
+						}
+					}
+				}
+				this.VisitCondition(conditions[i]);
+			}
+		}
+
+		protected virtual void VisitGroupBy(SelectStatement select)
+		{
+			this.AppendNewLine(Indentation.Same);
+			this.CommandText.Append("GROUP BY ");
+			for (var i = 0; i < select.GroupByFields.Count; i++)
+			{
+				if (i > 0)
+				{
+					this.CommandText.Append(", ");
+				}
+				this.VisitField(select.GroupByFields[i]);
+			}
+		}
+
+		protected virtual void VisitOrderBy(SelectStatement select)
+		{
+			this.AppendNewLine(Indentation.Same);
+			this.CommandText.Append("ORDER BY ");
+			for (var i = 0; i < select.OrderByFields.Count; i++)
+			{
+				if (i > 0)
+				{
+					this.CommandText.Append(", ");
+				}
+				this.VisitField(select.OrderByFields[i].Expression);
+				if (select.OrderByFields[i].Direction != OrderDirection.Ascending)
+				{
+					this.CommandText.Append(" DESC");
+				}
+			}
+		}
+
+		protected virtual void VisitLimitAtStart(SelectStatement select)
+		{
+			// TODO: Is there a good default for this?
+		}
+
+		protected virtual void VisitLimitAtEnd(SelectStatement select)
+		{
+			// TODO: Is there a good default for this?
 		}
 
 		protected virtual void VisitField(StatementPart field)
@@ -814,13 +801,14 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		protected virtual void VisitColumn(Column column)
+		protected virtual void VisitColumn(Column column, bool ignoreTablePrefix = false)
 		{
-			if (column.Table != null)
+			if (!ignoreTablePrefix && column.Table != null && !string.IsNullOrEmpty(column.Table.Name))
 			{
 				VisitTable(column.Table);
 				this.CommandText.Append(".");
 			}
+
 			if (column.Name == "*")
 			{
 				this.CommandText.Append("*");
@@ -1475,11 +1463,11 @@ namespace Watsonia.QueryBuilder
 		protected virtual void VisitDateAddFunction(DateAddFunction function)
 		{
 			this.VisitFunction("DATEADD", new StatementPart[]
-				{
-					new LiteralPart(function.DatePart.ToString().ToLowerInvariant()),
-					function.Number,
-					function.Argument
-				});
+			{
+				new LiteralPart(function.DatePart.ToString().ToLowerInvariant()),
+				function.Number,
+				function.Argument
+			});
 		}
 
 		protected virtual void VisitDateNewFunction(DateNewFunction function)

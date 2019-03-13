@@ -19,7 +19,7 @@ namespace Watsonia.QueryBuilder
 
 		public List<SetValue> SetValues { get; } = new List<SetValue>();
 
-		public List<ConditionExpression> Conditions { get; internal set; } = new List<ConditionExpression>();
+		public ConditionCollection Conditions { get; internal set; } = new ConditionCollection();
 
 		internal UpdateStatement()
 		{

@@ -6,6 +6,12 @@ namespace Watsonia.QueryBuilder
 {
 	public class SQLiteCommandBuilder : SqlCommandBuilder
 	{
+		protected override void VisitLimitAtEnd(SelectStatement select)
+		{
+			this.CommandText.Append(" LIMIT ");
+			this.CommandText.Append(select.Limit);
+		}
+
 		protected override void VisitCondition(Condition condition)
 		{
 			// Check for null comparisons first
@@ -165,6 +171,29 @@ namespace Watsonia.QueryBuilder
 					throw new InvalidOperationException("Invalid date part: " + function.DatePart);
 				}
 			}
+		}
+
+		protected override void VisitDateAddFunction(DateAddFunction function)
+		{
+			// HACK: This may lose precision, like if you want to add days but keep the time!
+			if (function.DatePart == DatePart.Hour ||
+				function.DatePart == DatePart.Minute ||
+				function.DatePart == DatePart.Second ||
+				function.DatePart == DatePart.Millisecond)
+			{
+				this.CommandText.Append("DATETIME(");
+			}
+			else
+			{
+				this.CommandText.Append("DATE(");
+			}
+			this.VisitField(function.Argument);
+			this.CommandText.Append(", ");
+			this.VisitField(function.Number);
+			this.CommandText.Append(" || ' ");
+			this.CommandText.Append(function.DatePart.ToString().ToLowerInvariant());
+			this.CommandText.Append("'");
+			this.CommandText.Append(")");
 		}
 
 		protected override void VisitNumberFloorFunction(NumberFloorFunction function)
