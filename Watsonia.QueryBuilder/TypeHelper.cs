@@ -216,7 +216,7 @@ namespace Watsonia.QueryBuilder
 				return true;
 			}
 
-			Type baseType = type.BaseType;
+			var baseType = type.BaseType;
 			if (baseType == null)
 			{
 				return false;

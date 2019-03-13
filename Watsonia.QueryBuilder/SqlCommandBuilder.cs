@@ -37,9 +37,9 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericSelect:
 				{
-					Type messageType = statement.GetType();
-					MethodInfo method = statement.GetType().GetMethod("CreateStatement");
-					SelectStatement select = (SelectStatement)method.Invoke(statement, new object[] { mapper });
+					var messageType = statement.GetType();
+					var method = statement.GetType().GetMethod("CreateStatement");
+					var select = (SelectStatement)method.Invoke(statement, new object[] { mapper });
 					VisitSelect(select);
 					break;
 				}
@@ -50,9 +50,9 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericInsert:
 				{
-					Type messageType = statement.GetType();
-					MethodInfo method = statement.GetType().GetMethod("CreateStatement");
-					InsertStatement insert = (InsertStatement)method.Invoke(statement, new object[] { mapper });
+					var messageType = statement.GetType();
+					var method = statement.GetType().GetMethod("CreateStatement");
+					var insert = (InsertStatement)method.Invoke(statement, new object[] { mapper });
 					VisitInsert(insert);
 					break;
 				}
@@ -63,9 +63,9 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericUpdate:
 				{
-					Type messageType = statement.GetType();
-					MethodInfo method = statement.GetType().GetMethod("CreateStatement");
-					UpdateStatement update = (UpdateStatement)method.Invoke(statement, new object[] { mapper });
+					var messageType = statement.GetType();
+					var method = statement.GetType().GetMethod("CreateStatement");
+					var update = (UpdateStatement)method.Invoke(statement, new object[] { mapper });
 					VisitUpdate(update);
 					break;
 				}
@@ -76,9 +76,9 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericDelete:
 				{
-					Type messageType = statement.GetType();
-					MethodInfo method = statement.GetType().GetMethod("CreateStatement");
-					DeleteStatement delete = (DeleteStatement)method.Invoke(statement, new object[] { mapper });
+					var messageType = statement.GetType();
+					var method = statement.GetType().GetMethod("CreateStatement");
+					var delete = (DeleteStatement)method.Invoke(statement, new object[] { mapper });
 					VisitDelete(delete);
 					break;
 				}
@@ -117,8 +117,8 @@ namespace Watsonia.QueryBuilder
 			}
 			else if (value is IEnumerable && !(value is string) && !(value is byte[]))
 			{
-				bool firstValue = true;
-				foreach (object innerValue in (IEnumerable)value)
+				var firstValue = true;
+				foreach (var innerValue in (IEnumerable)value)
 				{
 					if (!firstValue)
 					{
@@ -137,7 +137,7 @@ namespace Watsonia.QueryBuilder
 			}
 			else
 			{
-				int index = this.ParameterValues.IndexOf(value);
+				var index = this.ParameterValues.IndexOf(value);
 				if (index != -1)
 				{
 					this.CommandText.Append("@p");
@@ -207,7 +207,7 @@ namespace Watsonia.QueryBuilder
 			if (select.SourceFieldsFrom.Count > 0)
 			{
 				// TODO: Should the SourceFieldsFrom actually be its own class?
-				for (int i = 0; i < select.SourceFieldsFrom.Count; i++)
+				for (var i = 0; i < select.SourceFieldsFrom.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -223,7 +223,7 @@ namespace Watsonia.QueryBuilder
 			}
 			if (select.SourceFields.Count > 0)
 			{
-				for (int i = 0; i < select.SourceFields.Count; i++)
+				for (var i = 0; i < select.SourceFields.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -254,7 +254,7 @@ namespace Watsonia.QueryBuilder
 			}
 			if (select.SourceJoins != null)
 			{
-				for (int i = 0; i < select.SourceJoins.Count; i++)
+				for (var i = 0; i < select.SourceJoins.Count; i++)
 				{
 					this.AppendNewLine(Indentation.Same);
 					this.VisitJoin(select.SourceJoins[i]);
@@ -268,7 +268,7 @@ namespace Watsonia.QueryBuilder
 				{
 					this.CommandText.Append("NOT ");
 				}
-				for (int i = 0; i < select.Conditions.Count; i++)
+				for (var i = 0; i < select.Conditions.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -298,7 +298,7 @@ namespace Watsonia.QueryBuilder
 			{
 				this.AppendNewLine(Indentation.Same);
 				this.CommandText.Append("GROUP BY ");
-				for (int i = 0; i < select.GroupByFields.Count; i++)
+				for (var i = 0; i < select.GroupByFields.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -311,7 +311,7 @@ namespace Watsonia.QueryBuilder
 			{
 				this.AppendNewLine(Indentation.Same);
 				this.CommandText.Append("ORDER BY ");
-				for (int i = 0; i < select.OrderByFields.Count; i++)
+				for (var i = 0; i < select.OrderByFields.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -324,7 +324,7 @@ namespace Watsonia.QueryBuilder
 					}
 				}
 			}
-			foreach (SelectStatement union in select.UnionStatements)
+			foreach (var union in select.UnionStatements)
 			{
 				this.CommandText.AppendLine();
 				this.CommandText.AppendLine("UNION ALL");
@@ -344,7 +344,7 @@ namespace Watsonia.QueryBuilder
 			// ORDER BY OrderFields
 
 			// Clone the select and add the RowNumber field to it
-			SelectStatement inner = Select.From(select.Source);
+			var inner = Select.From(select.Source);
 			inner.SourceJoins.AddRange(select.SourceJoins);
 			inner.Alias = "RowNumberTable";
 			inner.SourceFields.AddRange(select.SourceFields);
@@ -361,8 +361,8 @@ namespace Watsonia.QueryBuilder
 			}
 
 			// Clone the select and change its source
-			SelectStatement outer = Select.From(inner);
-			foreach (SourceExpression field in select.SourceFields)
+			var outer = Select.From(inner);
+			foreach (var field in select.SourceFields)
 			{
 				if (field is Column column)
 				{
@@ -443,7 +443,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" SET ");
 			if (update.SetValues != null && update.SetValues.Count > 0)
 			{
-				for (int i = 0; i < update.SetValues.Count; i++)
+				for (var i = 0; i < update.SetValues.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -458,7 +458,7 @@ namespace Watsonia.QueryBuilder
 			{
 				this.AppendNewLine(Indentation.Same);
 				this.CommandText.Append("WHERE ");
-				for (int i = 0; i < update.Conditions.Count; i++)
+				for (var i = 0; i < update.Conditions.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -497,7 +497,7 @@ namespace Watsonia.QueryBuilder
 			if (insert.SetValues != null && insert.SetValues.Count > 0)
 			{
 				this.CommandText.Append(" (");
-				for (int i = 0; i < insert.SetValues.Count; i++)
+				for (var i = 0; i < insert.SetValues.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -508,7 +508,7 @@ namespace Watsonia.QueryBuilder
 				this.CommandText.Append(")");
 				this.AppendNewLine(Indentation.Same);
 				this.CommandText.Append("VALUES (");
-				for (int i = 0; i < insert.SetValues.Count; i++)
+				for (var i = 0; i < insert.SetValues.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -521,7 +521,7 @@ namespace Watsonia.QueryBuilder
 			else if (insert.TargetFields != null && insert.TargetFields.Count > 0 && insert.Source != null)
 			{
 				this.CommandText.Append(" (");
-				for (int i = 0; i < insert.TargetFields.Count; i++)
+				for (var i = 0; i < insert.TargetFields.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -547,7 +547,7 @@ namespace Watsonia.QueryBuilder
 			{
 				this.AppendNewLine(Indentation.Same);
 				this.CommandText.Append("WHERE ");
-				for (int i = 0; i < delete.Conditions.Count; i++)
+				for (var i = 0; i < delete.Conditions.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -791,7 +791,7 @@ namespace Watsonia.QueryBuilder
 				case StatementPartType.FieldCollection:
 				{
 					var collection = (FieldCollection)field;
-					for (int i = 0; i < collection.Count; i++)
+					for (var i = 0; i < collection.Count; i++)
 					{
 						if (i > 0)
 						{
@@ -841,13 +841,13 @@ namespace Watsonia.QueryBuilder
 
 		protected virtual void VisitSource(StatementPart source)
 		{
-			bool previousIsNested = this.IsNested;
+			var previousIsNested = this.IsNested;
 			this.IsNested = true;
 			switch (source.PartType)
 			{
 				case StatementPartType.Table:
 				{
-					Table table = (Table)source;
+					var table = (Table)source;
 					this.VisitTable(table);
 					if (!string.IsNullOrEmpty(table.Alias))
 					{
@@ -859,7 +859,7 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.Select:
 				{
-					SelectStatement select = (SelectStatement)source;
+					var select = (SelectStatement)source;
 					this.CommandText.Append("(");
 					this.AppendNewLine(Indentation.Inner);
 					this.VisitSelect(select);
@@ -910,7 +910,7 @@ namespace Watsonia.QueryBuilder
 		{
 			this.CommandText.Append(function.Name);
 			this.CommandText.Append("(");
-			for (int i = 0; i < function.Parameters.Count; i++)
+			for (var i = 0; i < function.Parameters.Count; i++)
 			{
 				if (i > 0)
 				{
@@ -987,8 +987,8 @@ namespace Watsonia.QueryBuilder
 		protected virtual void VisitCondition(Condition condition)
 		{
 			// Check for null comparisons first
-			bool fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
-			bool valueIsNull = (condition.Value is ConstantPart && ((ConstantPart)condition.Value).Value == null);
+			var fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
+			var valueIsNull = (condition.Value is ConstantPart && ((ConstantPart)condition.Value).Value == null);
 			if ((condition.Operator == SqlOperator.Equals || condition.Operator == SqlOperator.NotEquals) &&
 				(fieldIsNull || valueIsNull))
 			{
@@ -1058,14 +1058,14 @@ namespace Watsonia.QueryBuilder
 					case SqlOperator.IsIn:
 					{
 						// If it's in an empty list, just check against false
-						bool handled = false;
+						var handled = false;
 						if (condition.Value.PartType == StatementPartType.ConstantPart)
 						{
 							var value = ((ConstantPart)condition.Value).Value;
 							if (value is IEnumerable && !(value is string) && !(value is byte[]))
 							{
 								// HACK: Ugh
-								bool hasThings = false;
+								var hasThings = false;
 								foreach (var thing in (IEnumerable)value)
 								{
 									hasThings = true;
@@ -1123,7 +1123,7 @@ namespace Watsonia.QueryBuilder
 		protected virtual void VisitConditionCollection(ConditionCollection collection)
 		{
 			this.CommandText.Append("(");
-			for (int i = 0; i < collection.Count; i++)
+			for (var i = 0; i < collection.Count; i++)
 			{
 				if (i > 0)
 				{
@@ -1160,10 +1160,10 @@ namespace Watsonia.QueryBuilder
 				this.VisitField(conditional.Test);
 				this.CommandText.Append(" THEN ");
 				this.VisitField(conditional.IfTrue);
-				StatementPart ifFalse = conditional.IfFalse;
+				var ifFalse = conditional.IfFalse;
 				while (ifFalse != null && ifFalse.PartType == StatementPartType.ConditionalCase)
 				{
-					ConditionalCase subconditional = (ConditionalCase)conditional.IfFalse;
+					var subconditional = (ConditionalCase)conditional.IfFalse;
 					this.CommandText.Append(" WHEN ");
 					this.VisitField(subconditional.Test);
 					this.CommandText.Append(" THEN ");
@@ -1195,7 +1195,7 @@ namespace Watsonia.QueryBuilder
 			if (rowNumber.OrderByFields != null && rowNumber.OrderByFields.Count > 0)
 			{
 				this.CommandText.Append("ORDER BY ");
-				for (int i = 0; i < rowNumber.OrderByFields.Count; i++)
+				for (var i = 0; i < rowNumber.OrderByFields.Count; i++)
 				{
 					if (i > 0)
 					{
@@ -1297,7 +1297,7 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(", ");
 			while (second.PartType == StatementPartType.CoalesceFunction)
 			{
-				CoalesceFunction secondCoalesce = (CoalesceFunction)second;
+				var secondCoalesce = (CoalesceFunction)second;
 				this.VisitField(secondCoalesce.Arguments[0]);
 				this.CommandText.Append(", ");
 				second = secondCoalesce.Arguments[1];
@@ -1310,7 +1310,7 @@ namespace Watsonia.QueryBuilder
 		{
 			this.CommandText.Append(name);
 			this.CommandText.Append("(");
-			for (int i = 0; i < arguments.Length; i++)
+			for (var i = 0; i < arguments.Length; i++)
 			{
 				if (i > 0)
 				{
@@ -1407,7 +1407,7 @@ namespace Watsonia.QueryBuilder
 
 		protected virtual void VisitStringConcatenateFunction(StringConcatenateFunction function)
 		{
-			for (int i = 0; i < function.Arguments.Count; i++)
+			for (var i = 0; i < function.Arguments.Count; i++)
 			{
 				if (i > 0)
 				{
@@ -1739,7 +1739,7 @@ namespace Watsonia.QueryBuilder
 		{
 			this.CommandText.AppendLine();
 			this.Indent(style);
-			for (int i = 0; i < this.Depth * IndentationWidth; i++)
+			for (var i = 0; i < this.Depth * IndentationWidth; i++)
 			{
 				this.CommandText.Append(" ");
 			}

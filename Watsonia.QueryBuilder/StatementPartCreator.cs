@@ -93,7 +93,7 @@ namespace Watsonia.QueryBuilder
 
 			// Convert the conditions on the stack to a collection and set each condition's relationship
 			var newCondition = new ConditionCollection();
-			for (int i = 0; i < 2; i++)
+			for (var i = 0; i < 2; i++)
 			{
 				ConditionExpression subCondition = null;
 				if (this.Stack.Peek() is ConditionExpression)
@@ -112,7 +112,7 @@ namespace Watsonia.QueryBuilder
 				}
 				else if (this.Stack.Peek() is ConstantPart && ((ConstantPart)this.Stack.Peek()).Value is bool)
 				{
-					bool value = (bool)((ConstantPart)this.Stack.Pop()).Value;
+					var value = (bool)((ConstantPart)this.Stack.Pop()).Value;
 					subCondition = new Condition() { Field = new ConstantPart(value), Operator = SqlOperator.Equals, Value = new ConstantPart(true) };
 				}
 				else if (this.Stack.Peek() is Column && ((Column)this.Stack.Peek()).PropertyType == typeof(bool))
@@ -299,15 +299,15 @@ namespace Watsonia.QueryBuilder
 			}
 			else if (this.Configuration.ShouldMapType(expression.Type))
 			{
-				string primaryKeyName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
-				PropertyInfo property = expression.Type.GetProperty(primaryKeyName);
-				object value = property.GetValue(expression.Value);
+				var primaryKeyName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
+				var property = expression.Type.GetProperty(primaryKeyName);
+				var value = property.GetValue(expression.Value);
 				this.Stack.Push(new ConstantPart(value));
 			}
 			else if (TypeHelper.IsGenericType(expression.Type, typeof(IQueryable<>)))
 			{
-				Type queryType = expression.Value.GetType().GetGenericArguments()[0];
-				string tableName = this.Configuration.GetTableName(queryType);
+				var queryType = expression.Value.GetType().GetGenericArguments()[0];
+				var tableName = this.Configuration.GetTableName(queryType);
 				this.Stack.Push(new Table(tableName));
 			}
 			else
@@ -444,7 +444,7 @@ namespace Watsonia.QueryBuilder
 				{
 					// The property may be declared on a base type, so we can't just get DeclaringType
 					// Instead, we get the type from the expression that was used to reference it
-					Type propertyType = expression.Expression.Type;
+					var propertyType = expression.Expression.Type;
 
 					// HACK: Replace interfaces with actual tables
 					//	There has to be a way of intercepting the QueryModel creation??
@@ -457,7 +457,7 @@ namespace Watsonia.QueryBuilder
 				}
 
 				var property = (PropertyInfo)expression.Member;
-				string columnName = this.Configuration.GetColumnName(property);
+				var columnName = this.Configuration.GetColumnName(property);
 				if (this.Configuration.ShouldMapType(property.PropertyType))
 				{
 					// TODO: Should this be done here, or when converting the statement to SQL?
@@ -473,7 +473,7 @@ namespace Watsonia.QueryBuilder
 
 		protected override Expression VisitMethodCall(MethodCallExpression expression)
 		{
-			bool handled = false;
+			var handled = false;
 
 			if (expression.Method.DeclaringType == typeof(string))
 			{
@@ -560,7 +560,7 @@ namespace Watsonia.QueryBuilder
 					{
 						args = ((NewArrayExpression)args[0]).Expressions;
 					}
-					for (int i = 0; i < args.Count; i++)
+					for (var i = 0; i < args.Count; i++)
 					{
 						this.Visit(args[i]);
 						newFunction.Arguments.Add(this.Stack.Pop());
@@ -1097,7 +1097,7 @@ namespace Watsonia.QueryBuilder
 			{
 				// It's a new anonymous object, so get its properties as columns
 				var fields = new FieldCollection();
-				foreach (Expression argument in expression.Arguments)
+				foreach (var argument in expression.Arguments)
 				{
 					this.Visit(argument);
 					fields.Add((SourceExpression)this.Stack.Pop());
@@ -1162,8 +1162,8 @@ namespace Watsonia.QueryBuilder
 
 		protected override Expression VisitQuerySourceReference(QuerySourceReferenceExpression expression)
 		{
-			string tableName = expression.ReferencedQuerySource.ItemName.Replace("<generated>", "g");
-			string columnName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
+			var tableName = expression.ReferencedQuerySource.ItemName.Replace("<generated>", "g");
+			var columnName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
 			var newColumn = new Column(tableName, columnName);
 			this.Stack.Push(newColumn);
 

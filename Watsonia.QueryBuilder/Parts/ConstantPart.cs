@@ -65,7 +65,7 @@ namespace Watsonia.QueryBuilder
 			{
 				b.Append("{ ");
 				var values = new List<string>();
-				foreach (object o in (IEnumerable)this.Value)
+				foreach (var o in (IEnumerable)this.Value)
 				{
 					if (o == null)
 					{

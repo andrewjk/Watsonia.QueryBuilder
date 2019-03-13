@@ -30,7 +30,7 @@ namespace Watsonia.QueryBuilder
 
 		public static UpdateStatement<T> And<T>(this UpdateStatement<T> update, Expression<Func<T, bool>> condition)
 		{
-			Expression combined = update.Conditions.Body.AndAlso(condition.Body);
+			var combined = update.Conditions.Body.AndAlso(condition.Body);
 			combined = AnonymousParameterReplacer.Replace(combined, condition.Parameters);
 			update.Conditions = Expression.Lambda<Func<T, bool>>(combined, condition.Parameters);
 			return update;
@@ -38,7 +38,7 @@ namespace Watsonia.QueryBuilder
 
 		public static UpdateStatement<T> Or<T>(this UpdateStatement<T> update, Expression<Func<T, bool>> condition)
 		{
-			Expression combined = update.Conditions.Body.OrElse(condition.Body);
+			var combined = update.Conditions.Body.OrElse(condition.Body);
 			combined = AnonymousParameterReplacer.Replace(combined, condition.Parameters);
 			update.Conditions = Expression.Lambda<Func<T, bool>>(combined, condition.Parameters);
 			return update;

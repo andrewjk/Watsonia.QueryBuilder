@@ -29,10 +29,10 @@ namespace Watsonia.QueryBuilder
 				b.Append(this.Test.ToString());
 				b.Append(" Then ");
 				b.Append(this.IfTrue.ToString());
-				StatementPart ifFalse = this.IfFalse;
+				var ifFalse = this.IfFalse;
 				while (ifFalse is ConditionalCase)
 				{
-					ConditionalCase ifFalseCase = (ConditionalCase)ifFalse;
+					var ifFalseCase = (ConditionalCase)ifFalse;
 					b.Append(" When ");
 					b.Append(ifFalseCase.Test.ToString());
 					b.Append(" Then ");

@@ -9,8 +9,8 @@ namespace Watsonia.QueryBuilder
 		protected override void VisitCondition(Condition condition)
 		{
 			// Check for null comparisons first
-			bool fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
-			bool valueIsNull = (condition.Value is ConstantPart && ((ConstantPart)condition.Value).Value == null);
+			var fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
+			var valueIsNull = (condition.Value is ConstantPart && ((ConstantPart)condition.Value).Value == null);
 			if ((condition.Operator == SqlOperator.Equals || condition.Operator == SqlOperator.NotEquals) &&
 				(fieldIsNull || valueIsNull))
 			{

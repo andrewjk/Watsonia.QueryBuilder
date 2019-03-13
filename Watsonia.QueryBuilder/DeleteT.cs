@@ -24,7 +24,7 @@ namespace Watsonia.QueryBuilder
 
 		public static DeleteStatement<T> And<T>(this DeleteStatement<T> delete, Expression<Func<T, bool>> condition)
 		{
-			Expression combined = delete.Conditions.Body.AndAlso(condition.Body);
+			var combined = delete.Conditions.Body.AndAlso(condition.Body);
 			combined = AnonymousParameterReplacer.Replace(combined, condition.Parameters);
 			delete.Conditions = Expression.Lambda<Func<T, bool>>(combined, condition.Parameters);
 			return delete;
@@ -32,7 +32,7 @@ namespace Watsonia.QueryBuilder
 
 		public static DeleteStatement<T> Or<T>(this DeleteStatement<T> delete, Expression<Func<T, bool>> condition)
 		{
-			Expression combined = delete.Conditions.Body.OrElse(condition.Body);
+			var combined = delete.Conditions.Body.OrElse(condition.Body);
 			combined = AnonymousParameterReplacer.Replace(combined, condition.Parameters);
 			delete.Conditions = Expression.Lambda<Func<T, bool>>(combined, condition.Parameters);
 			return delete;

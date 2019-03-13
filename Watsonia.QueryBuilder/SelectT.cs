@@ -57,7 +57,7 @@ namespace Watsonia.QueryBuilder
 		{
 			if (select.Conditions != null)
 			{
-				Expression combined = select.Conditions.Body.AndAlso(condition.Body);
+				var combined = select.Conditions.Body.AndAlso(condition.Body);
 				combined = AnonymousParameterReplacer.Replace(combined, condition.Parameters);
 				select.Conditions = Expression.Lambda<Func<T, bool>>(combined, condition.Parameters);
 			}
@@ -72,7 +72,7 @@ namespace Watsonia.QueryBuilder
 		{
 			if (select.Conditions != null)
 			{
-				Expression combined = select.Conditions.Body.OrElse(condition.Body);
+				var combined = select.Conditions.Body.OrElse(condition.Body);
 				combined = AnonymousParameterReplacer.Replace(combined, condition.Parameters);
 				select.Conditions = Expression.Lambda<Func<T, bool>>(combined, condition.Parameters);
 			}
