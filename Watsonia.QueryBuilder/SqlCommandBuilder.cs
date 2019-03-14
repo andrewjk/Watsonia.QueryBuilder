@@ -326,8 +326,13 @@ namespace Watsonia.QueryBuilder
 
 			this.CommandText.Append("SELECT CASE WHEN EXISTS (");
 			this.Indent(Indentation.Inner);
+
 			select.IsAny = false;
+
 			this.VisitSelect(select);
+
+			select.IsAny = true;
+
 			this.Indent(Indentation.Outer);
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
@@ -343,9 +348,16 @@ namespace Watsonia.QueryBuilder
 
 			this.CommandText.Append("SELECT CASE WHEN NOT EXISTS (");
 			this.Indent(Indentation.Inner);
+
+			var not = select.Conditions.Not;
 			select.IsAll = false;
-			select.Conditions.Not = true;
+			select.Conditions.Not = !not;
+
 			this.VisitSelect(select);
+
+			select.IsAll = true;
+			select.Conditions.Not = not;
+
 			this.Indent(Indentation.Outer);
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
@@ -362,8 +374,13 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(select.ContainsItem);
 			this.CommandText.Append(" IN (");
 			this.Indent(Indentation.Inner);
+
 			select.IsContains = false;
+
 			this.VisitSelect(select);
+
+			select.IsContains = true;
+
 			this.Indent(Indentation.Outer);
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
