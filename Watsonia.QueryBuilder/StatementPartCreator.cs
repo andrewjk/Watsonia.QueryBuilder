@@ -458,7 +458,7 @@ namespace Watsonia.QueryBuilder
 
 				var property = (PropertyInfo)expression.Member;
 				var columnName = this.Configuration.GetColumnName(property);
-				if (this.Configuration.ShouldMapType(property.PropertyType))
+				if (this.Configuration.IsRelatedItem(property))
 				{
 					// TODO: Should this be done here, or when converting the statement to SQL?
 					columnName = this.Configuration.GetForeignKeyColumnName(property);

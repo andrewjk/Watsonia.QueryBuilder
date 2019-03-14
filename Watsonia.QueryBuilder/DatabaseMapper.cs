@@ -62,6 +62,18 @@ namespace Watsonia.QueryBuilder
 		}
 
 		/// <summary>
+		/// Determines whether the supplied property contains a related entity item.
+		/// </summary>
+		/// <param name="property">The property.</param>
+		/// <returns>
+		///   <c>true</c> if the supplied property contains a related entity item; otherwise, <c>false</c>.
+		/// </returns>
+		public virtual bool IsRelatedItem(PropertyInfo property)
+		{
+			return ShouldMapType(property.PropertyType);
+		}
+
+		/// <summary>
 		/// Gets the name of the foreign key column for the supplied property.
 		/// </summary>
 		/// <remarks>
@@ -105,7 +117,7 @@ namespace Watsonia.QueryBuilder
 		/// <returns></returns>
 		public virtual bool ShouldMapType(Type type)
 		{
-			return !type.IsValueType;
+			return type.IsClass;
 		}
 	}
 }
