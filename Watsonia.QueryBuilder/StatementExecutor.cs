@@ -12,39 +12,6 @@ namespace Watsonia.QueryBuilder
 	/// <seealso cref="Remotion.Linq.IQueryExecutor" />
 	internal class StatementExecutor : IQueryExecutor
 	{
-		////internal SelectStatement BuildSelectStatement(QueryModel queryModel)
-		////{
-		////	// Add joins for fields in tables that haven't been joined explicitly
-		////	// e.g. when using something like DB.Query<T>().Where(x => x.Item.Property == y)
-		////	SelectSourceExpander.Visit(queryModel, this.Database, this.Database.Configuration);
-
-		////	// Create the select statement
-		////	SelectStatement select = SelectStatementCreator.Visit(queryModel, this.Database.Configuration, true);
-
-		////	// Add include paths if necessary
-		////	if (!select.IsAggregate)
-		////	{
-		////		select.IncludePaths.AddRange(this.Query.IncludePaths);
-		////	}
-
-		////	// Add parameters if the source is a user-defined function
-		////	if (select.Source.PartType == StatementPartType.UserDefinedFunction)
-		////	{
-		////		var function = (UserDefinedFunction)select.Source;
-		////		function.Parameters.AddRange(this.Query.Parameters);
-		////	}
-
-		////	// Check whether we need to expand fields (if the select has no fields)
-		////	// This will avoid the case where selecting fields from multiple tables with non-unique field
-		////	// names (e.g. two tables with an ID field) fills the object with the wrong value
-		////	if (select.SourceFields.Count == 0)
-		////	{
-		////		SelectFieldExpander.Visit(queryModel, select, this.Database.Configuration);
-		////	}
-
-		////	return select;
-		////}
-
 		/// <summary>
 		/// Executes the given <paramref name="queryModel" /> as a collection query, i.e. as a query returning objects of type <typeparamref name="T" />.
 		/// The query does not end with a scalar result operator, but it can end with a single result operator, for example
