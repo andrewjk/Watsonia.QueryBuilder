@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +28,15 @@ namespace Watsonia.QueryBuilder
 		public object Value { get; private set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Parameter"/> class.
+		/// Gets the type of the parameter.
+		/// </summary>
+		/// <value>
+		/// The type of the parameter.
+		/// </value>
+		public Type ParameterType { get; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Parameter"/> class for use in a query.
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <param name="value">The value.</param>
@@ -36,6 +44,17 @@ namespace Watsonia.QueryBuilder
 		{
 			this.Name = name;
 			this.Value = value;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Parameter" /> class for use when defining a procedure or function.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="parameterType">Type of the parameter.</param>
+		public Parameter(string name, Type parameterType)
+		{
+			this.Name = name;
+			this.ParameterType = parameterType;
 		}
 
 		/// <summary>
