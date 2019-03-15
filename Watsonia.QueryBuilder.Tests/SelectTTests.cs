@@ -1,4 +1,5 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Watsonia.QueryBuilder.Tests.Entities;
 
 namespace Watsonia.QueryBuilder.Tests
 {

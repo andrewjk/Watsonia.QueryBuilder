@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Watsonia.QueryBuilder.Tests
+namespace Watsonia.QueryBuilder.Tests.Entities
 {
 	public class Customer
 	{
@@ -11,5 +11,8 @@ namespace Watsonia.QueryBuilder.Tests
 		public string Description { get; set; }
 		public string BusinessNumber { get; set; }
 		public int LicenseCount { get; set; }
+
+		public Address BillingAddress { get; set; }
+		public Address ShippingAddress { get; set; }
 	}
 }
