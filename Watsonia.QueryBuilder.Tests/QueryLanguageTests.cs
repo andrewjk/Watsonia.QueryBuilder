@@ -18,25 +18,25 @@ namespace Watsonia.Data.Tests.Queries
 	[TestClass]
 	public class QueryLanguageTests
 	{
-		private static readonly DatabaseMapper mapper = new NorthwindMapper();
-		private static Dictionary<string, string> sqlServerBaselines = new Dictionary<string, string>();
-		private static Dictionary<string, string> sqliteBaselines = new Dictionary<string, string>();
+		private static readonly DatabaseMapper _mapper = new NorthwindMapper();
+		private static Dictionary<string, string> _sqlServerBaselines = new Dictionary<string, string>();
+		private static Dictionary<string, string> _sqliteBaselines = new Dictionary<string, string>();
 
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{
-			string sqlServerFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Baselines\SqlServer.xml";
+			var sqlServerFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Baselines\SqlServer.xml";
 			if (!string.IsNullOrEmpty(sqlServerFileName) && File.Exists(sqlServerFileName))
 			{
-				XDocument doc = XDocument.Load(sqlServerFileName);
-				sqlServerBaselines = doc.Root.Elements("baseline").ToDictionary(e => (string)e.Attribute("key"), e => e.Value);
+				var doc = XDocument.Load(sqlServerFileName);
+				_sqlServerBaselines = doc.Root.Elements("baseline").ToDictionary(e => (string)e.Attribute("key"), e => e.Value);
 			}
 
-			string sqliteFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Baselines\SQLite.xml";
+			var sqliteFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Baselines\SQLite.xml";
 			if (!string.IsNullOrEmpty(sqliteFileName) && File.Exists(sqliteFileName))
 			{
-				XDocument doc = XDocument.Load(sqliteFileName);
-				sqliteBaselines = doc.Root.Elements("baseline").ToDictionary(e => (string)e.Attribute("key"), e => e.Value);
+				var doc = XDocument.Load(sqliteFileName);
+				_sqliteBaselines = doc.Root.Elements("baseline").ToDictionary(e => (string)e.Attribute("key"), e => e.Value);
 			}
 		}
 
@@ -1084,7 +1084,7 @@ namespace Watsonia.Data.Tests.Queries
 		[TestMethod]
 		public void TestContainsWithLocalCollection()
 		{
-			string[] ids = new[] { "ABCDE", "ALFKI" };
+			var ids = new[] { "ABCDE", "ALFKI" };
 			TestQuery2(
 				"TestContainsWithLocalCollection",
 				Select.From<Customer>("c").Where(c => ids.Contains(c.CustomerID))
@@ -2139,26 +2139,26 @@ namespace Watsonia.Data.Tests.Queries
 			{
 				// Test the SQLite command builder
 				var sqliteBuilder = new SQLiteCommandBuilder();
-				var sqliteCommand = query.Build(mapper, sqliteBuilder);
-				TestQuery2(sqliteBaselines[baseline], query, sqliteCommand, "*** SQLITE ***");
+				var sqliteCommand = query.Build(_mapper, sqliteBuilder);
+				TestQuery2(_sqliteBaselines[baseline], query, sqliteCommand, "*** SQLITE ***");
 			}
 
 			if (testSqlServer)
 			{
 				// Test the SQL Server command builder
 				var sqlServerBuilder = new SqlServerCommandBuilder();
-				var sqlServerCommand = query.Build(mapper, sqlServerBuilder);
-				TestQuery2(sqlServerBaselines[baseline], query, sqlServerCommand, "*** SQL SERVER ***");
+				var sqlServerCommand = query.Build(_mapper, sqlServerBuilder);
+				TestQuery2(_sqlServerBaselines[baseline], query, sqlServerCommand, "*** SQL SERVER ***");
 			}
 		}
 
 		private void TestQuery2(string baseline, Statement query, Command command, string provider)
 		{
-			string expected = TrimExtraWhiteSpace(baseline.Replace("\n\n", ") ("));
-			string actual = TrimExtraWhiteSpace(command.CommandText.ToString());
+			var expected = TrimExtraWhiteSpace(baseline.Replace("\n\n", ") ("));
+			var actual = TrimExtraWhiteSpace(command.CommandText.ToString());
 
 			// Replace parameter references with their values so that we can check they have the correct value
-			for (int i = 0; i < command.Parameters.Length; i++)
+			for (var i = 0; i < command.Parameters.Length; i++)
 			{
 				Assert.IsTrue(actual.Contains("@p" + i));
 				if (command.Parameters[i] is string ||
@@ -2177,7 +2177,7 @@ namespace Watsonia.Data.Tests.Queries
 
 		private string TrimExtraWhiteSpace(string s)
 		{
-			string result = s.Replace("\r", " ").Replace("\n", " ").Replace("\t", " ").Trim();
+			var result = s.Replace("\r", " ").Replace("\n", " ").Replace("\t", " ").Trim();
 			while (result.Contains("  "))
 			{
 				result = result.Replace("  ", " ");

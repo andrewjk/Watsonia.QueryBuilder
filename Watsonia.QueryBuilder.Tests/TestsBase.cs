@@ -8,7 +8,7 @@ namespace Watsonia.QueryBuilder.Tests
 	{
 		protected string TrimExtraWhiteSpace(string s)
 		{
-			string result = s.Replace("\r", " ").Replace("\n", " ").Replace("\t", " ").Trim();
+			var result = s.Replace("\r", " ").Replace("\n", " ").Replace("\t", " ").Trim();
 			while (result.Contains("  "))
 			{
 				result = result.Replace("  ", " ");
