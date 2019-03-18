@@ -830,6 +830,12 @@ namespace Watsonia.QueryBuilder
 			{
 				this.CommandText.Append("*");
 			}
+			else if (column.Name.StartsWith("@"))
+			{
+				// HACK: Allowing the user to pass parameter names in with new Column("@ParameterID")
+				// but it might be better to require new Parameter("@ParameterID")
+				this.CommandText.Append(column.Name);
+			}
 			else
 			{
 				this.CommandText.Append("[");
