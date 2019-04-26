@@ -12,7 +12,7 @@ namespace Watsonia.QueryBuilder
 	/// </summary>
 	public sealed class FieldCollection : SourceExpression, IEnumerable<SourceExpression>
 	{
-		private List<SourceExpression> _fields = new List<SourceExpression>();
+		private readonly List<SourceExpression> _fields = new List<SourceExpression>();
 
 		/// <summary>
 		/// Gets the type of the statement part.
@@ -73,10 +73,10 @@ namespace Watsonia.QueryBuilder
 		}
 
 		/// <summary>
-		/// Returns a <see cref="System.String" /> that represents this instance.
+		/// Returns a <see cref="string" /> that represents this instance.
 		/// </summary>
 		/// <returns>
-		/// A <see cref="System.String" /> that represents this instance.
+		/// A <see cref="string" /> that represents this instance.
 		/// </returns>
 		public override string ToString()
 		{

@@ -40,7 +40,7 @@ namespace Watsonia.QueryBuilder
 		{
 			var delete = new DeleteStatement();
 			delete.Target = new Table(mapper.GetTableName(this.Target));
-			foreach (var condition in StatementCreator.VisitStatementConditions<T>(this.Conditions, mapper, false))
+			foreach (var condition in StatementCreator.VisitStatementConditions(this.Conditions, mapper, false))
 			{
 				delete.Conditions.Add(condition);
 			}

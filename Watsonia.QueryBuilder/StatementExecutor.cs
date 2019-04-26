@@ -9,7 +9,7 @@ namespace Watsonia.QueryBuilder
 	/// <summary>
 	/// A dummy implementation of IQueryExecutor for visiting statement conditions e.g. in Delete.Where.
 	/// </summary>
-	/// <seealso cref="Remotion.Linq.IQueryExecutor" />
+	/// <seealso cref="IQueryExecutor" />
 	internal class StatementExecutor : IQueryExecutor
 	{
 		/// <summary>

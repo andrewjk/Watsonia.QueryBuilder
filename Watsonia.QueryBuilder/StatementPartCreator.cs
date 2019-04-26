@@ -1289,7 +1289,7 @@ namespace Watsonia.QueryBuilder
 		protected override Expression VisitLambda<T>(Expression<T> node)
 		{
 			BreakpointHook();
-			return base.VisitLambda<T>(node);
+			return base.VisitLambda(node);
 		}
 
 		protected override Expression VisitListInit(ListInitExpression node)

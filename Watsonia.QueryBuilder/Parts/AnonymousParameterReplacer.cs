@@ -17,7 +17,7 @@ namespace Watsonia.QueryBuilder
 	/// </remarks>
 	internal sealed class AnonymousParameterReplacer : ExpressionVisitor
 	{
-		private ReadOnlyCollection<ParameterExpression> _parameters;
+		private readonly ReadOnlyCollection<ParameterExpression> _parameters;
 
 		/// <summary>
 		/// Prevents a default instance of the <see cref="AnonymousParameterReplacer" /> class from being created.
