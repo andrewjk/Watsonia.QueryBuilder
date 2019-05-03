@@ -95,7 +95,7 @@ namespace Watsonia.QueryBuilder
 			var newCondition = new ConditionCollection();
 			for (var i = 0; i < 2; i++)
 			{
-				ConditionExpression subCondition = null;
+				ConditionExpression subCondition;
 				if (this.Stack.Peek() is ConditionExpression)
 				{
 					subCondition = (ConditionExpression)this.Stack.Pop();
