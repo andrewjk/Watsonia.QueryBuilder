@@ -300,7 +300,7 @@ namespace Watsonia.QueryBuilder
 			else if (this.Configuration.ShouldMapType(expression.Type))
 			{
 				var primaryKeyName = this.Configuration.GetPrimaryKeyColumnName(expression.Type);
-				var property = expression.Type.GetProperty(primaryKeyName);
+				var property = expression.Value.GetType().GetProperty(primaryKeyName);
 				var value = property.GetValue(expression.Value);
 				this.Stack.Push(new ConstantPart(value));
 			}
