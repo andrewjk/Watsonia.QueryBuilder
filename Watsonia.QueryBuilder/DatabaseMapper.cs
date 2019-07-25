@@ -9,6 +9,14 @@ namespace Watsonia.QueryBuilder
 	public class DatabaseMapper
 	{
 		/// <summary>
+		/// Gets the namespace in which entity classes are located.
+		/// </summary>
+		/// <value>
+		/// The entity namespace.
+		/// </value>
+		public string EntityNamespace { get; set; } = "$";
+
+		/// <summary>
 		/// Gets the name of the table for the supplied type.
 		/// </summary>
 		/// <remarks>
@@ -117,7 +125,7 @@ namespace Watsonia.QueryBuilder
 		/// <returns></returns>
 		public virtual bool ShouldMapType(Type type)
 		{
-			return type.IsClass;
+			return (type.Namespace == this.EntityNamespace);
 		}
 	}
 }
