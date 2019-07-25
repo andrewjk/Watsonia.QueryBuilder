@@ -17,7 +17,7 @@ namespace Watsonia.QueryBuilder.Tests
 
 			// Make sure the SQL is correct
 			Assert.AreEqual(
-				"DELETE FROM [Customer] WHERE ([Customer].[Code] = @p0 AND [Customer].[LicenseCount] = @p1)",
+				"DELETE FROM [Customer] WHERE ([Customer].[Code] = @0 AND [Customer].[LicenseCount] = @1)",
 				TrimExtraWhiteSpace(command.CommandText));
 
 			// Make sure the parameters are correct

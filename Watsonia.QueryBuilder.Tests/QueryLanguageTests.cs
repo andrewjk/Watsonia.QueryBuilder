@@ -2160,15 +2160,15 @@ namespace Watsonia.Data.Tests.Queries
 			// Replace parameter references with their values so that we can check they have the correct value
 			for (var i = 0; i < command.Parameters.Length; i++)
 			{
-				Assert.IsTrue(actual.Contains("@p" + i));
+				Assert.IsTrue(actual.Contains("@" + i));
 				if (command.Parameters[i] is string ||
 					command.Parameters[i] is char)
 				{
-					actual = actual.Replace("@p" + i, "'" + command.Parameters[i].ToString() + "'");
+					actual = actual.Replace("@" + i, "'" + command.Parameters[i].ToString() + "'");
 				}
 				else
 				{
-					actual = actual.Replace("@p" + i, command.Parameters[i].ToString());
+					actual = actual.Replace("@" + i, command.Parameters[i].ToString());
 				}
 			}
 

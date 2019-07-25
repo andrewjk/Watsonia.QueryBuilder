@@ -19,7 +19,7 @@ namespace Watsonia.QueryBuilder.Tests
 
 			// Make sure the SQL is correct
 			Assert.AreEqual(
-				"INSERT INTO [Customer] ([Code], [Description], [BusinessNumber], [LicenseCount]) VALUES (@p0, @p1, @p2, @p3)",
+				"INSERT INTO [Customer] ([Code], [Description], [BusinessNumber], [LicenseCount]) VALUES (@0, @1, @2, @3)",
 				TrimExtraWhiteSpace(command.CommandText));
 
 			// Make sure the parameters are correct

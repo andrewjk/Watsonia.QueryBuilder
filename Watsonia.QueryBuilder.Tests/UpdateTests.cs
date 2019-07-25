@@ -19,7 +19,7 @@ namespace Watsonia.QueryBuilder.Tests
 
 			// Make sure the SQL is correct
 			Assert.AreEqual(
-				"UPDATE [Customer] SET [Code] = @p0, [Description] = @p1, [LicenseCount] = @p2 WHERE [Code] = @p3 AND [BusinessNumber] = @p4",
+				"UPDATE [Customer] SET [Code] = @0, [Description] = @1, [LicenseCount] = @2 WHERE [Code] = @3 AND [BusinessNumber] = @4",
 				TrimExtraWhiteSpace(command.CommandText));
 
 			// Make sure the parameters are correct

@@ -21,7 +21,7 @@ namespace Watsonia.QueryBuilder.Tests
 
 			// Make sure the SQL is correct
 			Assert.AreEqual(
-				"SELECT [Customer].[Name], [Customer].[Code], [Customer].[LicenseCount] FROM [Customer] WHERE ([Customer].[Code] = @p0 AND [Customer].[BusinessNumber] = @p1) ORDER BY [Customer].[Name]",
+				"SELECT [Customer].[Name], [Customer].[Code], [Customer].[LicenseCount] FROM [Customer] WHERE ([Customer].[Code] = @0 AND [Customer].[BusinessNumber] = @1) ORDER BY [Customer].[Name]",
 				TrimExtraWhiteSpace(command.CommandText));
 
 			// Make sure the parameters are correct
