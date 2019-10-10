@@ -10,7 +10,7 @@ namespace Watsonia.QueryBuilder
 
 		public string CommandText { get; }
 
-		public object[] Parameters { get; }
+		public IList<object> Parameters { get; }
 
 		public Command(Statement statement, string commandText, object[] parameters)
 		{

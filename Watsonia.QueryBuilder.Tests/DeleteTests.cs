@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Watsonia.QueryBuilder.Tests
 {
@@ -20,7 +20,7 @@ namespace Watsonia.QueryBuilder.Tests
 				TrimExtraWhiteSpace(command.CommandText));
 
 			// Make sure the parameters are correct
-			Assert.AreEqual(2, command.Parameters.Length);
+			Assert.AreEqual(2, command.Parameters.Count);
 			Assert.AreEqual("HI123", command.Parameters[0]);
 			Assert.AreEqual(10, command.Parameters[1]);
 		}

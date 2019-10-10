@@ -107,7 +107,7 @@ namespace Watsonia.QueryBuilder
 			{
 				this.CommandText.Append(((bool)value) ? "1" : "0");
 			}
-			else if (value.GetType() == typeof(string) && value.ToString() == "")
+			else if (value.GetType() == typeof(string) && value.ToString().Length == 0)
 			{
 				this.CommandText.Append("''");
 			}

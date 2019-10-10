@@ -24,7 +24,7 @@ namespace Watsonia.QueryBuilder.Tests
 				TrimExtraWhiteSpace(command.CommandText));
 
 			// Make sure the parameters are correct
-			Assert.AreEqual(5, command.Parameters.Length);
+			Assert.AreEqual(5, command.Parameters.Count);
 			Assert.AreEqual("HI456", command.Parameters[0]);
 			Assert.AreEqual("Hi I'm a test value", command.Parameters[1]);
 			Assert.AreEqual(10, command.Parameters[2]);

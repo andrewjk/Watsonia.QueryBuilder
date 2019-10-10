@@ -23,7 +23,7 @@ namespace Watsonia.Data.Tests.Queries
 		private static Dictionary<string, string> _sqliteBaselines = new Dictionary<string, string>();
 
 		[ClassInitialize]
-		public static void Initialize(TestContext context)
+		public static void Initialize(TestContext _)
 		{
 			var sqlServerFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Baselines\SqlServer.xml";
 			if (!string.IsNullOrEmpty(sqlServerFileName) && File.Exists(sqlServerFileName))
@@ -2082,7 +2082,7 @@ namespace Watsonia.Data.Tests.Queries
 		[TestMethod]
 		public void TestContainsWithEmptyLocalList()
 		{
-			var ids = new string[0];
+			var ids = Array.Empty<string>();
 			TestQuery2(
 				"TestContainsWithEmptyLocalList",
 				from c in Select.From<Customer>("c")
@@ -2140,7 +2140,7 @@ namespace Watsonia.Data.Tests.Queries
 				// Test the SQLite command builder
 				var sqliteBuilder = new SQLiteCommandBuilder();
 				var sqliteCommand = query.Build(_mapper, sqliteBuilder);
-				TestQuery2(_sqliteBaselines[baseline], query, sqliteCommand, "*** SQLITE ***");
+				TestQuery2(_sqliteBaselines[baseline], sqliteCommand, "*** SQLITE ***");
 			}
 
 			if (testSqlServer)
@@ -2148,17 +2148,17 @@ namespace Watsonia.Data.Tests.Queries
 				// Test the SQL Server command builder
 				var sqlServerBuilder = new SqlServerCommandBuilder();
 				var sqlServerCommand = query.Build(_mapper, sqlServerBuilder);
-				TestQuery2(_sqlServerBaselines[baseline], query, sqlServerCommand, "*** SQL SERVER ***");
+				TestQuery2(_sqlServerBaselines[baseline], sqlServerCommand, "*** SQL SERVER ***");
 			}
 		}
 
-		private void TestQuery2(string baseline, Statement query, Command command, string provider)
+		private void TestQuery2(string baseline, Command command, string provider)
 		{
 			var expected = TrimExtraWhiteSpace(baseline.Replace("\n\n", ") ("));
 			var actual = TrimExtraWhiteSpace(command.CommandText.ToString());
 
 			// Replace parameter references with their values so that we can check they have the correct value
-			for (var i = 0; i < command.Parameters.Length; i++)
+			for (var i = 0; i < command.Parameters.Count; i++)
 			{
 				Assert.IsTrue(actual.Contains("@" + i));
 				if (command.Parameters[i] is string ||
