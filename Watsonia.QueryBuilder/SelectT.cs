@@ -101,6 +101,12 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
+		public static SelectStatement<T> Distinct<T>(this SelectStatement<T> select)
+		{
+			select.IsDistinct = true;
+			return select;
+		}
+
 		private static PropertyInfo FuncToPropertyInfo<T>(Expression<Func<T, object>> selector)
 		{
 			if (selector.Body is MemberExpression mex)

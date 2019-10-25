@@ -1206,8 +1206,8 @@
     WHERE [o].[CustomerID] = 'ALFKI'
   </baseline>
   <baseline key="TestDistinct">
-    SELECT DISTINCT [g_1].[CustomerID], [g_1].[City], [g_1].[CompanyName], [g_1].[ContactName], [g_1].[Country], [g_1].[Phone]
-    FROM [Customers] AS [g_1]
+    SELECT DISTINCT *
+    FROM [Customers] AS [c]
   </baseline>
   <baseline key="TestDistinctScalar">
     SELECT DISTINCT [c].[City]
@@ -1221,35 +1221,27 @@
   <baseline key="TestDistinctOrderBy">
     SELECT DISTINCT [c].[City]
     FROM [Customers] AS [c]
-    ORDER BY [c].[City]
+    ORDER BY [c].[CustomerID]
   </baseline>
   <baseline key="TestDistinctGroupBy">
-    SELECT t0.[CustomerID]
+    SELECT [t0].[CustomerID]
     FROM (
     SELECT DISTINCT *
     FROM [Orders] AS [o]
-    ) AS t0
-    GROUP BY t0.[CustomerID]
-
-    SELECT DISTINCT *
-    FROM [Orders] AS [o]
-    WHERE ([o].[CustomerID] IS NULL AND @n0 IS NULL) OR ([o].[CustomerID] = @n0)
+    ) AS [t0]
+    GROUP BY [t0].[CustomerID]
   </baseline>
   <baseline key="TestGroupByDistinct">
-    SELECT DISTINCT t0.[CustomerID]
+    SELECT DISTINCT [t0].[CustomerID]
     FROM (
     SELECT [o].[OrderID], [o].[CustomerID]
     FROM [Orders] AS [o]
     GROUP BY [o].[CustomerID]
-    ) AS t0
-
-    SELECT *
-    FROM [Orders] AS [o]
-    WHERE ([o].[CustomerID] IS NULL AND @n0 IS NULL) OR ([o].[CustomerID] = @n0)
+    ) AS [t0]
   </baseline>
   <baseline key="TestDistinctCount">
     SELECT DISTINCT COUNT(*)
-    FROM [Customers] AS [g_2]
+    FROM [Customers] AS [c]
   </baseline>
   <baseline key="TestSelectDistinctCount">
     SELECT COUNT(*)

@@ -575,41 +575,41 @@ namespace Watsonia.Data.Tests.Queries
 		////		);
 		////}
 
-		////[TestMethod]
-		////public void TestDistinct()
-		////{
-		////	TestQuery2(
-		////		"TestDistinct",
-		////		Select.From<Customer>("c").Distinct()
-		////		);
-		////}
+		[TestMethod]
+		public void TestDistinct()
+		{
+			TestQuery2(
+				"TestDistinct",
+				Select.From<Customer>("c").Distinct()
+				);
+		}
 
-		////[TestMethod]
-		////public void TestDistinctScalar()
-		////{
-		////	TestQuery2(
-		////		"TestDistinctScalar",
-		////		Select.From<Customer>("c").Columns(c => c.City).Distinct()
-		////		);
-		////}
+		[TestMethod]
+		public void TestDistinctScalar()
+		{
+			TestQuery2(
+				"TestDistinctScalar",
+				Select.From<Customer>("c").Columns(c => c.City).Distinct()
+				);
+		}
 
-		////[TestMethod]
-		////public void TestOrderByDistinct()
-		////{
-		////	TestQuery2(
-		////		"TestOrderByDistinct",
-		////		Select.From<Customer>("c").OrderBy(c => c.CustomerID).Columns(c => c.City).Distinct()
-		////		);
-		////}
+		[TestMethod]
+		public void TestOrderByDistinct()
+		{
+			TestQuery2(
+				"TestOrderByDistinct",
+				Select.From<Customer>("c").OrderBy(c => c.CustomerID).Columns(c => c.City).Distinct()
+				);
+		}
 
-		////[TestMethod]
-		////public void TestDistinctOrderBy()
-		////{
-		////	TestQuery2(
-		////		"TestDistinctOrderBy",
-		////		Select.From<Customer>("c").Columns(c => c.City).Distinct().OrderBy(c => c)
-		////		);
-		////}
+		[TestMethod]
+		public void TestDistinctOrderBy()
+		{
+			TestQuery2(
+				"TestDistinctOrderBy",
+				Select.From<Customer>("c").Columns(c => c.City).Distinct().OrderBy(c => c.CustomerID)
+				);
+		}
 
 		////[TestMethod]
 		////public void TestDistinctGroupBy()
@@ -627,17 +627,16 @@ namespace Watsonia.Data.Tests.Queries
 		////		"TestGroupByDistinct",
 		////		Select.From<Order>("o").GroupBy(o => o.CustomerID).Distinct()
 		////		);
-
 		////}
 
-		////[TestMethod]
-		////public void TestDistinctCount()
-		////{
-		////	TestQuery2(
-		////		"TestDistinctCount",
-		////		() => Select.From<Customer>("c").Distinct().Count()
-		////		);
-		////}
+		[TestMethod]
+		public void TestDistinctCount()
+		{
+			TestQuery2(
+				"TestDistinctCount",
+				Select.From<Customer>("c").Distinct().Count()
+				);
+		}
 
 		////[TestMethod]
 		////public void TestSelectDistinctCount()
