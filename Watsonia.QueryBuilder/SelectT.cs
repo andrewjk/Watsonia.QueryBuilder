@@ -61,8 +61,7 @@ namespace Watsonia.QueryBuilder
 
 		public static SelectStatement<T> Where<T>(this SelectStatement<T> select, Expression<Func<T, bool>> condition)
 		{
-			select.Conditions = condition;
-			return select;
+			return select.And(condition);
 		}
 
 		public static SelectStatement<T> And<T>(this SelectStatement<T> select, Expression<Func<T, bool>> condition)
