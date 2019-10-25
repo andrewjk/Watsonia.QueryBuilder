@@ -106,29 +106,29 @@ namespace Watsonia.Data.Tests.Queries
 				Select.From<Customer>("c").Columns(c => c.City));
 		}
 
-		////[TestMethod]
-		////public void TestSelectAnonymousOne()
-		////{
-		////	TestQuery2(
-		////		"TestSelectAnonymousOne",
-		////		Select.From<Customer>("c").Columns(c => new { c.City }));
-		////}
+		[TestMethod]
+		public void TestSelectAnonymousOne()
+		{
+			TestQuery2(
+				"TestSelectAnonymousOne",
+				Select.From<Customer>("c").Columns(c => new { c.City }));
+		}
 
-		////[TestMethod]
-		////public void TestSelectAnonymousTwo()
-		////{
-		////	TestQuery2(
-		////		"TestSelectAnonymousTwo",
-		////		Select.From<Customer>("c").Columns(c => new { c.City, c.Phone }));
-		////}
+		[TestMethod]
+		public void TestSelectAnonymousTwo()
+		{
+			TestQuery2(
+				"TestSelectAnonymousTwo",
+				Select.From<Customer>("c").Columns(c => new { c.City, c.Phone }));
+		}
 
-		////[TestMethod]
-		////public void TestSelectAnonymousThree()
-		////{
-		////	TestQuery2(
-		////		"TestSelectAnonymousThree",
-		////		Select.From<Customer>("c").Columns(c => new { c.City, c.Phone, c.Country }));
-		////}
+		[TestMethod]
+		public void TestSelectAnonymousThree()
+		{
+			TestQuery2(
+				"TestSelectAnonymousThree",
+				Select.From<Customer>("c").Columns(c => new { c.City, c.Phone, c.Country }));
+		}
 
 		////[TestMethod]
 		////public void TestSelectCustomerTable()

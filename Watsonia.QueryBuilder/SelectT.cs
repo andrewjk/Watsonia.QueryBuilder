@@ -19,7 +19,29 @@ namespace Watsonia.QueryBuilder
 
 		public static SelectStatement<T> Columns<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
-			select.SourceFields.Add(FuncToPropertyInfo(property));
+			var field = FuncToPropertyInfo(property, true);
+			if (field == null)
+			{
+				if (property.Body is NewExpression)
+				{
+					// It's a new anonymous object, so add each of its arguments
+					foreach (var anonArg in ((NewExpression)property.Body).Arguments)
+					{
+						if (anonArg is MemberExpression mex)
+						{
+							select.SourceFields.Add((PropertyInfo)mex.Member);
+						}
+					}
+				}
+				else
+				{
+					throw new InvalidOperationException();
+				}
+			}
+			else
+			{
+				select.SourceFields.Add(field);
+			}
 			return select;
 		}
 
@@ -112,7 +134,7 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
-		private static PropertyInfo FuncToPropertyInfo<T>(Expression<Func<T, object>> selector)
+		private static PropertyInfo FuncToPropertyInfo<T>(Expression<Func<T, object>> selector, bool returnNull = false)
 		{
 			if (selector.Body is MemberExpression mex)
 			{
@@ -126,7 +148,15 @@ namespace Watsonia.QueryBuilder
 				}
 			}
 
-			throw new InvalidOperationException();
+			// HACK: Yes, this is ugly!
+			if (returnNull)
+			{
+				return null;
+			}
+			else
+			{
+				throw new InvalidOperationException();
+			}
 		}
 	}
 }
