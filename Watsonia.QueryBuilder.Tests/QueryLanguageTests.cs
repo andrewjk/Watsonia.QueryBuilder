@@ -130,13 +130,13 @@ namespace Watsonia.Data.Tests.Queries
 				Select.From<Customer>("c").Columns(c => new { c.City, c.Phone, c.Country }));
 		}
 
-		////[TestMethod]
-		////public void TestSelectCustomerTable()
-		////{
-		////	TestQuery2(
-		////		"TestSelectCustomerTable",
-		////		Select.From<Customer>("c"));
-		////}
+		[TestMethod]
+		public void TestSelectCustomerTable()
+		{
+			TestQuery2(
+				"TestSelectCustomerTable",
+				Select.From<Customer>("c"));
+		}
 
 		////[TestMethod]
 		////public void TestSelectCustomerIdentity()

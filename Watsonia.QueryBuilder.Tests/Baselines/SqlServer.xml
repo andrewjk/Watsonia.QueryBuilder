@@ -925,8 +925,8 @@
     FROM [Customers] AS [c]
   </baseline>
   <baseline key="TestSelectCustomerTable">
-    SELECT [g_0].[CustomerID], [g_0].[City], [g_0].[CompanyName], [g_0].[ContactName], [g_0].[Country], [g_0].[Phone]
-    FROM [Customers] AS [g_0]
+    SELECT *
+    FROM [Customers] AS [c]
   </baseline>
   <baseline key="TestSelectCustomerIdentity">
     SELECT *
