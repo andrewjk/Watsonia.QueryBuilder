@@ -28,7 +28,7 @@ namespace Watsonia.QueryBuilder
 
 		public List<PropertyInfo> SourceFields { get; } = new List<PropertyInfo>();
 
-		public List<Tuple<PropertyInfo, AggregateType>> AggregateFields { get; } = new List<Tuple<PropertyInfo, AggregateType>>();
+		public List<FieldAggregate> AggregateFields { get; } = new List<FieldAggregate>();
 
 		public bool IsAny { get; set; }
 
@@ -42,7 +42,7 @@ namespace Watsonia.QueryBuilder
 
 		public Expression<Func<T, bool>> Conditions { get; internal set; }
 
-		public List<Tuple<PropertyInfo, OrderDirection>> OrderByFields { get; internal set; } = new List<Tuple<PropertyInfo, OrderDirection>>();
+		public List<FieldOrder> OrderByFields { get; internal set; } = new List<FieldOrder>();
 
 		public List<PropertyInfo> GroupByFields { get; internal set; } = new List<PropertyInfo>();
 
@@ -56,7 +56,7 @@ namespace Watsonia.QueryBuilder
 			var select = new SelectStatement();
 			select.Source = new Table(mapper.GetTableName(this.Source.Type), this.Source.Alias);
 			select.SourceFields.AddRange(this.SourceFields.Select(s => new Column(TableNameOrAlias(mapper, s.DeclaringType), mapper.GetColumnName(s))));
-			select.SourceFields.AddRange(this.AggregateFields.Select(s => new Aggregate(s.Item2, new Column(s.Item1 != null ? TableNameOrAlias(mapper, s.Item1.DeclaringType) : "", s.Item1 != null ? mapper.GetColumnName(s.Item1) : "*"))));
+			select.SourceFields.AddRange(this.AggregateFields.Select(s => new Aggregate(s.Aggregate, new Column(s.Field != null ? TableNameOrAlias(mapper, s.Field.DeclaringType) : "", s.Field != null ? mapper.GetColumnName(s.Field) : "*"))));
 			select.IsAny = this.IsAny;
 			select.IsAll = this.IsAll;
 			select.IsDistinct = this.IsDistinct;
@@ -71,7 +71,7 @@ namespace Watsonia.QueryBuilder
 					select.Conditions.Add(condition);
 				}
 			}
-			select.OrderByFields.AddRange(this.OrderByFields.Select(s => new OrderByExpression(new Column(TableNameOrAlias(mapper, s.Item1.DeclaringType), mapper.GetColumnName(s.Item1)), s.Item2)));
+			select.OrderByFields.AddRange(this.OrderByFields.Select(s => new OrderByExpression(new Column(TableNameOrAlias(mapper, s.Field.DeclaringType), mapper.GetColumnName(s.Field)), s.Direction)));
 			select.GroupByFields.AddRange(this.GroupByFields.Select(s => new Column(TableNameOrAlias(mapper, s.DeclaringType), mapper.GetColumnName(s))));
 			return select;
 		}

@@ -25,7 +25,7 @@ namespace Watsonia.QueryBuilder
 			internal set;
 		}
 
-		public List<Tuple<PropertyInfo, object>> SetValues { get; } = new List<Tuple<PropertyInfo, object>>();
+		public List<FieldValue> SetValues { get; } = new List<FieldValue>();
 
 		public Expression Conditions { get; private set; }
 
@@ -38,7 +38,7 @@ namespace Watsonia.QueryBuilder
 		{
 			var insert = new InsertStatement();
 			insert.Target = new Table(mapper.GetTableName(this.Target));
-			insert.SetValues.AddRange(this.SetValues.Select(sv => new SetValue(new Column(mapper.GetColumnName(sv.Item1)), sv.Item2)));
+			insert.SetValues.AddRange(this.SetValues.Select(sv => new SetValue(new Column(mapper.GetColumnName(sv.Field)), sv.Value)));
 			return insert;
 		}
 	}

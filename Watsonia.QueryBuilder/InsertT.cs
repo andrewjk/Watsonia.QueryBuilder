@@ -18,7 +18,7 @@ namespace Watsonia.QueryBuilder
 
 		public static InsertStatement<T> Value<T>(this InsertStatement<T> insert, Expression<Func<T, object>> property, object value)
 		{
-			insert.SetValues.Add(new Tuple<PropertyInfo, object>(FuncToPropertyInfo(property), value));
+			insert.SetValues.Add(new FieldValue(FuncToPropertyInfo(property), value));
 			return insert;
 		}
 

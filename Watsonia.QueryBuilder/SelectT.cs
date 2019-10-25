@@ -31,19 +31,19 @@ namespace Watsonia.QueryBuilder
 
 		public static SelectStatement<T> Count<T>(this SelectStatement<T> select, Expression<Func<T, bool>> condition)
 		{
-			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(null, AggregateType.Count));
+			select.AggregateFields.Add(new FieldAggregate(null, AggregateType.Count));
 			return select.And(condition);
 		}
 
 		public static SelectStatement<T> Count<T>(this SelectStatement<T> select)
 		{
-			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(null, AggregateType.Count));
+			select.AggregateFields.Add(new FieldAggregate(null, AggregateType.Count));
 			return select;
 		}
 
 		public static SelectStatement<T> Sum<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
-			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(FuncToPropertyInfo(property), AggregateType.Sum));
+			select.AggregateFields.Add(new FieldAggregate(FuncToPropertyInfo(property), AggregateType.Sum));
 			return select;
 		}
 
@@ -96,13 +96,13 @@ namespace Watsonia.QueryBuilder
 
 		public static SelectStatement<T> OrderBy<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
-			select.OrderByFields.Add(new Tuple<PropertyInfo, OrderDirection>(FuncToPropertyInfo(property), OrderDirection.Ascending));
+			select.OrderByFields.Add(new FieldOrder(FuncToPropertyInfo(property), OrderDirection.Ascending));
 			return select;
 		}
 
 		public static SelectStatement<T> OrderByDescending<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
-			select.OrderByFields.Add(new Tuple<PropertyInfo, OrderDirection>(FuncToPropertyInfo(property), OrderDirection.Descending));
+			select.OrderByFields.Add(new FieldOrder(FuncToPropertyInfo(property), OrderDirection.Descending));
 			return select;
 		}
 

@@ -18,7 +18,7 @@ namespace Watsonia.QueryBuilder
 
 		public static UpdateStatement<T> Set<T>(this UpdateStatement<T> update, Expression<Func<T, object>> property, object value)
 		{
-			update.SetValues.Add(new Tuple<PropertyInfo, object>(FuncToPropertyInfo(property), value));
+			update.SetValues.Add(new FieldValue(FuncToPropertyInfo(property), value));
 			return update;
 		}
 

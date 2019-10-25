@@ -25,7 +25,7 @@ namespace Watsonia.QueryBuilder
 			internal set;
 		}
 
-		public List<Tuple<PropertyInfo, object>> SetValues { get; } = new List<Tuple<PropertyInfo, object>>();
+		public List<FieldValue> SetValues { get; } = new List<FieldValue>();
 
 		public Expression<Func<T, bool>> Conditions
 		{
@@ -42,7 +42,7 @@ namespace Watsonia.QueryBuilder
 		{
 			var update = new UpdateStatement();
 			update.Target = new Table(mapper.GetTableName(this.Target));
-			update.SetValues.AddRange(this.SetValues.Select(sv => new SetValue(new Column(mapper.GetTableName(sv.Item1.DeclaringType), mapper.GetColumnName(sv.Item1)), sv.Item2)));
+			update.SetValues.AddRange(this.SetValues.Select(sv => new SetValue(new Column(mapper.GetTableName(sv.Field.DeclaringType), mapper.GetColumnName(sv.Field)), sv.Value)));
 			foreach (var condition in StatementCreator.VisitStatementConditions(this.Conditions, mapper, false))
 			{
 				update.Conditions.Add(condition);
