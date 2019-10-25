@@ -35,6 +35,12 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
+		public static SelectStatement<T> Sum<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
+		{
+			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(FuncToPropertyInfo(property), AggregateType.Sum));
+			return select;
+		}
+
 		public static SelectStatement<T> Skip<T>(this SelectStatement<T> select, int startIndex)
 		{
 			select.StartIndex = startIndex;

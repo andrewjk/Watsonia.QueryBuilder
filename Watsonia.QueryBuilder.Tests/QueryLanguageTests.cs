@@ -539,23 +539,24 @@ namespace Watsonia.Data.Tests.Queries
 		////		);
 		////}
 
-		////[TestMethod]
-		////public void TestSumWithNoArg()
-		////{
-		////	TestQuery2(
-		////		"TestSumWithNoArg",
-		////		() => Select.From<Order>("o").Select(o => o.OrderID).Sum()
-		////		);
-		////}
+		// NOTE: Don't think I like this syntax, better to force the user to pass in the sum column
+		//[TestMethod]
+		//public void TestSumWithNoArg()
+		//{
+		//	TestQuery2(
+		//		"TestSumWithNoArg",
+		//		Select.From<Order>("o").Columns(o => o.OrderID).Sum()
+		//		);
+		//}
 
-		////[TestMethod]
-		////public void TestSumWithArg()
-		////{
-		////	TestQuery2(
-		////		"TestSumWithArg",
-		////		() => Select.From<Order>("o").Sum(o => o.OrderID)
-		////		);
-		////}
+		[TestMethod]
+		public void TestSumWithArg()
+		{
+			TestQuery2(
+				"TestSumWithArg",
+				Select.From<Order>("o").Sum(o => o.OrderID)
+				);
+		}
 
 		////[TestMethod]
 		////public void TestCountWithNoPredicate()
