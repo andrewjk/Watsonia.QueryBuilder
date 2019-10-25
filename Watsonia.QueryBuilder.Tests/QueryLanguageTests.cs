@@ -341,14 +341,14 @@ namespace Watsonia.Data.Tests.Queries
 				);
 		}
 
-		////[TestMethod]
-		////public void TestOrderByThenBy()
-		////{
-		////	TestQuery2(
-		////		"TestOrderByThenBy",
-		////		Select.From<Customer>("c").OrderBy(c => c.CustomerID).ThenBy(c => c.Country).Columns(c => c.City)
-		////		);
-		////}
+		[TestMethod]
+		public void TestOrderByThenBy()
+		{
+			TestQuery2(
+				"TestOrderByThenBy",
+				Select.From<Customer>("c").OrderBy(c => c.CustomerID).ThenBy(c => c.Country).Columns(c => c.City)
+				);
+		}
 
 		[TestMethod]
 		public void TestOrderByDescending()
@@ -359,23 +359,23 @@ namespace Watsonia.Data.Tests.Queries
 				);
 		}
 
-		////[TestMethod]
-		////public void TestOrderByDescendingThenBy()
-		////{
-		////	TestQuery2(
-		////		"TestOrderByDescendingThenBy",
-		////		Select.From<Customer>("c").OrderByDescending(c => c.CustomerID).ThenBy(c => c.Country).Columns(c => c.City)
-		////		);
-		////}
+		[TestMethod]
+		public void TestOrderByDescendingThenBy()
+		{
+			TestQuery2(
+				"TestOrderByDescendingThenBy",
+				Select.From<Customer>("c").OrderByDescending(c => c.CustomerID).ThenBy(c => c.Country).Columns(c => c.City)
+				);
+		}
 
-		////[TestMethod]
-		////public void TestOrderByDescendingThenByDescending()
-		////{
-		////	TestQuery2(
-		////		"TestOrderByDescendingThenByDescending",
-		////		Select.From<Customer>("c").OrderByDescending(c => c.CustomerID).ThenByDescending(c => c.Country).Columns(c => c.City)
-		////		);
-		////}
+		[TestMethod]
+		public void TestOrderByDescendingThenByDescending()
+		{
+			TestQuery2(
+				"TestOrderByDescendingThenByDescending",
+				Select.From<Customer>("c").OrderByDescending(c => c.CustomerID).ThenByDescending(c => c.Country).Columns(c => c.City)
+				);
+		}
 
 		////[TestMethod]
 		////public void TestOrderByJoin()

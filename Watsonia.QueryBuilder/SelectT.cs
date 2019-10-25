@@ -128,6 +128,18 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
+		public static SelectStatement<T> ThenBy<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
+		{
+			select.OrderByFields.Add(new FieldOrder(FuncToPropertyInfo(property), OrderDirection.Ascending));
+			return select;
+		}
+
+		public static SelectStatement<T> ThenByDescending<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
+		{
+			select.OrderByFields.Add(new FieldOrder(FuncToPropertyInfo(property), OrderDirection.Descending));
+			return select;
+		}
+
 		public static SelectStatement<T> GroupBy<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
 			select.GroupByFields.Add(FuncToPropertyInfo(property));
