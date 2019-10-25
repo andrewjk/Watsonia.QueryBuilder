@@ -1104,13 +1104,9 @@
     ORDER BY [c].[CustomerID], [o].[OrderID]
   </baseline>
   <baseline key="TestGroupBy">
-    SELECT [c].[CustomerID], [c].[City]
-    FROM [Customers] AS [c]
-    GROUP BY [c].[City]
-
     SELECT *
     FROM [Customers] AS [c]
-    WHERE ([c].[City] IS NULL AND @n0 IS NULL) OR ([c].[City] = @n0)
+    GROUP BY [c].[City]
   </baseline>
   <baseline key="TestGroupBySelectMany">
     SELECT t1.[City], t1.[CompanyName], t1.[ContactName], t1.[Country], t1.[CustomerID], t1.[Phone]

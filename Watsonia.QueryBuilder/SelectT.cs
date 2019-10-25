@@ -95,6 +95,12 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
+		public static SelectStatement<T> GroupBy<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
+		{
+			select.GroupByFields.Add(FuncToPropertyInfo(property));
+			return select;
+		}
+
 		private static PropertyInfo FuncToPropertyInfo<T>(Expression<Func<T, object>> selector)
 		{
 			if (selector.Body is MemberExpression mex)

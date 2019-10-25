@@ -400,14 +400,14 @@ namespace Watsonia.Data.Tests.Queries
 		////		);
 		////}
 
-		////[TestMethod]
-		////public void TestGroupBy()
-		////{
-		////	TestQuery2(
-		////		"TestGroupBy",
-		////		Select.From<Customer>("c").GroupBy(c => c.City)
-		////		);
-		////}
+		[TestMethod]
+		public void TestGroupBy()
+		{
+			TestQuery2(
+				"TestGroupBy",
+				Select.From<Customer>("c").GroupBy(c => c.City)
+				);
+		}
 
 		////[TestMethod]
 		////public void TestGroupBySelectMany()

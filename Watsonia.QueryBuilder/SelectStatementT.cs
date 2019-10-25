@@ -44,6 +44,8 @@ namespace Watsonia.QueryBuilder
 
 		public List<Tuple<PropertyInfo, OrderDirection>> OrderByFields { get; internal set; } = new List<Tuple<PropertyInfo, OrderDirection>>();
 
+		public List<PropertyInfo> GroupByFields { get; internal set; } = new List<PropertyInfo>();
+
 		internal SelectStatement(string alias = null)
 		{
 			this.Source = new Table<T>(typeof(T), alias);
@@ -70,6 +72,7 @@ namespace Watsonia.QueryBuilder
 				}
 			}
 			select.OrderByFields.AddRange(this.OrderByFields.Select(s => new OrderByExpression(new Column(TableNameOrAlias(mapper, s.Item1.DeclaringType), mapper.GetColumnName(s.Item1)), s.Item2)));
+			select.GroupByFields.AddRange(this.GroupByFields.Select(s => new Column(TableNameOrAlias(mapper, s.DeclaringType), mapper.GetColumnName(s))));
 			return select;
 		}
 
