@@ -23,6 +23,12 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
+		public static SelectStatement<T> Distinct<T>(this SelectStatement<T> select)
+		{
+			select.IsDistinct = true;
+			return select;
+		}
+
 		public static SelectStatement<T> Count<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
 			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(FuncToPropertyInfo(property), AggregateType.Count));
@@ -104,12 +110,6 @@ namespace Watsonia.QueryBuilder
 		public static SelectStatement<T> GroupBy<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
 		{
 			select.GroupByFields.Add(FuncToPropertyInfo(property));
-			return select;
-		}
-
-		public static SelectStatement<T> Distinct<T>(this SelectStatement<T> select)
-		{
-			select.IsDistinct = true;
 			return select;
 		}
 
