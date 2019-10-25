@@ -29,10 +29,10 @@ namespace Watsonia.QueryBuilder
 			return select;
 		}
 
-		public static SelectStatement<T> Count<T>(this SelectStatement<T> select, Expression<Func<T, object>> property)
+		public static SelectStatement<T> Count<T>(this SelectStatement<T> select, Expression<Func<T, bool>> condition)
 		{
-			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(FuncToPropertyInfo(property), AggregateType.Count));
-			return select;
+			select.AggregateFields.Add(new Tuple<PropertyInfo, AggregateType>(null, AggregateType.Count));
+			return select.And(condition);
 		}
 
 		public static SelectStatement<T> Count<T>(this SelectStatement<T> select)

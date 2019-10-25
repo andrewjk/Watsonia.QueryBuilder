@@ -1182,7 +1182,7 @@
   </baseline>
   <baseline key="TestCountWithNoPredicate">
     SELECT COUNT(*)
-    FROM [Orders] AS [g_1]
+    FROM [Orders] AS [o]
   </baseline>
   <baseline key="TestCountWithPredicate">
     SELECT COUNT(*)

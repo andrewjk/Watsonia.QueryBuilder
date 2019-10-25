@@ -558,23 +558,23 @@ namespace Watsonia.Data.Tests.Queries
 				);
 		}
 
-		////[TestMethod]
-		////public void TestCountWithNoPredicate()
-		////{
-		////	TestQuery2(
-		////		"TestCountWithNoPredicate",
-		////		() => Select.From<Order>("o").Count()
-		////		);
-		////}
+		[TestMethod]
+		public void TestCountWithNoPredicate()
+		{
+			TestQuery2(
+				"TestCountWithNoPredicate",
+				Select.From<Order>("o").Count()
+				);
+		}
 
-		////[TestMethod]
-		////public void TestCountWithPredicate()
-		////{
-		////	TestQuery2(
-		////		"TestCountWithPredicate",
-		////		() => Select.From<Order>("o").Count(o => o.CustomerID == "ALFKI")
-		////		);
-		////}
+		[TestMethod]
+		public void TestCountWithPredicate()
+		{
+			TestQuery2(
+				"TestCountWithPredicate",
+				Select.From<Order>("o").Count(o => o.CustomerID == "ALFKI")
+				);
+		}
 
 		[TestMethod]
 		public void TestDistinct()
