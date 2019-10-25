@@ -7,9 +7,19 @@ namespace Watsonia.QueryBuilder.Tests.Northwind
 {
 	public class NorthwindMapper : DatabaseMapper
 	{
+		public NorthwindMapper()
+		{
+			this.EntityNamespace = this.GetType().Namespace;
+		}
+
 		public override string GetTableName(Type type)
 		{
 			return type.Name + "s";
+		}
+
+		public override string GetPrimaryKeyColumnName(Type type)
+		{
+			return type.Name + "ID";
 		}
 
 		public override string GetForeignKeyColumnName(PropertyInfo property)

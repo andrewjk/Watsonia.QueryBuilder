@@ -48,23 +48,23 @@ namespace Watsonia.Data.Tests.Queries
 				Select.From<Customer>("c").Where(c => c.City == "London"));
 		}
 
-		////[TestMethod]
-		////public void TestCompareEntityEqual()
-		////{
-		////	Customer alfki = new Customer { CustomerID = "ALFKI" };
-		////	TestQuery2(
-		////		"TestCompareEntityEqual",
-		////		Select.From<Customer>("c").Where(c => c == alfki));
-		////}
+		[TestMethod]
+		public void TestCompareEntityEqual()
+		{
+			var alfki = new Customer { CustomerID = "ALFKI" };
+			TestQuery2(
+				"TestCompareEntityEqual",
+				Select.From<Customer>("c").Where(c => c == alfki));
+		}
 
-		////[TestMethod]
-		////public void TestCompareEntityNotEqual()
-		////{
-		////	Customer alfki = new Customer { CustomerID = "ALFKI" };
-		////	TestQuery2(
-		////		"TestCompareEntityNotEqual",
-		////		Select.From<Customer>("c").Where(c => c != alfki));
-		////}
+		[TestMethod]
+		public void TestCompareEntityNotEqual()
+		{
+			var alfki = new Customer { CustomerID = "ALFKI" };
+			TestQuery2(
+				"TestCompareEntityNotEqual",
+				Select.From<Customer>("c").Where(c => c != alfki));
+		}
 
 		[TestMethod]
 		public void TestCompareConstructedEqual()
