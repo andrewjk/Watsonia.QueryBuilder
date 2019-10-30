@@ -1022,101 +1022,52 @@ namespace Watsonia.QueryBuilder
 				{
 					case SqlOperator.Equals:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" = ");
-						this.VisitField(condition.Value);
+						VisitEqualsCondition(condition);
 						break;
 					}
 					case SqlOperator.NotEquals:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" <> ");
-						this.VisitField(condition.Value);
+						VisitNotEqualsCondition(condition);
 						break;
 					}
 					case SqlOperator.IsLessThan:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" < ");
-						this.VisitField(condition.Value);
+						VisitIsLessThanCondition(condition);
 						break;
 					}
 					case SqlOperator.IsLessThanOrEqualTo:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" <= ");
-						this.VisitField(condition.Value);
+						VisitIsLessThanOrEqualToCondition(condition);
 						break;
 					}
 					case SqlOperator.IsGreaterThan:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" > ");
-						this.VisitField(condition.Value);
+						VisitIsGreaterThanCondition(condition);
 						break;
 					}
 					case SqlOperator.IsGreaterThanOrEqualTo:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" >= ");
-						this.VisitField(condition.Value);
+						VisitIsGreaterThanOrEqualToCondition(condition);
 						break;
 					}
 					case SqlOperator.IsIn:
 					{
-						// If it's in an empty list, just check against false
-						var handled = false;
-						if (condition.Value.PartType == StatementPartType.ConstantPart)
-						{
-							var value = ((ConstantPart)condition.Value).Value;
-							if (value is IEnumerable && !(value is string) && !(value is byte[]))
-							{
-								// HACK: Ugh
-								var hasThings = false;
-								foreach (var thing in (IEnumerable)value)
-								{
-									hasThings = true;
-								}
-								if (!hasThings)
-								{
-									handled = true;
-									this.CommandText.Append(" 0 <> 0");
-								}
-							}
-						}
-						if (!handled)
-						{
-							this.VisitField(condition.Field);
-							this.CommandText.Append(" IN (");
-							this.AppendNewLine(Indentation.Inner);
-							this.VisitField(condition.Value);
-							this.AppendNewLine(Indentation.Same);
-							this.CommandText.Append(")");
-							this.AppendNewLine(Indentation.Outer);
-						}
+						VisitIsInCondition(condition);
 						break;
 					}
 					case SqlOperator.Contains:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" LIKE '%' + ");
-						this.VisitField(condition.Value);
-						this.CommandText.Append(" + '%'");
+						VisitContainsCondition(condition);
 						break;
 					}
 					case SqlOperator.StartsWith:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" LIKE ");
-						this.VisitField(condition.Value);
-						this.CommandText.Append(" + '%'");
+						VisitStartsWithCondition(condition);
 						break;
 					}
 					case SqlOperator.EndsWith:
 					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" LIKE '%' + ");
-						this.VisitField(condition.Value);
+						VisitEndsWithCondition(condition);
 						break;
 					}
 					default:
@@ -1125,6 +1076,106 @@ namespace Watsonia.QueryBuilder
 					}
 				}
 			}
+		}
+
+		protected virtual void VisitEqualsCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" = ");
+			this.VisitField(condition.Value);
+		}
+
+		protected virtual void VisitNotEqualsCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" <> ");
+			this.VisitField(condition.Value);
+		}
+
+		protected virtual void VisitIsLessThanCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" < ");
+			this.VisitField(condition.Value);
+		}
+
+		protected virtual void VisitIsLessThanOrEqualToCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" <= ");
+			this.VisitField(condition.Value);
+		}
+
+		protected virtual void VisitIsGreaterThanCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" > ");
+			this.VisitField(condition.Value);
+		}
+
+		protected virtual void VisitIsGreaterThanOrEqualToCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" >= ");
+			this.VisitField(condition.Value);
+		}
+
+		protected virtual void VisitIsInCondition(Condition condition)
+		{
+			// If it's in an empty list, just check against false
+			var handled = false;
+			if (condition.Value.PartType == StatementPartType.ConstantPart)
+			{
+				var value = ((ConstantPart)condition.Value).Value;
+				if (value is IEnumerable && !(value is string) && !(value is byte[]))
+				{
+					// HACK: Ugh
+					var hasThings = false;
+					foreach (var thing in (IEnumerable)value)
+					{
+						hasThings = true;
+						break;
+					}
+					if (!hasThings)
+					{
+						handled = true;
+						this.CommandText.Append(" 0 <> 0");
+					}
+				}
+			}
+			if (!handled)
+			{
+				this.VisitField(condition.Field);
+				this.CommandText.Append(" IN (");
+				this.AppendNewLine(Indentation.Inner);
+				this.VisitField(condition.Value);
+				this.AppendNewLine(Indentation.Same);
+				this.CommandText.Append(")");
+				this.AppendNewLine(Indentation.Outer);
+			}
+		}
+
+		protected virtual void VisitContainsCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" LIKE '%' + ");
+			this.VisitField(condition.Value);
+			this.CommandText.Append(" + '%'");
+		}
+
+		protected virtual void VisitStartsWithCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" LIKE ");
+			this.VisitField(condition.Value);
+			this.CommandText.Append(" + '%'");
+		}
+
+		protected virtual void VisitEndsWithCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" LIKE '%' + ");
+			this.VisitField(condition.Value);
 		}
 
 		protected virtual void VisitConditionCollection(ConditionCollection collection)

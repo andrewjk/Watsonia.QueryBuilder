@@ -12,50 +12,27 @@ namespace Watsonia.QueryBuilder.SQLite
 			this.CommandText.Append(select.Limit);
 		}
 
-		protected override void VisitCondition(Condition condition)
+		protected override void VisitContainsCondition(Condition condition)
 		{
-			// Check for null comparisons first
-			var fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
-			var valueIsNull = (condition.Value is ConstantPart && ((ConstantPart)condition.Value).Value == null);
-			if ((condition.Operator == SqlOperator.Equals || condition.Operator == SqlOperator.NotEquals) &&
-				(fieldIsNull || valueIsNull))
-			{
-				base.VisitCondition(condition);
-			}
-			else
-			{
-				switch (condition.Operator)
-				{
-					case SqlOperator.Contains:
-					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" LIKE '%' || ");
-						this.VisitField(condition.Value);
-						this.CommandText.Append(" || '%'");
-						break;
-					}
-					case SqlOperator.StartsWith:
-					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" LIKE ");
-						this.VisitField(condition.Value);
-						this.CommandText.Append(" || '%'");
-						break;
-					}
-					case SqlOperator.EndsWith:
-					{
-						this.VisitField(condition.Field);
-						this.CommandText.Append(" LIKE '%' || ");
-						this.VisitField(condition.Value);
-						break;
-					}
-					default:
-					{
-						base.VisitCondition(condition);
-						break;
-					}
-				}
-			}
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" LIKE '%' || ");
+			this.VisitField(condition.Value);
+			this.CommandText.Append(" || '%'");
+		}
+
+		protected override void VisitStartsWithCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" LIKE ");
+			this.VisitField(condition.Value);
+			this.CommandText.Append(" || '%'");
+		}
+
+		protected override void VisitEndsWithCondition(Condition condition)
+		{
+			this.VisitField(condition.Field);
+			this.CommandText.Append(" LIKE '%' || ");
+			this.VisitField(condition.Value);
 		}
 
 		protected override void VisitDateNewFunction(DateNewFunction function)
