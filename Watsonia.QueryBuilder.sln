@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watsonia.QueryBuilder", "Watsonia.QueryBuilder\Watsonia.QueryBuilder.csproj", "{C21FC3FA-DE49-41A6-867E-E72A9681AF57}"
 EndProject
@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watsonia.QueryBuilder.SqlServer", "Watsonia.QueryBuilder.SqlServer\Watsonia.QueryBuilder.SqlServer.csproj", "{9E888918-402F-4E53-8EDB-1F1F7EDAC930}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watsonia.QueryBuilder.SQLite", "Watsonia.QueryBuilder.SQLite\Watsonia.QueryBuilder.SQLite.csproj", "{4E22DA3C-D435-47FD-A4EB-5AB2AC470693}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +30,14 @@ Global
 		{897510C4-C344-4B52-8DCA-22A6931753C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{897510C4-C344-4B52-8DCA-22A6931753C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{897510C4-C344-4B52-8DCA-22A6931753C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E888918-402F-4E53-8EDB-1F1F7EDAC930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E888918-402F-4E53-8EDB-1F1F7EDAC930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E888918-402F-4E53-8EDB-1F1F7EDAC930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E888918-402F-4E53-8EDB-1F1F7EDAC930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E22DA3C-D435-47FD-A4EB-5AB2AC470693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E22DA3C-D435-47FD-A4EB-5AB2AC470693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E22DA3C-D435-47FD-A4EB-5AB2AC470693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E22DA3C-D435-47FD-A4EB-5AB2AC470693}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

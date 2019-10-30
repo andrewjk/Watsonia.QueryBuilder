@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Watsonia.QueryBuilder
+namespace Watsonia.QueryBuilder.SQLite
 {
 	public class SQLiteCommandBuilder : SqlCommandBuilder
 	{

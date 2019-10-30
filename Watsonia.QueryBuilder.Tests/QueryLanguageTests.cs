@@ -9,6 +9,8 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Watsonia.QueryBuilder;
+using Watsonia.QueryBuilder.SQLite;
+using Watsonia.QueryBuilder.SqlServer;
 using Watsonia.QueryBuilder.Tests.Northwind;
 
 // TODO: Implement all double commented (////) tests

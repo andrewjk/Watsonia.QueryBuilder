@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Watsonia.QueryBuilder
+namespace Watsonia.QueryBuilder.SqlServer
 {
 	public class SqlServerCommandBuilder : SqlCommandBuilder
 	{
