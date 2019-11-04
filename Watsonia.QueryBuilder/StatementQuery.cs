@@ -27,7 +27,7 @@ namespace Watsonia.QueryBuilder
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="StatementQuery" /> class.
+		/// Initializes a new instance of the <see cref="StatementQuery{T}"/> class.
 		/// </summary>
 		/// <param name="provider">The provider.</param>
 		/// <param name="expression">The expression.</param>

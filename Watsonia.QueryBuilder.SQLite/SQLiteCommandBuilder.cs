@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Watsonia.QueryBuilder.SQLite
 {
+	/// <summary>
+	/// Builds command text and parameters from a statement for use in an SQLite database.
+	/// </summary>
+	/// <seealso cref="Watsonia.QueryBuilder.SqlCommandBuilder" />
 	public class SQLiteCommandBuilder : SqlCommandBuilder
 	{
 		protected override void VisitLimitAtEnd(SelectStatement select)

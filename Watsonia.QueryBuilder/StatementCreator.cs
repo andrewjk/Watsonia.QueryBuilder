@@ -32,6 +32,13 @@ namespace Watsonia.QueryBuilder
 			this.SelectStatement = new SelectStatement();
 		}
 
+		/// <summary>
+		/// Visits the specified query model.
+		/// </summary>
+		/// <param name="queryModel">The query model.</param>
+		/// <param name="mapper">The mapper.</param>
+		/// <param name="aliasTables">if set to <c>true</c> [alias tables].</param>
+		/// <returns></returns>
 		public static SelectStatement Visit(QueryModel queryModel, DatabaseMapper mapper, bool aliasTables)
 		{
 			var visitor = new StatementCreator(mapper, aliasTables);
@@ -39,6 +46,14 @@ namespace Watsonia.QueryBuilder
 			return visitor.SelectStatement;
 		}
 
+		/// <summary>
+		/// Visits the statement conditions.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="conditions">The conditions.</param>
+		/// <param name="mapper">The mapper.</param>
+		/// <param name="aliasTables">if set to <c>true</c> [alias tables].</param>
+		/// <returns></returns>
 		public static ConditionCollection VisitStatementConditions<T>(Expression<Func<T, bool>> conditions, DatabaseMapper mapper, bool aliasTables)
 		{
 			// Build a new query
@@ -64,6 +79,11 @@ namespace Watsonia.QueryBuilder
 			return visitor.SelectStatement.Conditions;
 		}
 
+		/// <summary>
+		/// Visits the select clause.
+		/// </summary>
+		/// <param name="selectClause">The select clause.</param>
+		/// <param name="queryModel">The query model.</param>
 		public override void VisitSelectClause(SelectClause selectClause, QueryModel queryModel)
 		{
 			if (selectClause.Selector.NodeType != ExpressionType.Extension)
@@ -75,6 +95,11 @@ namespace Watsonia.QueryBuilder
 			base.VisitSelectClause(selectClause, queryModel);
 		}
 
+		/// <summary>
+		/// Visits the main from clause.
+		/// </summary>
+		/// <param name="fromClause">From clause.</param>
+		/// <param name="queryModel">The query model.</param>
 		public override void VisitMainFromClause(MainFromClause fromClause, QueryModel queryModel)
 		{
 			if (this.Configuration.IsFunction(fromClause.ItemType))
@@ -94,6 +119,12 @@ namespace Watsonia.QueryBuilder
 			base.VisitMainFromClause(fromClause, queryModel);
 		}
 
+		/// <summary>
+		/// Visits the join clause.
+		/// </summary>
+		/// <param name="joinClause">The join clause.</param>
+		/// <param name="queryModel">The query model.</param>
+		/// <param name="index">The index.</param>
 		public override void VisitJoinClause(JoinClause joinClause, QueryModel queryModel, int index)
 		{
 			// TODO: This seems heavy...
@@ -122,6 +153,14 @@ namespace Watsonia.QueryBuilder
 			base.VisitJoinClause(joinClause, queryModel, index);
 		}
 
+		/// <summary>
+		/// Visits the ordering.
+		/// </summary>
+		/// <param name="ordering">The ordering.</param>
+		/// <param name="queryModel">The query model.</param>
+		/// <param name="orderByClause">The order by clause.</param>
+		/// <param name="index">The index.</param>
+		/// <exception cref="InvalidOperationException">Invalid ordering direction: {ordering.OrderingDirection}</exception>
 		public override void VisitOrdering(Ordering ordering, QueryModel queryModel, OrderByClause orderByClause, int index)
 		{
 			var column = (Column)StatementPartCreator.Visit(queryModel, ordering.Expression, this.Configuration, this.AliasTables);
@@ -147,6 +186,28 @@ namespace Watsonia.QueryBuilder
 			base.VisitOrdering(ordering, queryModel, orderByClause, index);
 		}
 
+		/// <summary>
+		/// Visits the result operator.
+		/// </summary>
+		/// <param name="resultOperator">The result operator.</param>
+		/// <param name="queryModel">The query model.</param>
+		/// <param name="index">The index.</param>
+		/// <exception cref="InvalidOperationException">
+		/// can't count multiple fields
+		/// or
+		/// can't sum multiple or no fields
+		/// or
+		/// can't min multiple or no fields
+		/// or
+		/// can't max multiple or no fields
+		/// or
+		/// can't average multiple or no fields
+		/// </exception>
+		/// <exception cref="NotSupportedException">
+		/// Currently not supporting methods or variables in the Skip or Take clause.
+		/// or
+		/// Currently not supporting methods or variables in the Skip or Take clause.
+		/// </exception>
 		public override void VisitResultOperator(ResultOperatorBase resultOperator, QueryModel queryModel, int index)
 		{
 			if (resultOperator is AnyResultOperator)
@@ -325,6 +386,12 @@ namespace Watsonia.QueryBuilder
 			base.VisitResultOperator(resultOperator, queryModel, index);
 		}
 
+		/// <summary>
+		/// Visits the where clause.
+		/// </summary>
+		/// <param name="whereClause">The where clause.</param>
+		/// <param name="queryModel">The query model.</param>
+		/// <param name="index">The index.</param>
 		public override void VisitWhereClause(WhereClause whereClause, QueryModel queryModel, int index)
 		{
 			VisitPredicate(whereClause.Predicate, queryModel);

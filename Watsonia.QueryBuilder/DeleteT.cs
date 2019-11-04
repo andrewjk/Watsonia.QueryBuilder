@@ -9,19 +9,41 @@ using Watsonia.QueryBuilder;
 
 namespace Watsonia.QueryBuilder
 {
+	/// <summary>
+	/// The starting point for fluently creating delete statements.
+	/// </summary>
 	public static partial class Delete
 	{
+		/// <summary>
+		/// Creates a delete statement from a type corresponding to the table that records should be deleted from.
+		/// </summary>
+		/// <typeparam name="T">The type corresponding to the table that records should be deleted from.</typeparam>
+		/// <returns>The delete statement.</returns>
 		public static DeleteStatement<T> From<T>()
 		{
 			return new DeleteStatement<T>() { Target = typeof(T) };
 		}
 
+		/// <summary>
+		/// Adds a condition to the delete statement.
+		/// </summary>
+		/// <typeparam name="T">The type corresponding to the table that records should be deleted from.</typeparam>
+		/// <param name="delete">The delete statement.</param>
+		/// <param name="condition">The condition.</param>
+		/// <returns>The delete statement.</returns>
 		public static DeleteStatement<T> Where<T>(this DeleteStatement<T> delete, Expression<Func<T, bool>> condition)
 		{
 			delete.Conditions = condition;
 			return delete;
 		}
 
+		/// <summary>
+		/// Adds an AND condition to the delete statement.
+		/// </summary>
+		/// <typeparam name="T">The type corresponding to the table that records should be deleted from.</typeparam>
+		/// <param name="delete">The delete statement.</param>
+		/// <param name="condition">The condition.</param>
+		/// <returns>The delete statement.</returns>
 		public static DeleteStatement<T> And<T>(this DeleteStatement<T> delete, Expression<Func<T, bool>> condition)
 		{
 			var combined = delete.Conditions.Body.AndAlso(condition.Body);
@@ -30,6 +52,13 @@ namespace Watsonia.QueryBuilder
 			return delete;
 		}
 
+		/// <summary>
+		/// Adds an OR condition to the delete statement.
+		/// </summary>
+		/// <typeparam name="T">The type corresponding to the table that records should be deleted from.</typeparam>
+		/// <param name="delete">The delete statement.</param>
+		/// <param name="condition">The condition.</param>
+		/// <returns>The delete statement.</returns>
 		public static DeleteStatement<T> Or<T>(this DeleteStatement<T> delete, Expression<Func<T, bool>> condition)
 		{
 			var combined = delete.Conditions.Body.OrElse(condition.Body);

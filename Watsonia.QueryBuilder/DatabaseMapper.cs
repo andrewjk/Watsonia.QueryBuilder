@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Watsonia.QueryBuilder
 {
+	/// <summary>
+	/// Maps .NET objects to database objects.
+	/// </summary>
 	public class DatabaseMapper
 	{
 		/// <summary>

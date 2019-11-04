@@ -43,8 +43,7 @@ namespace Watsonia.QueryBuilder
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CoalesceFunction" /> class.
 		/// </summary>
-		/// <param name="first">The first.</param>
-		/// <param name="second">The second.</param>
+		/// <param name="arguments">The arguments.</param>
 		public CoalesceFunction(params SourceExpression[] arguments)
 		{
 			this.Arguments.AddRange(arguments);

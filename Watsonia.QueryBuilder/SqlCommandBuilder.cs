@@ -7,25 +7,47 @@ using System.Text;
 
 namespace Watsonia.QueryBuilder
 {
+	/// <summary>
+	/// Builds command text and parameters from a statement for use in an SQL database.
+	/// </summary>
+	/// <seealso cref="Watsonia.QueryBuilder.ICommandBuilder" />
 	public class SqlCommandBuilder : ICommandBuilder
 	{
 		private const int IndentationWidth = 2;
 
-		protected enum Indentation
+		private enum Indentation
 		{
 			Same,
 			Inner,
 			Outer
 		}
 
+		/// <summary>
+		/// Gets the command text.
+		/// </summary>
+		/// <value>
+		/// The command text.
+		/// </value>
 		public StringBuilder CommandText { get; } = new StringBuilder();
 
+		/// <summary>
+		/// Gets the parameter values.
+		/// </summary>
+		/// <value>
+		/// The parameter values.
+		/// </value>
 		public List<object> ParameterValues { get; } = new List<object>();
 
 		private int Depth { get; set; }
 
 		private bool IsNested { get; set; }
 
+		/// <summary>
+		/// Visits a statement and builds the command text and parameters.
+		/// </summary>
+		/// <param name="statement">The statement.</param>
+		/// <param name="mapper">The mapper.</param>
+		/// <exception cref="NotSupportedException"></exception>
 		public void VisitStatement(Statement statement, DatabaseMapper mapper)
 		{
 			switch (statement.PartType)
@@ -82,6 +104,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a constant part.
+		/// </summary>
+		/// <param name="constant">The constant part.</param>
 		protected virtual void VisitConstant(ConstantPart constant)
 		{
 			VisitObject(constant.Value);
@@ -93,6 +119,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits an object.
+		/// </summary>
+		/// <param name="value">The object.</param>
 		protected virtual void VisitObject(object value)
 		{
 			if (value == null)
@@ -151,6 +181,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a select statement.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSelect(SelectStatement select)
 		{
 			// TODO: If we're using SQL Server 2012 we should just use the OFFSET keyword
@@ -233,7 +267,7 @@ namespace Watsonia.QueryBuilder
 			}
 			if (select.Conditions.Count > 0)
 			{
-				VisitWhere(select.Conditions);
+				VisitConditions(select.Conditions);
 			}
 			if (select.GroupByFields.Count > 0)
 			{
@@ -256,6 +290,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a select statement with a row number.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSelectWithRowNumber(SelectStatement select)
 		{
 			// It's going to look something like this:
@@ -307,6 +345,10 @@ namespace Watsonia.QueryBuilder
 			VisitSelect(outer);
 		}
 
+		/// <summary>
+		/// Visits a select statement with ANY.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSelectWithAny(SelectStatement select)
 		{
 			// It's going to look something like this:
@@ -329,6 +371,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
 
+		/// <summary>
+		/// Visits a select with ALL.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSelectWithAll(SelectStatement select)
 		{
 			// It's going to look something like this:
@@ -354,6 +400,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
 
+		/// <summary>
+		/// Visits a select with CONTAINS.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSelectWithContains(SelectStatement select)
 		{
 			// It's going to look something like this:
@@ -377,6 +427,11 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") THEN 1 ELSE 0 END");
 		}
 
+		/// <summary>
+		/// Visits an update statement.
+		/// </summary>
+		/// <param name="update">The update statement.</param>
+		/// <exception cref="InvalidOperationException">An update statement must have at least one condition to avoid accidentally updating all data in a table</exception>
 		protected virtual void VisitUpdate(UpdateStatement update)
 		{
 			this.CommandText.Append("UPDATE ");
@@ -397,7 +452,7 @@ namespace Watsonia.QueryBuilder
 			}
 			if (update.Conditions != null && update.Conditions.Count > 0)
 			{
-				VisitWhere(update.Conditions);
+				VisitConditions(update.Conditions);
 			}
 			else
 			{
@@ -405,6 +460,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits an insert statement.
+		/// </summary>
+		/// <param name="insert">The insert statement.</param>
 		protected virtual void VisitInsert(InsertStatement insert)
 		{
 			this.CommandText.Append("INSERT INTO ");
@@ -454,13 +513,18 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a delete statement.
+		/// </summary>
+		/// <param name="delete">The delete statement.</param>
+		/// <exception cref="InvalidOperationException">A delete statement must have at least one condition to avoid accidentally deleting all data in a table</exception>
 		protected virtual void VisitDelete(DeleteStatement delete)
 		{
 			this.CommandText.Append("DELETE FROM ");
 			this.VisitTable(delete.Target);
 			if (delete.Conditions != null && delete.Conditions.Count > 0)
 			{
-				VisitWhere(delete.Conditions);
+				VisitConditions(delete.Conditions);
 			}
 			else
 			{
@@ -468,6 +532,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a source fields.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSourceFields(SelectStatement select)
 		{
 			for (var i = 0; i < select.SourceFields.Count; i++)
@@ -480,6 +548,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a source fields from.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSourceFieldsFrom(SelectStatement select)
 		{
 			// TODO: Should the SourceFieldsFrom actually be its own class?
@@ -498,7 +570,12 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		protected virtual void VisitWhere(ConditionCollection conditions)
+		/// <summary>
+		/// Visits a condition collection.
+		/// </summary>
+		/// <param name="conditions">The condition collection.</param>
+		/// <exception cref="InvalidOperationException"></exception>
+		protected virtual void VisitConditions(ConditionCollection conditions)
 		{
 			this.AppendNewLine(Indentation.Same);
 			this.CommandText.Append("WHERE ");
@@ -533,6 +610,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a group by.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitGroupBy(SelectStatement select)
 		{
 			this.AppendNewLine(Indentation.Same);
@@ -547,6 +628,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits an order by.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitOrderBy(SelectStatement select)
 		{
 			this.AppendNewLine(Indentation.Same);
@@ -565,16 +650,29 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a limit at start.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitLimitAtStart(SelectStatement select)
 		{
 			// TODO: Is there a good default for this?
 		}
 
+		/// <summary>
+		/// Visits a limit at end.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitLimitAtEnd(SelectStatement select)
 		{
 			// TODO: Is there a good default for this?
 		}
 
+		/// <summary>
+		/// Visits a field.
+		/// </summary>
+		/// <param name="field">The field.</param>
+		/// <exception cref="InvalidOperationException"></exception>
 		protected virtual void VisitField(StatementPart field)
 		{
 			switch (field.PartType)
@@ -810,6 +908,11 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a column.
+		/// </summary>
+		/// <param name="column">The column.</param>
+		/// <param name="ignoreTablePrefix">if set to <c>true</c> [ignore table prefix].</param>
 		protected virtual void VisitColumn(Column column, bool ignoreTablePrefix = false)
 		{
 			if (!ignoreTablePrefix && column.Table != null && !string.IsNullOrEmpty(column.Table.Name))
@@ -851,6 +954,11 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a source.
+		/// </summary>
+		/// <param name="source">The source.</param>
+		/// <exception cref="InvalidOperationException">Select source is not valid type</exception>
 		protected virtual void VisitSource(StatementPart source)
 		{
 			var previousIsNested = this.IsNested;
@@ -911,6 +1019,10 @@ namespace Watsonia.QueryBuilder
 			this.IsNested = previousIsNested;
 		}
 
+		/// <summary>
+		/// Visits a table.
+		/// </summary>
+		/// <param name="table">The table.</param>
 		protected virtual void VisitTable(Table table)
 		{
 			if (!string.IsNullOrEmpty(table.Schema))
@@ -925,6 +1037,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append("]");
 		}
 
+		/// <summary>
+		/// Visits an user defined function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitUserDefinedFunction(UserDefinedFunction function)
 		{
 			if (!string.IsNullOrEmpty(function.Schema))
@@ -945,6 +1061,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Visits a join.
+		/// </summary>
+		/// <param name="join">The join.</param>
 		protected virtual void VisitJoin(Join join)
 		{
 			switch (join.JoinType)
@@ -983,6 +1103,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitCondition(ConditionExpression condition)
 		{
 			// TODO: Should all types of conditions be a class?  Not exposed to the user, because that
@@ -1008,6 +1132,11 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
+		/// <exception cref="InvalidOperationException">Invalid operator: " + condition.Operator</exception>
 		protected virtual void VisitCondition(Condition condition)
 		{
 			// Check for null comparisons first
@@ -1095,6 +1224,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits an equals condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitEqualsCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1102,6 +1235,10 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits a not equals condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitNotEqualsCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1109,6 +1246,10 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits an is less than condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitIsLessThanCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1116,6 +1257,10 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits an is less than or equal to condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitIsLessThanOrEqualToCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1123,6 +1268,10 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits an is greater than condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitIsGreaterThanCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1130,6 +1279,10 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits an is greater than or equal to condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitIsGreaterThanOrEqualToCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1137,6 +1290,10 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits an is in condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitIsInCondition(Condition condition)
 		{
 			// If it's in an empty list, just check against false
@@ -1172,6 +1329,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a contains condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitContainsCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1180,6 +1341,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" + '%'");
 		}
 
+		/// <summary>
+		/// Visits a starts with condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitStartsWithCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1188,6 +1353,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" + '%'");
 		}
 
+		/// <summary>
+		/// Visits an ends with condition.
+		/// </summary>
+		/// <param name="condition">The condition.</param>
 		protected virtual void VisitEndsWithCondition(Condition condition)
 		{
 			this.VisitField(condition.Field);
@@ -1195,6 +1364,11 @@ namespace Watsonia.QueryBuilder
 			this.VisitField(condition.Value);
 		}
 
+		/// <summary>
+		/// Visits a condition collection.
+		/// </summary>
+		/// <param name="collection">The collection.</param>
+		/// <exception cref="InvalidOperationException"></exception>
 		protected virtual void VisitConditionCollection(ConditionCollection collection)
 		{
 			this.CommandText.Append("(");
@@ -1227,6 +1401,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Visits a conditional case.
+		/// </summary>
+		/// <param name="conditional">The conditional.</param>
 		protected virtual void VisitConditionalCase(ConditionalCase conditional)
 		{
 			if (conditional.Test is Condition)
@@ -1264,6 +1442,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a row number.
+		/// </summary>
+		/// <param name="rowNumber">The row number.</param>
 		protected virtual void VisitRowNumber(RowNumber rowNumber)
 		{
 			this.CommandText.Append("ROW_NUMBER() OVER(");
@@ -1286,6 +1468,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(") AS RowNumber");
 		}
 
+		/// <summary>
+		/// Visits an aggregate.
+		/// </summary>
+		/// <param name="aggregate">The aggregate.</param>
 		protected virtual void VisitAggregate(Aggregate aggregate)
 		{
 			this.CommandText.Append(GetAggregateName(aggregate.AggregateType));
@@ -1306,6 +1492,12 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Gets the name of the aggregate.
+		/// </summary>
+		/// <param name="aggregateType">Type of the aggregate.</param>
+		/// <returns></returns>
+		/// <exception cref="Exception">Unknown aggregate type: {aggregateType}</exception>
 		private string GetAggregateName(AggregateType aggregateType)
 		{
 			switch (aggregateType)
@@ -1341,6 +1533,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a condition predicate.
+		/// </summary>
+		/// <param name="predicate">The predicate.</param>
 		protected virtual void VisitConditionPredicate(ConditionPredicate predicate)
 		{
 			this.CommandText.Append("(CASE WHEN ");
@@ -1348,6 +1544,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" THEN 1 ELSE 0 END)");
 		}
 
+		/// <summary>
+		/// Visits an exists.
+		/// </summary>
+		/// <param name="exists">The exists.</param>
 		protected virtual void VisitExists(Exists exists)
 		{
 			if (exists.Not)
@@ -1362,6 +1562,10 @@ namespace Watsonia.QueryBuilder
 			this.Indent(Indentation.Outer);
 		}
 
+		/// <summary>
+		/// Visits a coalesce function.
+		/// </summary>
+		/// <param name="coalesce">The coalesce.</param>
 		protected virtual void VisitCoalesceFunction(CoalesceFunction coalesce)
 		{
 			StatementPart first = coalesce.Arguments[0];
@@ -1381,6 +1585,11 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Visits a function.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="arguments">The arguments.</param>
 		protected virtual void VisitFunction(string name, params StatementPart[] arguments)
 		{
 			this.CommandText.Append(name);
@@ -1396,6 +1605,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Visits a convert function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitConvertFunction(ConvertFunction function)
 		{
 			// TODO: Handle more types
@@ -1404,11 +1617,19 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Visits a string length function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringLengthFunction(StringLengthFunction function)
 		{
 			VisitFunction("LEN", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a substring function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitSubstringFunction(SubstringFunction function)
 		{
 			this.CommandText.Append("SUBSTRING(");
@@ -1420,6 +1641,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(")");
 		}
 
+		/// <summary>
+		/// Visits a string remove function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringRemoveFunction(StringRemoveFunction function)
 		{
 			this.CommandText.Append("STUFF(");
@@ -1431,6 +1656,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(", '')");
 		}
 
+		/// <summary>
+		/// Visits a string character index function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringCharIndexFunction(StringIndexFunction function)
 		{
 			this.CommandText.Append("(");
@@ -1445,21 +1674,37 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" - 1)");
 		}
 
+		/// <summary>
+		/// Visits a string to upper function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringToUpperFunction(StringToUpperFunction function)
 		{
 			VisitFunction("UPPER", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a string to lower function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringToLowerFunction(StringToLowerFunction function)
 		{
 			VisitFunction("LOWER", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a string replace function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringReplaceFunction(StringReplaceFunction function)
 		{
 			VisitFunction("REPLACE", function.Argument, function.OldValue, function.NewValue);
 		}
 
+		/// <summary>
+		/// Visits a string trim function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringTrimFunction(StringTrimFunction function)
 		{
 			this.CommandText.Append("RTRIM(LTRIM(");
@@ -1467,6 +1712,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append("))");
 		}
 
+		/// <summary>
+		/// Visits a string compare function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringCompareFunction(StringCompareFunction function)
 		{
 			this.CommandText.Append("(CASE WHEN ");
@@ -1480,6 +1729,10 @@ namespace Watsonia.QueryBuilder
 			this.CommandText.Append(" THEN -1 ELSE 1 END)");
 		}
 
+		/// <summary>
+		/// Visits a string concatenate function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitStringConcatenateFunction(StringConcatenateFunction function)
 		{
 			for (var i = 0; i < function.Arguments.Count; i++)
@@ -1492,6 +1745,11 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a date part function.
+		/// </summary>
+		/// <param name="function">The function.</param>
+		/// <exception cref="InvalidOperationException">Invalid date part: " + function.DatePart</exception>
 		protected virtual void VisitDatePartFunction(DatePartFunction function)
 		{
 			switch (function.DatePart)
@@ -1547,6 +1805,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a date add function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitDateAddFunction(DateAddFunction function)
 		{
 			this.VisitFunction("DATEADD", new StatementPart[]
@@ -1557,6 +1819,10 @@ namespace Watsonia.QueryBuilder
 			});
 		}
 
+		/// <summary>
+		/// Visits a date new function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitDateNewFunction(DateNewFunction function)
 		{
 			if (function.Hour != null)
@@ -1597,73 +1863,129 @@ namespace Watsonia.QueryBuilder
 
 		}
 
+		/// <summary>
+		/// Visits a date difference function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitDateDifferenceFunction(DateDifferenceFunction function)
 		{
 			this.VisitFunction("DATEDIFF", function.Date1, function.Date2);
 		}
 
+		/// <summary>
+		/// Visits a number absolute function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberAbsoluteFunction(NumberAbsoluteFunction function)
 		{
 			this.VisitFunction("ABS", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number negate function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberNegateFunction(NumberNegateFunction function)
 		{
 			this.CommandText.Append("-");
 			this.VisitField(function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number ceiling function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberCeilingFunction(NumberCeilingFunction function)
 		{
 			this.VisitFunction("CEILING", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number floor function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberFloorFunction(NumberFloorFunction function)
 		{
 			this.VisitFunction("FLOOR", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number round function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberRoundFunction(NumberRoundFunction function)
 		{
 			this.VisitFunction("ROUND", function.Argument, function.Precision);
 		}
 
+		/// <summary>
+		/// Visits a number truncate function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberTruncateFunction(NumberTruncateFunction function)
 		{
 			this.VisitFunction("ROUND", function.Argument, new ConstantPart(0), new ConstantPart(1));
 		}
 
+		/// <summary>
+		/// Visits a number sign function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberSignFunction(NumberSignFunction function)
 		{
 			this.VisitFunction("SIGN", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number power function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberPowerFunction(NumberPowerFunction function)
 		{
 			this.VisitFunction("POWER", function.Argument, function.Power);
 		}
 
+		/// <summary>
+		/// Visits a number root function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberRootFunction(NumberRootFunction function)
 		{
 			// TODO: I'm being lazy, if root > 3 then we should to convert it to POW(argument, 1 / root)
 			this.VisitFunction("SQRT", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number exponential function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberExponentialFunction(NumberExponentialFunction function)
 		{
 			this.VisitFunction("EXP", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number log function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberLogFunction(NumberLogFunction function)
 		{
 			this.VisitFunction("LOG", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number log10 function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberLog10Function(NumberLog10Function function)
 		{
 			this.VisitFunction("LOG10", function.Argument);
 		}
 
+		/// <summary>
+		/// Visits a number trig function.
+		/// </summary>
+		/// <param name="function">The function.</param>
 		protected virtual void VisitNumberTrigFunction(NumberTrigFunction function)
 		{
 			if (function.Argument2 != null)
@@ -1676,6 +1998,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a binary operation.
+		/// </summary>
+		/// <param name="operation">The operation.</param>
 		protected virtual void VisitBinaryOperation(BinaryOperation operation)
 		{
 			if (operation.Operator == BinaryOperator.LeftShift)
@@ -1762,6 +2088,10 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a unary operation.
+		/// </summary>
+		/// <param name="operation">The operation.</param>
 		protected virtual void VisitUnaryOperation(UnaryOperation operation)
 		{
 			this.CommandText.Append(GetOperatorName(operation.Operator));
@@ -1789,11 +2119,19 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
+		/// <summary>
+		/// Visits a literal part.
+		/// </summary>
+		/// <param name="literalPart">The literal part.</param>
 		protected virtual void VisitLiteralPart(LiteralPart literalPart)
 		{
 			this.CommandText.Append(literalPart.Value);
 		}
 
+		/// <summary>
+		/// Visits a select expression.
+		/// </summary>
+		/// <param name="select">The select statement.</param>
 		protected virtual void VisitSelectExpression(SelectExpression select)
 		{
 			this.CommandText.Append("(");
@@ -1810,7 +2148,7 @@ namespace Watsonia.QueryBuilder
 			this.Indent(Indentation.Outer);
 		}
 
-		protected virtual void AppendNewLine(Indentation style)
+		private void AppendNewLine(Indentation style)
 		{
 			this.CommandText.AppendLine();
 			this.Indent(style);
@@ -1820,7 +2158,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		protected virtual void Indent(Indentation style)
+		private void Indent(Indentation style)
 		{
 			if (style == Indentation.Inner)
 			{
