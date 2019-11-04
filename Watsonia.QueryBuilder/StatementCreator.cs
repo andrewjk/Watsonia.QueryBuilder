@@ -1,4 +1,4 @@
-using Remotion.Linq;
+﻿using Remotion.Linq;
 using Remotion.Linq.Clauses;
 using Remotion.Linq.Clauses.ResultOperators;
 using Remotion.Linq.Parsing.Structure;
@@ -79,15 +79,17 @@ namespace Watsonia.QueryBuilder
 		{
 			if (this.Configuration.IsFunction(fromClause.ItemType))
 			{
+				var schemaName = this.Configuration.GetSchemaName(fromClause.ItemType);
 				var functionName = this.Configuration.GetFunctionName(fromClause.ItemType);
 				var alias = fromClause.ItemName.Replace("<generated>", "g");
-				this.SelectStatement.Source = new UserDefinedFunction(functionName) { Alias = alias };
+				this.SelectStatement.Source = new UserDefinedFunction(functionName) { Alias = alias, Schema = schemaName };
 			}
 			else
 			{
+				var schemaName = this.Configuration.GetSchemaName(fromClause.ItemType);
 				var tableName = this.Configuration.GetTableName(fromClause.ItemType);
 				var alias = fromClause.ItemName.Replace("<generated>", "g");
-				this.SelectStatement.Source = new Table(tableName) { Alias = alias };
+				this.SelectStatement.Source = new Table(tableName) { Alias = alias, Schema = schemaName };
 			}
 			base.VisitMainFromClause(fromClause, queryModel);
 		}

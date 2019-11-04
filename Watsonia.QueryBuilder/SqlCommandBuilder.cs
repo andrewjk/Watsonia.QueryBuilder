@@ -814,7 +814,16 @@ namespace Watsonia.QueryBuilder
 		{
 			if (!ignoreTablePrefix && column.Table != null && !string.IsNullOrEmpty(column.Table.Name))
 			{
-				VisitTable(column.Table);
+				if (!string.IsNullOrEmpty(column.Table.Alias))
+				{
+					this.CommandText.Append("[");
+					this.CommandText.Append(column.Table.Alias);
+					this.CommandText.Append("]");
+				}
+				else
+				{
+					VisitTable(column.Table);
+				}
 				this.CommandText.Append(".");
 			}
 
@@ -904,6 +913,13 @@ namespace Watsonia.QueryBuilder
 
 		protected virtual void VisitTable(Table table)
 		{
+			if (!string.IsNullOrEmpty(table.Schema))
+			{
+				this.CommandText.Append("[");
+				this.CommandText.Append(table.Schema);
+				this.CommandText.Append("]");
+				this.CommandText.Append(".");
+			}
 			this.CommandText.Append("[");
 			this.CommandText.Append(table.Name);
 			this.CommandText.Append("]");
@@ -911,6 +927,11 @@ namespace Watsonia.QueryBuilder
 
 		protected virtual void VisitUserDefinedFunction(UserDefinedFunction function)
 		{
+			if (!string.IsNullOrEmpty(function.Schema))
+			{
+				this.CommandText.Append(function.Schema);
+				this.CommandText.Append(".");
+			}
 			this.CommandText.Append(function.Name);
 			this.CommandText.Append("(");
 			for (var i = 0; i < function.Parameters.Count; i++)

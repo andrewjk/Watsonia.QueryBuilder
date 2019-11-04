@@ -24,6 +24,14 @@ namespace Watsonia.QueryBuilder
 		}
 
 		/// <summary>
+		/// Gets the name of the schema.
+		/// </summary>
+		/// <value>
+		/// The name of the schema.
+		/// </value>
+		public string Schema { get; internal set; }
+
+		/// <summary>
 		/// Gets the name of the function.
 		/// </summary>
 		/// <value>

@@ -8,9 +8,9 @@ namespace Watsonia.QueryBuilder
 {
 	public static partial class Select
 	{
-		public static SelectStatement From(string tableName, string alias = null)
+		public static SelectStatement From(string tableName, string alias = null, string schema = null)
 		{
-			return Select.From(new Table(tableName, alias));
+			return Select.From(new Table(tableName, alias, schema));
 		}
 
 		public static SelectStatement From(Table table)

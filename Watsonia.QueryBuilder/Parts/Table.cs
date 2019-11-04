@@ -24,6 +24,18 @@ namespace Watsonia.QueryBuilder
 		}
 
 		/// <summary>
+		/// Gets the name of the schema.
+		/// </summary>
+		/// <value>
+		/// The name of the schema.
+		/// </value>
+		public string Schema
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
 		/// Gets the name of the table.
 		/// </summary>
 		/// <value>
@@ -59,10 +71,12 @@ namespace Watsonia.QueryBuilder
 		/// </summary>
 		/// <param name="name">The name of the table.</param>
 		/// <param name="alias">The alias to use for the table.</param>
-		public Table(string name, string alias = null)
+		/// <param name="schema">The schema to use for the table.</param>
+		public Table(string name, string alias = null, string schema = null)
 		{
 			this.Name = name;
 			this.Alias = alias;
+			this.Schema = schema;
 		}
 
 		/// <summary>
