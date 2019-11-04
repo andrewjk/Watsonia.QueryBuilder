@@ -1,0 +1,1229 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Watsonia.QueryBuilder</name>
+    </assembly>
+    <members>
+        <member name="P:Watsonia.QueryBuilder.DatabaseMapper.EntityNamespace">
+            <summary>
+            Gets the namespace in which entity classes are located.
+            </summary>
+            <value>
+            The entity namespace.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetSchemaName(System.Type)">
+            <summary>
+            Gets the name of the schema for the supplied type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetTableName(System.Type)">
+            <summary>
+            Gets the name of the table for the supplied type.
+            </summary>
+            <remarks>
+            For a Book item, this would return "Book" by default but might be overridden to return "Books" or something different.
+            </remarks>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetProcedureName(System.Type)">
+            <summary>
+            Gets the name of the procedure for the supplied type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetFunctionName(System.Type)">
+            <summary>
+            Gets the name of the function for the supplied type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetColumnName(System.Reflection.PropertyInfo)">
+            <summary>
+            Gets the name of the column for the supplied property.
+            </summary>
+            <param name="property">The property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetPrimaryKeyColumnName(System.Type)">
+            <summary>
+            Gets the name of the primary key column.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.IsRelatedItem(System.Reflection.PropertyInfo)">
+            <summary>
+            Determines whether the supplied property contains a related entity item.
+            </summary>
+            <param name="property">The property.</param>
+            <returns>
+              <c>true</c> if the supplied property contains a related entity item; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.GetForeignKeyColumnName(System.Reflection.PropertyInfo)">
+            <summary>
+            Gets the name of the foreign key column for the supplied property.
+            </summary>
+            <remarks>
+            For a Book.Author property, this would return "AuthorID" by default.
+            </remarks>
+            <param name="property">The property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.IsProcedure(System.Type)">
+            <summary>
+            Determines whether the supplied type is a stored procedure.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the supplied type is a stored procedure; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.IsFunction(System.Type)">
+            <summary>
+            Determines whether the supplied type is a user-defined function.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the supplied type is a user-defined function; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.DatabaseMapper.ShouldMapType(System.Type)">
+            <summary>
+            Determines whether the class with the supplied type should be mapped to the database.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.FieldAggregate">
+            <summary>
+            Represents a field and aggregate (count, sum, etc) that is used with a select statement.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldAggregate.Field">
+            <summary>
+            Gets or sets the field.
+            </summary>
+            <value>
+            The field.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldAggregate.Aggregate">
+            <summary>
+            Gets or sets the aggregate (count, sum, etc).
+            </summary>
+            <value>
+            The aggregate.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.FieldAggregate.#ctor(System.Reflection.PropertyInfo,Watsonia.QueryBuilder.AggregateType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.FieldAggregate"/> class.
+            </summary>
+            <param name="field">The field.</param>
+            <param name="aggregate">The aggregate (count, sum, etc).</param>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.FieldOrder">
+            <summary>
+            Represents a field and direction that is used for ordering a statement.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldOrder.Field">
+            <summary>
+            Gets or sets the field.
+            </summary>
+            <value>
+            The field.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldOrder.Direction">
+            <summary>
+            Gets or sets the order direction (ascending or descending).
+            </summary>
+            <value>
+            The direction.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.FieldOrder.#ctor(System.Reflection.PropertyInfo,Watsonia.QueryBuilder.OrderDirection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.FieldOrder"/> class.
+            </summary>
+            <param name="field">The field.</param>
+            <param name="direction">The order direction (ascending or descending).</param>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.FieldValue">
+            <summary>
+            Represents a field and the value to set it to.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldValue.Field">
+            <summary>
+            Gets or sets the field.
+            </summary>
+            <value>
+            The field.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldValue.Value">
+            <summary>
+            Gets or sets the value to set the field to.
+            </summary>
+            <value>
+            The value.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.FieldValue.#ctor(System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.FieldValue"/> class.
+            </summary>
+            <param name="field">The field.</param>
+            <param name="value">The value to set the field to.</param>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.Aggregate">
+            <summary>
+            An aggregate operation (such as sum or count) on a source field.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Aggregate.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Aggregate.IsDistinct">
+            <summary>
+            Gets or sets a value indicating whether this aggregate operation is distinct.
+            </summary>
+            <value>
+            <c>true</c> if this aggregate operation is distinct; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Aggregate.AggregateType">
+            <summary>
+            Gets or sets the type of the aggregate (e.g. sum, or count).
+            </summary>
+            <value>
+            The type of the aggregate.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Aggregate.Field">
+            <summary>
+            Gets or sets the field to be aggregated.
+            </summary>
+            <value>
+            The field.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Aggregate.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Aggregate" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Aggregate.#ctor(Watsonia.QueryBuilder.AggregateType,Watsonia.QueryBuilder.Field)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Aggregate" /> class.
+            </summary>
+            <param name="aggregateType">The type of the aggregate (e.g. sum, or count).</param>
+            <param name="field">The field to be aggregated.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Aggregate.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.AggregateType">
+            <summary>
+            An aggregate that may be applied to a field such as sum or count.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.None">
+            <summary>
+            No aggregate.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.Count">
+            <summary>
+            Counts the number of items.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.BigCount">
+            <summary>
+            Counts the number of items and returns a large integer.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.Sum">
+            <summary>
+            Adds the values contained in the field together.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.Min">
+            <summary>
+            Returns the minimum value contained in the field.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.Max">
+            <summary>
+            Returns the maximum value contained in the field.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.AggregateType.Average">
+            <summary>
+            Returns the average value contained in the field.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.AnonymousParameterReplacer">
+            <summary>
+            A class for replacing parameters in an expression.
+            </summary>
+            <remarks>
+            This class is used to consolidate anonymous parameters when combining lambda expressions, so
+            that all of the parameters have the same object reference.
+            </remarks>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.AnonymousParameterReplacer.#ctor(System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.ParameterExpression})">
+            <summary>
+            Prevents a default instance of the <see cref="T:Watsonia.QueryBuilder.AnonymousParameterReplacer" /> class from being created.
+            </summary>
+            <param name="parameters">The parameters.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.AnonymousParameterReplacer.Replace(System.Linq.Expressions.Expression,System.Collections.ObjectModel.ReadOnlyCollection{System.Linq.Expressions.ParameterExpression})">
+            <summary>
+            Replaces the parameters in an expression with the supplied parameters.
+            </summary>
+            <param name="expression">The expression.</param>
+            <param name="parameters">The parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.AnonymousParameterReplacer.VisitParameter(System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            Visits the <see cref="T:System.Linq.Expressions.ParameterExpression" />.
+            </summary>
+            <param name="node">The expression to visit.</param>
+            <returns>
+            The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.BinaryOperation">
+            <summary>
+            An operation with a binary operator e.g. 1 + 2.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.BinaryOperation.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.BinaryOperation.Left">
+            <summary>
+            Gets or sets the expression on the left of the operator.
+            </summary>
+            <value>
+            The left expression.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.BinaryOperation.Operator">
+            <summary>
+            Gets or sets the operator.
+            </summary>
+            <value>
+            The operator.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.BinaryOperation.Right">
+            <summary>
+            Gets or sets the expression on the right of the operator.
+            </summary>
+            <value>
+            The right expression.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.BinaryOperation.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.BinaryOperation" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.BinaryOperation.#ctor(Watsonia.QueryBuilder.SourceExpression,Watsonia.QueryBuilder.BinaryOperator,Watsonia.QueryBuilder.SourceExpression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.BinaryOperation" /> class.
+            </summary>
+            <param name="left">The expression on the left of the operator.</param>
+            <param name="op">The operator.</param>
+            <param name="right">The expression on the right of the operator.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.BinaryOperation.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.BinaryOperator">
+            <summary>
+            An operator that is performed on two expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.Add">
+            <summary>
+            Add the expressions together.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.Subtract">
+            <summary>
+            Subtract the right expression from the left.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.Multiply">
+            <summary>
+            Multiply the expressions together.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.Divide">
+            <summary>
+            Divide the left expression by the right.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.Remainder">
+            <summary>
+            Divide the left expression by the right and return the remainder.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.ExclusiveOr">
+            <summary>
+            Perform an exclusive OR operation on the expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.LeftShift">
+            <summary>
+            Perform a left shift operation on the expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.RightShift">
+            <summary>
+            Perform a right shift operation on the expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.BitwiseAnd">
+            <summary>
+            Perform a bitwise AND operation on the expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.BitwiseOr">
+            <summary>
+            Perform a bitwise OR operation on the expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.BitwiseExclusiveOr">
+            <summary>
+            Perform a bitwise exclusive OR operation on the expressions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.BinaryOperator.BitwiseNot">
+            <summary>
+            Perform a bitwise NOT operation on the expressions.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.CoalesceFunction">
+            <summary>
+            Returns the first non-null expression.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.CoalesceFunction.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.CoalesceFunction.Arguments">
+            <summary>
+            Gets or sets the first expression.
+            </summary>
+            <value>
+            The first expression.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.CoalesceFunction.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.CoalesceFunction" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.CoalesceFunction.#ctor(Watsonia.QueryBuilder.SourceExpression[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.CoalesceFunction" /> class.
+            </summary>
+            <param name="first">The first.</param>
+            <param name="second">The second.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.CoalesceFunction.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.Column">
+            <summary>
+            A column in a table.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Column.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Column.Table">
+            <summary>
+            Gets or sets the table.
+            </summary>
+            <value>
+            The table.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Column.Name">
+            <summary>
+            Gets the name of the column.
+            </summary>
+            <value>
+            The name of the column.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Column.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Column" /> class.
+            </summary>
+            <param name="name">The name of the column.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Column.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Column" /> class.
+            </summary>
+            <param name="tableName">The name of the table.</param>
+            <param name="name">The name of the column.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Column.#ctor(Watsonia.QueryBuilder.Table,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Column"/> class.
+            </summary>
+            <param name="table">The table.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Column.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.ConditionCollection">
+            <summary>
+            A collection of conditions.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ConditionCollection.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ConditionCollection.#ctor(Watsonia.QueryBuilder.ConditionExpression[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.ConditionCollection"/> class.
+            </summary>
+            <param name="conditions">The conditions.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ConditionCollection.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.ConditionExpression">
+            <summary>
+            An expression that can be used as a condition.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.ConditionRelationship">
+            <summary>
+            The logical relationship between a set of conditions.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.ConditionRelationship.And">
+            <summary>
+            The set of conditions should return true if all conditions are true.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.ConditionRelationship.Or">
+            <summary>
+            The set of conditions should return true if any conditions are true.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.ConstantPart">
+            <summary>
+            A statement part containing a constant value.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ConstantPart.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ConstantPart.Value">
+            <summary>
+            Gets the constant value.
+            </summary>
+            <value>
+            The constant value.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ConstantPart.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.ConstantPart" /> class.
+            </summary>
+            <param name="value">The constant value.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ConstantPart.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.ConvertFunction">
+            <summary>
+            Converts an expression to the supplied type.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ConvertFunction.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ConvertFunction.Expression">
+            <summary>
+            Gets or sets the expression to convert.
+            </summary>
+            <value>
+            The expression to convert.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ConvertFunction.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.ConvertFunction" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ConvertFunction.#ctor(Watsonia.QueryBuilder.SourceExpression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.ConvertFunction" /> class.
+            </summary>
+            <param name="expression">The expression to convert.</param>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.DatePart">
+            <summary>
+            A date part.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Millisecond">
+            <summary>
+            The millisecond component of the date's time.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Second">
+            <summary>
+            The second component of the date's time.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Minute">
+            <summary>
+            The minute component of the date's time.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Hour">
+            <summary>
+            The hour component of the date's time.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Day">
+            <summary>
+            The day component of the date.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.DayOfWeek">
+            <summary>
+            The day of the week component of the date.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.DayOfYear">
+            <summary>
+            The day of the year component of the date.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Month">
+            <summary>
+            The month component of the date.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Year">
+            <summary>
+            The year component of the date.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.DatePart.Date">
+            <summary>
+            The date component of the date.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.FieldCollection">
+            <summary>
+            A collection of fields.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.FieldCollection.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.FieldCollection.#ctor(Watsonia.QueryBuilder.Field[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.FieldCollection"/> class.
+            </summary>
+            <param name="fields">The fields.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.FieldCollection.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.OrderByExpression">
+            <summary>
+            An expression that is used to order a select statement.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.OrderByExpression.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.OrderByExpression.Expression">
+            <summary>
+            Gets the expression that is ordered by.
+            </summary>
+            <value>
+            The expression.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.OrderByExpression.Direction">
+            <summary>
+            Gets the direction of ordering.
+            </summary>
+            <value>
+            The direction.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.OrderByExpression.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.OrderByExpression" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.OrderByExpression.#ctor(Watsonia.QueryBuilder.SourceExpression)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.OrderByExpression" /> class.
+            </summary>
+            <param name="expression">The expression that is ordered by.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.OrderByExpression.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.OrderByExpression" /> class.
+            </summary>
+            <param name="columnName">The name of the column to order by.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.OrderByExpression.#ctor(Watsonia.QueryBuilder.SourceExpression,Watsonia.QueryBuilder.OrderDirection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.OrderByExpression" /> class.
+            </summary>
+            <param name="expression">The expression that is ordered by.</param>
+            <param name="direction">The direction of ordering.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.OrderByExpression.#ctor(System.String,Watsonia.QueryBuilder.OrderDirection)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.OrderByExpression" /> class.
+            </summary>
+            <param name="columnName">The name of the column to order by.</param>
+            <param name="direction">The direction of ordering.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.OrderByExpression.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.OrderDirection">
+            <summary>
+            The direction in which an expression is ordered.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.OrderDirection.Ascending">
+            <summary>
+            The expression is ordered from lowest to highest.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.OrderDirection.Descending">
+            <summary>
+            The expression is ordered from highest to lowest.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.Parameter">
+            <summary>
+            A parameter for passing to a stored procedure or function.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Parameter.Name">
+            <summary>
+            Gets the name of the parameter.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Parameter.Value">
+            <summary>
+            Gets the value of the parameter.
+            </summary>
+            <value>
+            The value.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Parameter.ParameterType">
+            <summary>
+            Gets the type of the parameter.
+            </summary>
+            <value>
+            The type of the parameter.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Parameter.#ctor(System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Parameter"/> class for use in a query.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Parameter.#ctor(System.String,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Parameter" /> class for use when defining a procedure or function.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="parameterType">Type of the parameter.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Parameter.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.ScalarField">
+            <summary>
+            A field containing a select statement that returns a single value.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ScalarField.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.ScalarField.Select">
+            <summary>
+            Gets the select statement.
+            </summary>
+            <value>
+            The select statement.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ScalarField.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.ScalarField"/> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ScalarField.#ctor(Watsonia.QueryBuilder.SelectStatement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.ScalarField"/> class.
+            </summary>
+            <param name="select">The select statement.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.ScalarField.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.SourceExpression">
+            <summary>
+            An expression that can be used in the field list of a select statement.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.StatementPart">
+            <summary>
+            The basic building blocks of SQL statements.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.StatementPart.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.Table">
+            <summary>
+            A table in the database.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Table.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Table.Schema">
+            <summary>
+            Gets the name of the schema.
+            </summary>
+            <value>
+            The name of the schema.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Table.Name">
+            <summary>
+            Gets the name of the table.
+            </summary>
+            <value>
+            The name of the table.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.Table.Alias">
+            <summary>
+            Gets the alias to use for the table.
+            </summary>
+            <value>
+            The alias.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Table.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Table" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Table.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.Table" /> class.
+            </summary>
+            <param name="name">The name of the table.</param>
+            <param name="alias">The alias to use for the table.</param>
+            <param name="schema">The schema to use for the table.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Table.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.UnaryOperation">
+            <summary>
+            An operation with a single operator e.g. negative 1.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UnaryOperation.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UnaryOperation.Operator">
+            <summary>
+            Gets or sets the operator.
+            </summary>
+            <value>
+            The operator.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UnaryOperation.Expression">
+            <summary>
+            Gets or sets the expression.
+            </summary>
+            <value>
+            The expression.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.UnaryOperation.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.UnaryOperation" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.UnaryOperation.#ctor(Watsonia.QueryBuilder.UnaryOperator,Watsonia.QueryBuilder.StatementPart)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.UnaryOperation" /> class.
+            </summary>
+            <param name="op">The operator.</param>
+            <param name="expression">The expression.</param>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.UnaryOperator">
+            <summary>
+            An operator that is performed on a single expression.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.UnaryOperator.Not">
+            <summary>
+            Makes the expression logically opposite.
+            </summary>
+        </member>
+        <member name="F:Watsonia.QueryBuilder.UnaryOperator.Negate">
+            <summary>
+            Negates the expression.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.UserDefinedFunction">
+            <summary>
+            A user-defined function in the database.
+            </summary>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UserDefinedFunction.PartType">
+            <summary>
+            Gets the type of the statement part.
+            </summary>
+            <value>
+            The type of the part.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UserDefinedFunction.Schema">
+            <summary>
+            Gets the name of the schema.
+            </summary>
+            <value>
+            The name of the schema.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UserDefinedFunction.Name">
+            <summary>
+            Gets the name of the function.
+            </summary>
+            <value>
+            The name of the function.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UserDefinedFunction.Alias">
+            <summary>
+            Gets the alias to use for the function.
+            </summary>
+            <value>
+            The alias.
+            </value>
+        </member>
+        <member name="P:Watsonia.QueryBuilder.UserDefinedFunction.Parameters">
+            <summary>
+            Gets the paths of related items and collections to include when loading data from this function.
+            </summary>
+            <value>
+            The include paths.
+            </value>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.UserDefinedFunction.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.UserDefinedFunction" /> class.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.UserDefinedFunction.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.UserDefinedFunction" /> class.
+            </summary>
+            <param name="name">The name of the function.</param>
+            <param name="alias">The alias to use for the function.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.UserDefinedFunction.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String" /> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.Select.From(Watsonia.QueryBuilder.Join)">
+            <summary>
+            Froms the specified join.
+            </summary>
+            <param name="join">The join.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.StatementCreator">
+            <summary>
+            Converts QueryModels into Select statements for passing to the database.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.StatementExecutor">
+            <summary>
+            A dummy implementation of IQueryExecutor for visiting statement conditions e.g. in Delete.Where.
+            </summary>
+            <seealso cref="T:Remotion.Linq.IQueryExecutor" />
+        </member>
+        <member name="M:Watsonia.QueryBuilder.StatementExecutor.ExecuteCollection``1(Remotion.Linq.QueryModel)">
+            <summary>
+            Executes the given <paramref name="queryModel" /> as a collection query, i.e. as a query returning objects of type <typeparamref name="T" />.
+            The query does not end with a scalar result operator, but it can end with a single result operator, for example
+            <see cref="T:Remotion.Linq.Clauses.ResultOperators.SingleResultOperator" /> or <see cref="T:Remotion.Linq.Clauses.ResultOperators.FirstResultOperator" />. In such a case, the returned enumerable must yield exactly
+            one object (or none if the last result operator allows empty result sets).
+            </summary>
+            <typeparam name="T">The type of the items returned by the query.</typeparam>
+            <param name="queryModel">The <see cref="T:Remotion.Linq.QueryModel" /> representing the query to be executed. Analyze this via an
+            <see cref="T:Remotion.Linq.IQueryModelVisitor" />.</param>
+            <returns>
+            A scalar value of type <typeparamref name="T" /> that represents the query's result.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.StatementExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)">
+            <summary>
+            Executes the given <paramref name="queryModel" /> as a scalar query, i.e. as a query returning a scalar value of type <typeparamref name="T" />.
+            The query ends with a scalar result operator, for example a <see cref="T:Remotion.Linq.Clauses.ResultOperators.CountResultOperator" /> or a <see cref="T:Remotion.Linq.Clauses.ResultOperators.SumResultOperator" />.
+            </summary>
+            <typeparam name="T">The type of the scalar value returned by the query.</typeparam>
+            <param name="queryModel">The <see cref="T:Remotion.Linq.QueryModel" /> representing the query to be executed. Analyze this via an
+            <see cref="T:Remotion.Linq.IQueryModelVisitor" />.</param>
+            <returns>
+            A scalar value of type <typeparamref name="T" /> that represents the query's result.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+            <remarks>
+            The difference between <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> and <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)" /> is in the kind of object that is returned.
+            <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> is used when a query that would otherwise return a collection result set should pick a single value from the
+            set, for example the first, last, minimum, maximum, or only value in the set. <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)" /> is used when a value is
+            calculated or aggregated from all the values in the collection result set. This applies to, for example, item counts, average calculations,
+            checks for the existence of a specific item, and so on.
+            </remarks>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.StatementExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)">
+            <summary>
+            Executes the given <paramref name="queryModel" /> as a single object query, i.e. as a query returning a single object of type
+            <typeparamref name="T" />.
+            The query ends with a single result operator, for example a <see cref="T:Remotion.Linq.Clauses.ResultOperators.FirstResultOperator" /> or a <see cref="T:Remotion.Linq.Clauses.ResultOperators.SingleResultOperator" />.
+            </summary>
+            <typeparam name="T">The type of the single value returned by the query.</typeparam>
+            <param name="queryModel">The <see cref="T:Remotion.Linq.QueryModel" /> representing the query to be executed. Analyze this via an
+            <see cref="T:Remotion.Linq.IQueryModelVisitor" />.</param>
+            <param name="returnDefaultWhenEmpty">If <see langword="true" />, the executor must return a default value when its result set is empty;
+            if <see langword="false" />, it should throw an <see cref="T:System.InvalidOperationException" /> when its result set is empty.</param>
+            <returns>
+            A single value of type <typeparamref name="T" /> that represents the query's result.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+            <remarks>
+            The difference between <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> and <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)" /> is in the kind of object that is returned.
+            <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteSingle``1(Remotion.Linq.QueryModel,System.Boolean)" /> is used when a query that would otherwise return a collection result set should pick a single value from the
+            set, for example the first, last, minimum, maximum, or only value in the set. <see cref="M:Remotion.Linq.IQueryExecutor.ExecuteScalar``1(Remotion.Linq.QueryModel)" /> is used when a value is
+            calculated or aggregated from all the values in the collection result set. This applies to, for example, item counts, average calculations,
+            checks for the existence of a specific item, and so on.
+            </remarks>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.StatementPartCreator">
+            <summary>
+            Converts Expressions (such as those in Re-Linq's QueryModels) into StatementParts.
+            </summary>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.StatementQuery`1">
+            <summary>
+            A dummy implementation of QueryableBase for visiting statement conditions e.g. in Delete.Where.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <seealso cref="T:Remotion.Linq.QueryableBase`1" />
+        </member>
+        <member name="M:Watsonia.QueryBuilder.StatementQuery`1.#ctor(Remotion.Linq.Parsing.Structure.IQueryParser,Remotion.Linq.IQueryExecutor)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Watsonia.QueryBuilder.StatementQuery`1"/> class.
+            </summary>
+            <param name="queryParser">The <see cref="T:Remotion.Linq.Parsing.Structure.IQueryParser" /> used to parse queries. Specify an instance of
+            <see cref="T:Remotion.Linq.Parsing.Structure.QueryParser" /> for default behavior. See also <see cref="M:Remotion.Linq.Parsing.Structure.QueryParser.CreateDefault" />.</param>
+            <param name="executor">The <see cref="T:Remotion.Linq.IQueryExecutor" /> used to execute the query represented by this <see cref="T:Remotion.Linq.QueryableBase`1" />.</param>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.StatementQuery`1.#ctor(System.Linq.IQueryProvider,System.Linq.Expressions.Expression)">
+            <summary>
+            Initializes a new instance of the <see cref="!:StatementQuery" /> class.
+            </summary>
+            <param name="provider">The provider.</param>
+            <param name="expression">The expression.</param>
+        </member>
+        <member name="T:Watsonia.QueryBuilder.TypeHelper">
+            <summary>
+            Contains helper methods for dealing with types.
+            </summary>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.TypeHelper.IsNullableType(System.Type)">
+            <summary>
+            Determines whether the specified type is nullable.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if the specified type is nullable; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:Watsonia.QueryBuilder.TypeHelper.GetNonNullableType(System.Type)">
+            <summary>
+            Gets a non-nullable version of the supplied type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
