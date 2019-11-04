@@ -265,8 +265,9 @@ namespace Watsonia.QueryBuilder
 			{
 				return (PropertyInfo)mex.Member;
 			}
-			else if (selector.Body is UnaryExpression uex) // Throw away Converts
+			else if (selector.Body is UnaryExpression uex)
 			{
+				// Throw away converts
 				if (uex.Operand is MemberExpression omex)
 				{
 					return (PropertyInfo)omex.Member;

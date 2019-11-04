@@ -140,6 +140,8 @@ namespace Watsonia.Data.Tests.Queries
 		////		Select.From<Customer>("c").Columns(c => c));
 		////}
 
+		// NOTE: I don't really see the point of selecting locals:
+
 		////[TestMethod]
 		////public void TestSelectAnonymousWithObject()
 		////{

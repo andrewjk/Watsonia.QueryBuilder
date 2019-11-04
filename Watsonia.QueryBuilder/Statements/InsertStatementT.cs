@@ -38,8 +38,17 @@ namespace Watsonia.QueryBuilder
 		{
 			var insert = new InsertStatement();
 			insert.Target = new Table(mapper.GetTableName(this.Target));
-			insert.SetValues.AddRange(this.SetValues.Select(sv => new SetValue(new Column(mapper.GetColumnName(sv.Field)), sv.Value)));
+			insert.SetValues.AddRange(this.SetValues.Select(sv => PropertyToSetValue(sv, mapper)));
 			return insert;
+		}
+
+		private SetValue PropertyToSetValue(FieldValue sv, DatabaseMapper mapper)
+		{
+			return new SetValue(
+				new Column(
+					mapper.GetColumnName(sv.Field)
+				),
+				sv.Value);
 		}
 	}
 }

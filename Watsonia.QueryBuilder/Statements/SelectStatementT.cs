@@ -55,8 +55,8 @@ namespace Watsonia.QueryBuilder
 		{
 			var select = new SelectStatement();
 			select.Source = new Table(mapper.GetTableName(this.Source.Type), this.Source.Alias);
-			select.SourceFields.AddRange(this.SourceFields.Select(s => new Column(TableNameOrAlias(mapper, s.DeclaringType), mapper.GetColumnName(s))));
-			select.SourceFields.AddRange(this.AggregateFields.Select(s => new Aggregate(s.Aggregate, new Column(s.Field != null ? TableNameOrAlias(mapper, s.Field.DeclaringType) : "", s.Field != null ? mapper.GetColumnName(s.Field) : "*"))));
+			select.SourceFields.AddRange(this.SourceFields.Select(s => PropertyToSourceField(s, mapper)));
+			select.SourceFields.AddRange(this.AggregateFields.Select(s => PropertyToAggregate(s, mapper)));
 			select.IsAny = this.IsAny;
 			select.IsAll = this.IsAll;
 			select.IsDistinct = this.IsDistinct;
@@ -71,9 +71,46 @@ namespace Watsonia.QueryBuilder
 					select.Conditions.Add(condition);
 				}
 			}
-			select.OrderByFields.AddRange(this.OrderByFields.Select(s => new OrderByExpression(new Column(TableNameOrAlias(mapper, s.Field.DeclaringType), mapper.GetColumnName(s.Field)), s.Direction)));
-			select.GroupByFields.AddRange(this.GroupByFields.Select(s => new Column(TableNameOrAlias(mapper, s.DeclaringType), mapper.GetColumnName(s))));
+			select.OrderByFields.AddRange(this.OrderByFields.Select(s => PropertyToOrderBy(s, mapper)));
+			select.GroupByFields.AddRange(this.GroupByFields.Select(s => PropertyToGroupBy(s, mapper)));
 			return select;
+		}
+
+		private SourceExpression PropertyToSourceField(PropertyInfo prop, DatabaseMapper mapper)
+		{
+			if (prop != null)
+			{
+				return new Column(TableNameOrAlias(mapper, prop.DeclaringType), mapper.GetColumnName(prop));
+			}
+			else
+			{
+				return new ConstantPart(null);
+			}
+		}
+
+		private SourceExpression PropertyToAggregate(FieldAggregate field, DatabaseMapper mapper)
+		{
+			return new Aggregate(
+				field.Aggregate,
+				new Column(
+					field.Field != null ? TableNameOrAlias(mapper, field.Field.DeclaringType) : "",
+					field.Field != null ? mapper.GetColumnName(field.Field) : "*")
+				);
+		}
+
+		private OrderByExpression PropertyToOrderBy(FieldOrder field, DatabaseMapper mapper)
+		{
+			return new OrderByExpression(
+				new Column(
+					TableNameOrAlias(mapper, field.Field.DeclaringType),
+					mapper.GetColumnName(field.Field)), field.Direction);
+		}
+
+		private Column PropertyToGroupBy(PropertyInfo prop, DatabaseMapper mapper)
+		{
+			return new Column(
+					 TableNameOrAlias(mapper, prop.DeclaringType),
+					 mapper.GetColumnName(prop));
 		}
 
 		private string TableNameOrAlias(DatabaseMapper mapper, Type t)

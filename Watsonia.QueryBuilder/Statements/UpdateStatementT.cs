@@ -42,12 +42,21 @@ namespace Watsonia.QueryBuilder
 		{
 			var update = new UpdateStatement();
 			update.Target = new Table(mapper.GetTableName(this.Target));
-			update.SetValues.AddRange(this.SetValues.Select(sv => new SetValue(new Column(mapper.GetTableName(sv.Field.DeclaringType), mapper.GetColumnName(sv.Field)), sv.Value)));
+			update.SetValues.AddRange(this.SetValues.Select(sv => PropertyToSetValue(sv, mapper)));
 			foreach (var condition in StatementCreator.VisitStatementConditions(this.Conditions, mapper, false))
 			{
 				update.Conditions.Add(condition);
 			}
 			return update;
+		}
+
+		private SetValue PropertyToSetValue(FieldValue sv, DatabaseMapper mapper)
+		{
+			return new SetValue(
+				new Column(
+					mapper.GetTableName(sv.Field.DeclaringType),
+					mapper.GetColumnName(sv.Field)),
+				sv.Value);
 		}
 	}
 }
