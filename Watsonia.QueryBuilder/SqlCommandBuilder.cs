@@ -37,8 +37,7 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericSelect:
 				{
-					var method = statement.GetType().GetMethod("CreateStatement");
-					var select = (SelectStatement)method.Invoke(statement, new object[] { mapper });
+					var select = (SelectStatement)((GenericStatement)statement).CreateStatement(mapper);
 					VisitSelect(select);
 					break;
 				}
@@ -49,8 +48,7 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericInsert:
 				{
-					var method = statement.GetType().GetMethod("CreateStatement");
-					var insert = (InsertStatement)method.Invoke(statement, new object[] { mapper });
+					var insert = (InsertStatement)((GenericStatement)statement).CreateStatement(mapper);
 					VisitInsert(insert);
 					break;
 				}
@@ -61,8 +59,7 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericUpdate:
 				{
-					var method = statement.GetType().GetMethod("CreateStatement");
-					var update = (UpdateStatement)method.Invoke(statement, new object[] { mapper });
+					var update = (UpdateStatement)((GenericStatement)statement).CreateStatement(mapper);
 					VisitUpdate(update);
 					break;
 				}
@@ -73,8 +70,7 @@ namespace Watsonia.QueryBuilder
 				}
 				case StatementPartType.GenericDelete:
 				{
-					var method = statement.GetType().GetMethod("CreateStatement");
-					var delete = (DeleteStatement)method.Invoke(statement, new object[] { mapper });
+					var delete = (DeleteStatement)((GenericStatement)statement).CreateStatement(mapper);
 					VisitDelete(delete);
 					break;
 				}

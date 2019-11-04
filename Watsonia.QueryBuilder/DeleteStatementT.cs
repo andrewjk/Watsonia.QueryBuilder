@@ -9,7 +9,7 @@ using Watsonia.QueryBuilder;
 
 namespace Watsonia.QueryBuilder
 {
-	public sealed class DeleteStatement<T> : Statement
+	public sealed class DeleteStatement<T> : GenericStatement
 	{
 		public override StatementPartType PartType
 		{
@@ -36,7 +36,7 @@ namespace Watsonia.QueryBuilder
 			this.Target = typeof(T);
 		}
 
-		public DeleteStatement CreateStatement(DatabaseMapper mapper)
+		public override Statement CreateStatement(DatabaseMapper mapper)
 		{
 			var delete = new DeleteStatement();
 			delete.Target = new Table(mapper.GetTableName(this.Target));

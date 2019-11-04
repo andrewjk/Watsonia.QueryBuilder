@@ -10,7 +10,7 @@ using Watsonia.QueryBuilder;
 
 namespace Watsonia.QueryBuilder
 {
-	public sealed class SelectStatement<T> : Statement
+	public sealed class SelectStatement<T> : GenericStatement
 	{
 		public override StatementPartType PartType
 		{
@@ -51,7 +51,7 @@ namespace Watsonia.QueryBuilder
 			this.Source = new Table<T>(typeof(T), alias);
 		}
 
-		public SelectStatement CreateStatement(DatabaseMapper mapper)
+		public override Statement CreateStatement(DatabaseMapper mapper)
 		{
 			var select = new SelectStatement();
 			select.Source = new Table(mapper.GetTableName(this.Source.Type), this.Source.Alias);

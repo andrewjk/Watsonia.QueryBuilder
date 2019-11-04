@@ -9,7 +9,7 @@ using Watsonia.QueryBuilder;
 
 namespace Watsonia.QueryBuilder
 {
-	public sealed class InsertStatement<T> : Statement
+	public sealed class InsertStatement<T> : GenericStatement
 	{
 		public override StatementPartType PartType
 		{
@@ -34,7 +34,7 @@ namespace Watsonia.QueryBuilder
 			this.Target = typeof(T);
 		}
 
-		public InsertStatement CreateStatement(DatabaseMapper mapper)
+		public override Statement CreateStatement(DatabaseMapper mapper)
 		{
 			var insert = new InsertStatement();
 			insert.Target = new Table(mapper.GetTableName(this.Target));
