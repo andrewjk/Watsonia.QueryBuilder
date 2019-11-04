@@ -199,7 +199,32 @@ namespace Watsonia.QueryBuilder
 
 			Visit(expression.Right);
 			newCondition.Value = this.Stack.Pop();
-			this.Stack.Push(newCondition);
+
+			if (newCondition.Field.PartType == StatementPartType.FieldCollection)
+			{
+				// If anonymous types have been passed in for multi-value checking, we need to split
+				// them out manually from the field collection and constant part that Relinq creates
+				var fields = (FieldCollection)newCondition.Field;
+				var value = ((ConstantPart)newCondition.Value).Value;
+				var valueList = value.GetType().GetProperties().Select(x => x.GetValue(value, null)).ToList();
+				var newConditionCollection = new ConditionCollection();
+				// Swap the operator if it's NotEquals
+				var op = newCondition.Operator;
+				if (op == SqlOperator.NotEquals)
+				{
+					op = SqlOperator.Equals;
+					newConditionCollection.Not = true;
+				}
+				for (var i = 0; i < fields.Count; i++)
+				{
+					newConditionCollection.Add(new Condition(fields[i], op, valueList[i]));
+				}
+				this.Stack.Push(newConditionCollection);
+			}
+			else
+			{
+				this.Stack.Push(newCondition);
+			}
 
 			return expression;
 		}

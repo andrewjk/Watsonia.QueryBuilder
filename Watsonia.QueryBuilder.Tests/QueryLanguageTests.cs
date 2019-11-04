@@ -76,28 +76,20 @@ namespace Watsonia.Data.Tests.Queries
 				Select.From<Customer>("c").Where(c => new { x = c.City } == new { x = "London" }));
 		}
 
-		////[TestMethod]
-		////public void TestCompareConstructedMultiValueEqual()
-		////{
-		////	TestQuery2(
-		////		"TestCompareConstructedMultiValueEqual",
-		////		Select.From<Customer>("c").Where(c => new { x = c.City, y = c.Country } == new { x = "London", y = "UK" }));
-		////}
-
-		////[TestMethod]
-		////public void TestCompareConstructedMultiValueNotEqual()
-		////{
-		////	TestQuery2(
-		////		"TestCompareConstructedMultiValueNotEqual",
-		////		Select.From<Customer>("c").Where(c => new { x = c.City, y = c.Country } != new { x = "London", y = "UK" }));
-		////}
-
 		[TestMethod]
-		public void TestCompareConstructed()
+		public void TestCompareConstructedMultiValueEqual()
 		{
 			TestQuery2(
-				"TestCompareConstructed",
-				Select.From<Customer>("c").Where(c => new { x = c.City } == new { x = "London" }));
+				"TestCompareConstructedMultiValueEqual",
+				Select.From<Customer>("c").Where(c => new { x = c.City, y = c.Country } == new { x = "London", y = "UK" }));
+		}
+
+		[TestMethod]
+		public void TestCompareConstructedMultiValueNotEqual()
+		{
+			TestQuery2(
+				"TestCompareConstructedMultiValueNotEqual",
+				Select.From<Customer>("c").Where(c => new { x = c.City, y = c.Country } != new { x = "London", y = "UK" }));
 		}
 
 		[TestMethod]

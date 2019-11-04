@@ -891,22 +891,17 @@
   <baseline key="TestCompareConstructedEqual">
     SELECT *
     FROM [Customers] AS [c]
-    WHERE [c].[City] = { x = London }
+    WHERE ([c].[City] = 'London')
   </baseline>
   <baseline key="TestCompareConstructedMultiValueEqual">
     SELECT *
     FROM [Customers] AS [c]
-    WHERE [c].[City] = 'London') AND ([c].[Country] = 'UK'
+    WHERE ([c].[City] = 'London' AND [c].[Country] = 'UK')
   </baseline>
   <baseline key="TestCompareConstructedMultiValueNotEqual">
     SELECT *
     FROM [Customers] AS [c]
-    WHERE NOT (([c].[City] = 'London') AND ([c].[Country] = 'UK'))
-  </baseline>
-  <baseline key="TestCompareConstructed">
-    SELECT *
-    FROM [Customers] AS [c]
-    WHERE [c].[City] = { x = London }
+    WHERE NOT ([c].[City] = 'London' AND [c].[Country] = 'UK')
   </baseline>
   <baseline key="TestSelectScalar">
     SELECT [c].[City]
