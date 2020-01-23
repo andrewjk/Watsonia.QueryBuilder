@@ -436,20 +436,31 @@ namespace Watsonia.QueryBuilder
 		{
 			this.CommandText.Append("UPDATE ");
 			this.VisitTable(update.Target);
-			this.CommandText.Append(" SET ");
+			this.CommandText.Append(" SET");
+			this.AppendNewLine(Indentation.Inner);
 			if (update.SetValues != null && update.SetValues.Count > 0)
 			{
 				for (var i = 0; i < update.SetValues.Count; i++)
 				{
 					if (i > 0)
 					{
-						this.CommandText.Append(", ");
+						this.CommandText.Append(",");
+						this.AppendNewLine(Indentation.Same);
 					}
 					this.VisitColumn(update.SetValues[i].Column, ignoreTablePrefix: true);
 					this.CommandText.Append(" = ");
-					this.VisitField(update.SetValues[i].Value);
+					if (update.SetValues[i].Value is SelectStatement select)
+					{
+						// Special case - ensure a select statement is surrounded with brackets
+						this.VisitField(new SelectExpression(select));
+					}
+					else
+					{
+						this.VisitField(update.SetValues[i].Value);
+					}
 				}
 			}
+			this.Indent(Indentation.Outer);
 			if (update.Conditions != null && update.Conditions.Count > 0)
 			{
 				VisitConditions(update.Conditions);

@@ -21,7 +21,14 @@ namespace Watsonia.QueryBuilder
 		public SetValue(Column column, object value)
 		{
 			this.Column = column;
-			this.Value = new ConstantPart(value);
+			if (value is StatementPart)
+			{
+				this.Value = (StatementPart)value;
+			}
+			else
+			{
+				this.Value = new ConstantPart(value);
+			}
 		}
 	}
 }
