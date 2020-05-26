@@ -25,6 +25,22 @@ namespace Watsonia.QueryBuilder
 		}
 
 		/// <summary>
+		/// Sets the condition to delete all records from the table (be careful!).
+		/// </summary>
+		/// <typeparam name="T">The type corresponding to the table that records should be deleted from.</typeparam>
+		/// <param name="delete">The delete statement.</param>
+		/// <param name="all">if set to <c>true</c>, delete all records from the table.</param>
+		/// <returns>The delete statement.</returns>
+		public static DeleteStatement<T> Where<T>(this DeleteStatement<T> delete, bool all)
+		{
+			if (all)
+			{
+				delete.Conditions = (item) => true;
+			}
+			return delete;
+		}
+
+		/// <summary>
 		/// Adds a condition to the delete statement.
 		/// </summary>
 		/// <typeparam name="T">The type corresponding to the table that records should be deleted from.</typeparam>
