@@ -14,9 +14,6 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The type of the part.
 		/// </value>
-		public abstract StatementPartType PartType
-		{
-			get;
-		}
+		public abstract StatementPartType PartType { get; }
 	}
 }

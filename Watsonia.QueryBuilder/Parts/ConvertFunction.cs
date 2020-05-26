@@ -28,11 +28,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The expression to convert.
 		/// </value>
-		public SourceExpression Expression
-		{
-			get;
-			internal set;
-		}
+		public SourceExpression Expression { get; internal set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ConvertFunction" /> class.

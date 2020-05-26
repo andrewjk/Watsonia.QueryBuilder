@@ -14,17 +14,9 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		public JoinType JoinType
-		{
-			get;
-			internal set;
-		}
+		public JoinType JoinType { get; internal set; }
 		
-		public StatementPart Table
-		{
-			get;
-			internal set;
-		}
+		public StatementPart Table { get; internal set; }
 
 		public ConditionCollection Conditions { get; } = new ConditionCollection();
 

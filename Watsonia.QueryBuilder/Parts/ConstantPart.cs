@@ -61,11 +61,11 @@ namespace Watsonia.QueryBuilder
 				b.Append(this.Value.ToString());
 				b.Append("'");
 			}
-			else if (this.Value is IEnumerable)
+			else if (this.Value is IEnumerable enumerable)
 			{
 				b.Append("{ ");
 				var values = new List<string>();
-				foreach (var o in (IEnumerable)this.Value)
+				foreach (var o in enumerable)
 				{
 					if (o == null)
 					{

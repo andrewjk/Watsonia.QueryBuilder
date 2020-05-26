@@ -137,19 +137,19 @@ namespace Watsonia.QueryBuilder
 			{
 				this.CommandText.Append("''");
 			}
-			else if (value is IEnumerable && !(value is string) && !(value is byte[]))
+			else if (value is IEnumerable enumerable && !(value is string) && !(value is byte[]))
 			{
 				var firstValue = true;
-				foreach (var innerValue in (IEnumerable)value)
+				foreach (var innerValue in enumerable)
 				{
 					if (!firstValue)
 					{
 						this.CommandText.Append(", ");
 					}
 					firstValue = false;
-					if (innerValue is ConstantPart)
+					if (innerValue is ConstantPart constantValue)
 					{
-						this.VisitConstant((ConstantPart)innerValue);
+						this.VisitConstant(constantValue);
 					}
 					else
 					{
@@ -1122,9 +1122,9 @@ namespace Watsonia.QueryBuilder
 		{
 			// TODO: Should all types of conditions be a class?  Not exposed to the user, because that
 			// interface would be gross
-			if (condition is Exists)
+			if (condition is Exists existsCondition)
 			{
-				VisitExists((Exists)condition);
+				VisitExists(existsCondition);
 				return;
 			}
 
@@ -1133,13 +1133,13 @@ namespace Watsonia.QueryBuilder
 				this.CommandText.Append("NOT ");
 			}
 
-			if (condition is Condition)
+			if (condition is Condition singleCondition)
 			{
-				VisitCondition((Condition)condition);
+				VisitCondition(singleCondition);
 			}
-			else if (condition is ConditionCollection)
+			else if (condition is ConditionCollection multipleConditions)
 			{
-				VisitConditionCollection((ConditionCollection)condition);
+				VisitConditionCollection(multipleConditions);
 			}
 		}
 
@@ -1151,8 +1151,8 @@ namespace Watsonia.QueryBuilder
 		protected virtual void VisitCondition(Condition condition)
 		{
 			// Check for null comparisons first
-			var fieldIsNull = (condition.Field is ConstantPart && ((ConstantPart)condition.Field).Value == null);
-			var valueIsNull = (condition.Value is ConstantPart && ((ConstantPart)condition.Value).Value == null);
+			var fieldIsNull = (condition.Field is ConstantPart constantField && constantField.Value == null);
+			var valueIsNull = (condition.Value is ConstantPart constantValue && constantValue.Value == null);
 			if ((condition.Operator == SqlOperator.Equals || condition.Operator == SqlOperator.NotEquals) &&
 				(fieldIsNull || valueIsNull))
 			{
@@ -1312,11 +1312,11 @@ namespace Watsonia.QueryBuilder
 			if (condition.Value.PartType == StatementPartType.ConstantPart)
 			{
 				var value = ((ConstantPart)condition.Value).Value;
-				if (value is IEnumerable && !(value is string) && !(value is byte[]))
+				if (value is IEnumerable enumerable && !(value is string) && !(value is byte[]))
 				{
 					// HACK: Ugh
 					var hasThings = false;
-					foreach (var thing in (IEnumerable)value)
+					foreach (var thing in enumerable)
 					{
 						hasThings = true;
 						break;

@@ -30,9 +30,8 @@ namespace Watsonia.QueryBuilder
 				b.Append(" Then ");
 				b.Append(this.IfTrue.ToString());
 				var ifFalse = this.IfFalse;
-				while (ifFalse is ConditionalCase)
+				while (ifFalse is ConditionalCase ifFalseCase)
 				{
-					var ifFalseCase = (ConditionalCase)ifFalse;
 					b.Append(" When ");
 					b.Append(ifFalseCase.Test.ToString());
 					b.Append(" Then ");

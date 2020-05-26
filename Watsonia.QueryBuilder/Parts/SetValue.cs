@@ -21,9 +21,9 @@ namespace Watsonia.QueryBuilder
 		public SetValue(Column column, object value)
 		{
 			this.Column = column;
-			if (value is StatementPart)
+			if (value is StatementPart statementPartValue)
 			{
-				this.Value = (StatementPart)value;
+				this.Value = statementPartValue;
 			}
 			else
 			{

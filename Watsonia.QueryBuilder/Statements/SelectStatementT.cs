@@ -20,11 +20,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		public Table<T> Source
-		{
-			get;
-			internal set;
-		}
+		public Table<T> Source { get; internal set; }
 
 		public List<PropertyInfo> SourceFields { get; } = new List<PropertyInfo>();
 

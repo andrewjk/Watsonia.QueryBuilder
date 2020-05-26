@@ -28,11 +28,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The expression.
 		/// </value>
-		public SourceExpression Expression
-		{
-			get;
-			internal set;
-		}
+		public SourceExpression Expression { get; internal set; }
 
 		/// <summary>
 		/// Gets the direction of ordering.
@@ -40,11 +36,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The direction.
 		/// </value>
-		public OrderDirection Direction
-		{
-			get;
-			internal set;
-		}
+		public OrderDirection Direction { get; internal set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="OrderByExpression" /> class.

@@ -20,11 +20,7 @@ namespace Watsonia.QueryBuilder
 
 		private DatabaseMapper Configuration { get; set; }
 
-		private bool AliasTables
-		{
-			get;
-			set;
-		}
+		private bool AliasTables { get; set; }
 
 		private Stack<StatementPart> Stack { get; set; }
 
@@ -100,24 +96,31 @@ namespace Watsonia.QueryBuilder
 				{
 					subCondition = (ConditionExpression)this.Stack.Pop();
 				}
-				else if (this.Stack.Peek() is UnaryOperation && ((UnaryOperation)this.Stack.Peek()).Expression is ConditionExpression)
+				else if (this.Stack.Peek() is UnaryOperation unaryOp && unaryOp.Expression is ConditionExpression)
 				{
-					subCondition = (ConditionExpression)((UnaryOperation)this.Stack.Pop()).Expression;
+					var unary = (UnaryOperation)this.Stack.Pop();
+					subCondition = (ConditionExpression)unary.Expression;
 				}
-				else if (this.Stack.Peek() is UnaryOperation && ((UnaryOperation)this.Stack.Peek()).Expression is Column)
+				else if (this.Stack.Peek() is UnaryOperation unaryOp2 && unaryOp2.Expression is Column)
 				{
 					var unary = (UnaryOperation)this.Stack.Pop();
 					var column = (Column)unary.Expression;
 					subCondition = new Condition(column, SqlOperator.Equals, new ConstantPart(unary.Operator != UnaryOperator.Not));
 				}
-				else if (this.Stack.Peek() is ConstantPart && ((ConstantPart)this.Stack.Peek()).Value is bool)
+				else if (this.Stack.Peek() is ConstantPart constantPart && constantPart.Value is bool)
 				{
-					var value = (bool)((ConstantPart)this.Stack.Pop()).Value;
-					subCondition = new Condition() { Field = new ConstantPart(value), Operator = SqlOperator.Equals, Value = new ConstantPart(true) };
+					var constant = (ConstantPart)this.Stack.Pop();
+					var value = (bool)constant.Value;
+					subCondition = new Condition() {
+						Field = new ConstantPart(value),
+						Operator = SqlOperator.Equals,
+						Value = new ConstantPart(true)
+					};
 				}
-				else if (this.Stack.Peek() is Column && ((Column)this.Stack.Peek()).PropertyType == typeof(bool))
+				else if (this.Stack.Peek() is Column columnPart && columnPart.PropertyType == typeof(bool))
 				{
-					subCondition = new Condition((Column)this.Stack.Pop(), SqlOperator.Equals, new ConstantPart(true));
+					var column = (Column)this.Stack.Pop();
+					subCondition = new Condition(column, SqlOperator.Equals, new ConstantPart(true));
 				}
 				else
 				{
@@ -449,14 +452,14 @@ namespace Watsonia.QueryBuilder
 				string tableName;
 				if (this.AliasTables)
 				{
-					if (expression.Expression is UnaryExpression)
+					if (expression.Expression is UnaryExpression unaryExpression)
 					{
-						var source = (QuerySourceReferenceExpression)((UnaryExpression)expression.Expression).Operand;
+						var source = (QuerySourceReferenceExpression)unaryExpression.Operand;
 						tableName = source.ReferencedQuerySource.ItemName.Replace("<generated>", "g");
 					}
-					else if (expression.Expression is MemberExpression)
+					else if (expression.Expression is MemberExpression memberExpression)
 					{
-						var source = (QuerySourceReferenceExpression)((MemberExpression)expression.Expression).Expression;
+						var source = (QuerySourceReferenceExpression)memberExpression.Expression;
 						tableName = source.ReferencedQuerySource.ItemName.Replace("<generated>", "g");
 					}
 					else
@@ -1198,13 +1201,12 @@ namespace Watsonia.QueryBuilder
 		protected override Expression VisitSubQuery(SubQueryExpression expression)
 		{
 			if (expression.QueryModel.ResultOperators.Count > 0 &&
-				expression.QueryModel.ResultOperators[0] is Remotion.Linq.Clauses.ResultOperators.ContainsResultOperator)
+				expression.QueryModel.ResultOperators[0] is Remotion.Linq.Clauses.ResultOperators.ContainsResultOperator contains)
 			{
 				// It's an Array.Contains, so we need to convert the subquery into a condition
 				var newCondition = new Condition();
 				newCondition.Operator = SqlOperator.IsIn;
 
-				var contains = (Remotion.Linq.Clauses.ResultOperators.ContainsResultOperator)expression.QueryModel.ResultOperators[0];
 				Visit(contains.Item);
 				newCondition.Field = this.Stack.Pop();
 

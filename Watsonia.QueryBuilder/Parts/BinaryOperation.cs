@@ -27,11 +27,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The left expression.
 		/// </value>
-		public SourceExpression Left
-		{
-			get;
-			internal set;
-		}
+		public SourceExpression Left { get; internal set; }
 
 		/// <summary>
 		/// Gets or sets the operator.
@@ -39,11 +35,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The operator.
 		/// </value>
-		public BinaryOperator Operator
-		{
-			get;
-			internal set;
-		}
+		public BinaryOperator Operator { get; internal set; }
 
 		private string OperatorString
 		{
@@ -109,11 +101,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The right expression.
 		/// </value>
-		public SourceExpression Right
-		{
-			get;
-			internal set;
-		}
+		public SourceExpression Right { get; internal set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BinaryOperation" /> class.

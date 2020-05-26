@@ -19,17 +19,9 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		public Type Target
-		{
-			get;
-			internal set;
-		}
+		public Type Target { get; internal set; }
 
-		public Expression<Func<T, bool>> Conditions
-		{
-			get;
-			internal set;
-		}
+		public Expression<Func<T, bool>> Conditions { get; internal set; }
 
 		internal DeleteStatement()
 		{

@@ -17,11 +17,7 @@ namespace Watsonia.QueryBuilder
 	{
 		private DatabaseMapper Configuration { get; set; }
 
-        private bool AliasTables
-        {
-            get;
-            set;
-        }
+        private bool AliasTables { get; set; }
 
 		private SelectStatement SelectStatement { get; set; }
 
@@ -134,10 +130,9 @@ namespace Watsonia.QueryBuilder
 			var leftColumn = (SourceExpression)StatementPartCreator.Visit(queryModel, joinClause.OuterKeySelector, this.Configuration, this.AliasTables);
 			var rightColumn = (SourceExpression)StatementPartCreator.Visit(queryModel, joinClause.InnerKeySelector, this.Configuration, this.AliasTables);
 
-			if (leftColumn is FieldCollection && rightColumn is FieldCollection)
+			if (leftColumn is FieldCollection leftColumnCollection &&
+				rightColumn is FieldCollection rightColumnCollection)
 			{
-				var leftColumnCollection = (FieldCollection)leftColumn;
-				var rightColumnCollection = (FieldCollection)rightColumn;
 				var joinConditions = new ConditionCollection();
 				for (var i = 0; i < leftColumnCollection.Count; i++)
 				{
@@ -217,11 +212,11 @@ namespace Watsonia.QueryBuilder
 				return;
 			}
 
-			if (resultOperator is AllResultOperator)
+			if (resultOperator is AllResultOperator allResults)
 			{
 				this.SelectStatement.IsAll = true;
 				this.SelectStatement.IsAggregate = true;
-				var predicate = ((AllResultOperator)resultOperator).Predicate;
+				var predicate = allResults.Predicate;
 				if (predicate != null)
 				{
 					VisitPredicate(predicate, queryModel);
@@ -229,11 +224,11 @@ namespace Watsonia.QueryBuilder
 				return;
 			}
 
-			if (resultOperator is ContainsResultOperator)
+			if (resultOperator is ContainsResultOperator containsResult)
 			{
 				this.SelectStatement.IsContains = true;
 				this.SelectStatement.IsAggregate = true;
-				var item = ((ContainsResultOperator)resultOperator).Item;
+				var item = containsResult.Item;
 				if (item != null && item.NodeType == ExpressionType.Constant)
 				{
 					this.SelectStatement.ContainsItem = new ConstantPart(((ConstantExpression)item).Value);
@@ -346,12 +341,12 @@ namespace Watsonia.QueryBuilder
 				return;
 			}
 
-			if (resultOperator is TakeResultOperator)
+			if (resultOperator is TakeResultOperator takeResult)
 			{
-				var exp = ((TakeResultOperator)resultOperator).Count;
-				if (exp.NodeType == ExpressionType.Constant)
+				var count = takeResult.Count;
+				if (count.NodeType == ExpressionType.Constant)
 				{
-					this.SelectStatement.Limit = (int)((ConstantExpression)exp).Value;
+					this.SelectStatement.Limit = (int)((ConstantExpression)count).Value;
 				}
 				else
 				{
@@ -360,12 +355,12 @@ namespace Watsonia.QueryBuilder
 				return;
 			}
 
-			if (resultOperator is SkipResultOperator)
+			if (resultOperator is SkipResultOperator skipResult)
 			{
-				var exp = ((SkipResultOperator)resultOperator).Count;
-				if (exp.NodeType == ExpressionType.Constant)
+				var count = skipResult.Count;
+				if (count.NodeType == ExpressionType.Constant)
 				{
-					this.SelectStatement.StartIndex = (int)((ConstantExpression)exp).Value;
+					this.SelectStatement.StartIndex = (int)((ConstantExpression)count).Value;
 				}
 				else
 				{
@@ -403,28 +398,31 @@ namespace Watsonia.QueryBuilder
 		{
 			var whereStatement = StatementPartCreator.Visit(queryModel, predicate, this.Configuration, this.AliasTables);
 			ConditionExpression condition;
-			if (whereStatement is ConditionExpression)
+			if (whereStatement is ConditionExpression conditionWhere)
 			{
-				condition = (ConditionExpression)whereStatement;
+				condition = conditionWhere;
 			}
-			else if (whereStatement is UnaryOperation && ((UnaryOperation)whereStatement).Expression is ConditionExpression)
+			else if (whereStatement is UnaryOperation unaryWhere && unaryWhere.Expression is ConditionExpression unaryWhereExpression)
 			{
-				condition = (ConditionExpression)((UnaryOperation)whereStatement).Expression;
+				condition = unaryWhereExpression;
 			}
-			else if (whereStatement is UnaryOperation && ((UnaryOperation)whereStatement).Expression is Column)
+			else if (whereStatement is UnaryOperation unaryWhere2 && unaryWhere2.Expression is Column)
 			{
-				var unary = (UnaryOperation)whereStatement;
+				var unary = unaryWhere2;
 				var column = (Column)unary.Expression;
 				condition = new Condition(column, SqlOperator.Equals, new ConstantPart(unary.Operator != UnaryOperator.Not));
 			}
-			else if (whereStatement is ConstantPart && ((ConstantPart)whereStatement).Value is bool)
+			else if (whereStatement is ConstantPart constantWhere && constantWhere.Value is bool booleanWhere)
 			{
-				var value = (bool)((ConstantPart)whereStatement).Value;
-				condition = new Condition() { Field = new ConstantPart(value), Operator = SqlOperator.Equals, Value = new ConstantPart(true) };
+				condition = new Condition() {
+					Field = new ConstantPart(booleanWhere),
+					Operator = SqlOperator.Equals,
+					Value = new ConstantPart(true)
+				};
 			}
-			else if (whereStatement is Column && ((Column)whereStatement).PropertyType == typeof(bool))
+			else if (whereStatement is Column columnWhere && columnWhere.PropertyType == typeof(bool))
 			{
-				condition = new Condition((Column)whereStatement, SqlOperator.Equals, new ConstantPart(true));
+				condition = new Condition(columnWhere, SqlOperator.Equals, new ConstantPart(true));
 			}
 			else
 			{

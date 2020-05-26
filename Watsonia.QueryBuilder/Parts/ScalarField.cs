@@ -32,11 +32,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The select statement.
 		/// </value>
-		public SelectStatement Select
-		{
-			get;
-			internal set;
-		}
+		public SelectStatement Select { get; internal set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ScalarField"/> class.

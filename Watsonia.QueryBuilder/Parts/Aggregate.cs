@@ -37,11 +37,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The type of the aggregate.
 		/// </value>
-		public AggregateType AggregateType
-		{
-			get;
-			internal set;
-		}
+		public AggregateType AggregateType { get; internal set; }
 
 		/// <summary>
 		/// Gets or sets the field to be aggregated.
@@ -49,11 +45,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The field.
 		/// </value>
-		public Field Field
-		{
-			get;
-			internal set;
-		}
+		public Field Field { get; internal set; }
 
 		// TODO: Remove all of the internal empty constructors
 		/// <summary>

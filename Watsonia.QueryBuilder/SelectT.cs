@@ -39,10 +39,10 @@ namespace Watsonia.QueryBuilder
 			var field = FuncToPropertyInfo(property, true);
 			if (field == null)
 			{
-				if (property.Body is NewExpression)
+				if (property.Body is NewExpression anonObject)
 				{
 					// It's a new anonymous object, so add each of its arguments
-					foreach (var anonArg in ((NewExpression)property.Body).Arguments)
+					foreach (var anonArg in anonObject.Arguments)
 					{
 						if (anonArg is MemberExpression mex)
 						{

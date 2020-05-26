@@ -16,11 +16,7 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		public StatementPart Source
-		{
-			get;
-			internal set;
-		}
+		public StatementPart Source { get; internal set; }
 
 		public List<Join> SourceJoins { get; } = new List<Join>();
 

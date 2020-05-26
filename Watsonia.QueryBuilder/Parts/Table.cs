@@ -29,11 +29,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The name of the schema.
 		/// </value>
-		public string Schema
-		{
-			get;
-			internal set;
-		}
+		public string Schema { get; internal set; }
 
 		/// <summary>
 		/// Gets the name of the table.
@@ -41,11 +37,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The name of the table.
 		/// </value>
-		public string Name
-		{
-			get;
-			internal set;
-		}
+		public string Name { get; internal set; }
 
 		/// <summary>
 		/// Gets the alias to use for the table.
@@ -53,11 +45,7 @@ namespace Watsonia.QueryBuilder
 		/// <value>
 		/// The alias.
 		/// </value>
-		public string Alias
-		{
-			get;
-			internal set;
-		}
+		public string Alias { get; internal set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Table" /> class.

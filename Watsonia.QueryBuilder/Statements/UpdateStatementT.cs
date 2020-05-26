@@ -19,19 +19,11 @@ namespace Watsonia.QueryBuilder
 			}
 		}
 
-		public Type Target
-		{
-			get;
-			internal set;
-		}
+		public Type Target { get; internal set; }
 
 		public List<FieldValue> SetValues { get; } = new List<FieldValue>();
 
-		public Expression<Func<T, bool>> Conditions
-		{
-			get;
-			internal set;
-		}
+		public Expression<Func<T, bool>> Conditions { get; internal set; }
 
 		internal UpdateStatement()
 		{
