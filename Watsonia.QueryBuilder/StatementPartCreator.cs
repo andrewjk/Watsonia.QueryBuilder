@@ -1054,7 +1054,7 @@ namespace Watsonia.QueryBuilder
 				this.Visit(expression.Arguments[1]);
 				condition.Value = this.Stack.Pop();
 			}
-			else if (!expression.Method.IsStatic && expression.Arguments.Count > 1 && expression.Arguments[0].Type == expression.Object.Type)
+			else if (!expression.Method.IsStatic && expression.Arguments.Count > 0 && expression.Arguments[0].Type == expression.Object.Type)
 			{
 				// TODO: Get the other arguments, most importantly StringComparison
 				this.Visit(expression.Object);

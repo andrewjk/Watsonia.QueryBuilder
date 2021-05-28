@@ -884,17 +884,12 @@
     FROM [Customers] AS [c]
     WHERE [c].[City] = 'London'
   </baseline>
-  <baseline key="TestWhereTrue">
-    SELECT *
-    FROM [Customers] AS [c]
-    WHERE 1 &lt;&gt; 0
-  </baseline>
-  <baseline key="TestWhereFalse">
-    SELECT *
-    FROM [Customers] AS [c]
-    WHERE 0 &lt;&gt; 0
-  </baseline>
-  <baseline key="TestCompareEntityEqual">
+	<baseline key="TestWhereEquals">
+		SELECT *
+		FROM [Customers] AS [c]
+		WHERE [c].[City] = 'London'
+	</baseline>
+	<baseline key="TestCompareEntityEqual">
     SELECT *
     FROM [Customers] AS [c]
     WHERE [c].[CustomerID] = 'ALFKI'

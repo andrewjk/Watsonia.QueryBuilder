@@ -51,6 +51,14 @@ namespace Watsonia.Data.Tests.Queries
 		}
 
 		[TestMethod]
+		public void TestWhereEquals()
+		{
+			TestQuery2(
+				"TestWhereEquals",
+				Select.From<Customer>("c").Where(c => c.City.Equals("London")));
+		}
+
+		[TestMethod]
 		public void TestCompareEntityEqual()
 		{
 			var alfki = new Customer { CustomerID = "ALFKI" };
